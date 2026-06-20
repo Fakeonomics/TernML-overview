@@ -5,323 +5,378 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="TernML — Ternary neural network framework for microcontrollers. 1.58 bit/param, 15 KB models, no DSP or FPU required.">
 <title>TernML — Ternary Neural Networks for Microcontrollers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#06060b;
-  --bg-surface:#0c0c16;
-  --bg-card:#111122;
-  --bg-card-hover:#16162e;
-  --border:rgba(255,255,255,.06);
-  --border-hover:rgba(255,255,255,.1);
-  --text:#e8e8f0;
-  --text-dim:rgba(255,255,255,.45);
-  --text-dimmer:rgba(255,255,255,.25);
-  --accent:#00d4ff;
-  --accent2:#4f8cff;
-  --accent3:#7c3aed;
-  --gradient:linear-gradient(135deg,#00d4ff,#4f8cff,#7c3aed);
-  --gradient-text:linear-gradient(135deg,#00d4ff 0%,#4f8cff 50%,#7c3aed 100%);
-  --glow:rgba(0,212,255,.15);
-  --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
-  --mono:'JetBrains Mono','SF Mono','Fira Code',monospace;
-  --max-w:1100px;
-  --radius:12px;
-  --radius-sm:8px;
+  --bg:#0c0b09;
+  --bg-surface:#171512;
+  --bg-card:#201e1a;
+  --bg-card-hover:#2b2823;
+  --border:rgba(230,215,195,.07);
+  --border-strong:rgba(230,215,195,.14);
+  --text:#ece6de;
+  --text-dim:#a89e92;
+  --text-dimmer:#736b60;
+  --gold:#c9954a;
+  --gold-light:#e2c278;
+  --gold-glow:rgba(201,149,74,.15);
+  --teal:#2dd4bf;
+  --ember:#d4603a;
+  --gradient-hero:linear-gradient(180deg,rgba(12,11,9,.3) 0%,rgba(12,11,9,.92) 60%,var(--bg) 100%);
+  --gradient-gold:linear-gradient(135deg,#c9954a,#e2c278);
+  --font-ui:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  --font-serif:'Instrument Serif',Georgia,serif;
+  --font-mono:'JetBrains Mono','SF Mono','Fira Code',monospace;
+  --max-w:1120px;
+  --radius:10px;
 }
-::selection{background:rgba(0,212,255,.25);color:#fff}
+::selection{background:rgba(201,149,74,.25);color:#fff}
 html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 body{
-  font-family:var(--font);
+  font-family:var(--font-ui);
   background:var(--bg);
   color:var(--text);
-  line-height:1.6;
+  line-height:1.65;
   overflow-x:hidden;
 }
-a{color:var(--accent);text-decoration:none;transition:color .2s}
-a:hover{color:#fff}
+a{color:var(--gold);text-decoration:none;transition:color .25s}
+a:hover{color:var(--gold-light)}
 img{max-width:100%}
-
-/* Utilities */
 .container{width:100%;max-width:var(--max-w);margin:0 auto;padding:0 24px}
 .section{padding:100px 0 80px;position:relative}
+.section-header{margin-bottom:48px}
 .section-label{
   display:inline-flex;align-items:center;gap:8px;
-  font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--accent);margin-bottom:16px;
+  font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:14px;
 }
-.section-label::before{content:'';width:24px;height:1px;background:var(--accent)}
+.section-label::before{content:'';width:20px;height:1.5px;background:var(--gold)}
 .section-title{
-  font-size:clamp(28px,4vw,48px);font-weight:700;letter-spacing:-.03em;
-  margin-bottom:16px;line-height:1.15;
+  font-size:clamp(26px,3.8vw,44px);font-weight:700;letter-spacing:-.025em;
+  margin-bottom:12px;line-height:1.12;color:var(--text);
 }
-.section-subtitle{font-size:18px;color:var(--text-dim);max-width:560px;line-height:1.6}
-.section-header{margin-bottom:56px}
-
-/* Reveal animation */
-.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.section-subtitle{
+  font-size:17px;color:var(--text-dim);max-width:520px;line-height:1.6;
+  font-weight:400;
+}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1)}
 .reveal.visible{opacity:1;transform:translateY(0)}
-.reveal-delay-1{transition-delay:.1s}
-.reveal-delay-2{transition-delay:.2s}
-.reveal-delay-3{transition-delay:.3s}
-.reveal-delay-4{transition-delay:.4s}
+.reveal-d1{transition-delay:.08s}
+.reveal-d2{transition-delay:.16s}
+.reveal-d3{transition-delay:.24s}
+.reveal-d4{transition-delay:.32s}
+.reveal-d5{transition-delay:.40s}
 
-/* === NAVIGATION === */
+/* === NAV === */
 nav{
   position:fixed;top:0;left:0;right:0;z-index:100;
-  padding:16px 0;
-  transition:background .3s,backdrop-filter .3s;
+  padding:18px 0;
+  transition:background .35s,backdrop-filter .35s,border-color .35s;
 }
-nav.scrolled{background:rgba(6,6,11,.8);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+nav.scrolled{
+  background:rgba(12,11,9,.82);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+}
 nav .container{display:flex;align-items:center;justify-content:space-between}
-.nav-logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;letter-spacing:-.02em;color:var(--text)}
-.nav-logo svg{flex-shrink:0}
-.nav-links{display:flex;align-items:center;gap:28px;list-style:none}
-.nav-links a{font-size:14px;color:var(--text-dim);font-weight:500;transition:color .2s}
-.nav-links a:hover{color:var(--text)}
-.nav-cta{
-  font-size:13px;font-weight:600;padding:8px 20px;
-  background:var(--gradient);border-radius:20px;color:#fff!important;
-  transition:opacity .2s,transform .2s;
+.nav-logo{
+  display:flex;align-items:center;gap:10px;
+  font-weight:700;font-size:17px;letter-spacing:-.02em;color:var(--text);
+  font-family:var(--font-ui);
 }
-.nav-cta:hover{opacity:.9;transform:translateY(-1px)}
-.nav-toggle{display:none;background:none;border:none;color:var(--text);font-size:24px;cursor:pointer;padding:4px}
+.nav-logo svg{flex-shrink:0}
+.nav-links{display:flex;align-items:center;gap:24px;list-style:none}
+.nav-links a{
+  font-size:13.5px;color:var(--text-dim);font-weight:500;
+  transition:color .25s;position:relative;
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:-2px;left:0;width:0;height:1.5px;
+  background:var(--gold);transition:width .3s cubic-bezier(.22,1,.36,1);
+}
+.nav-links a:hover{color:var(--text)}
+.nav-links a:hover::after{width:100%}
+.nav-cta{
+  font-size:13px;font-weight:600;padding:9px 22px;
+  background:var(--gradient-gold);border-radius:6px;
+  color:#0c0b09!important;letter-spacing:.01em;
+  transition:opacity .25s,transform .25s;
+  clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%);
+}
+.nav-cta:hover{opacity:.88;transform:translateY(-1px);color:#0c0b09!important}
+.nav-cta::after{display:none!important}
+.nav-toggle{display:none;background:none;border:none;color:var(--text);font-size:22px;cursor:pointer;padding:4px;line-height:1}
 
 /* === HERO === */
 .hero{
   min-height:100vh;display:flex;align-items:center;position:relative;
-  padding:120px 0 80px;overflow:hidden;
+  padding:120px 0 60px;overflow:hidden;
 }
-.hero-grid{
-  position:absolute;inset:0;overflow:hidden;pointer-events:none;
+.hero-bg{
+  position:absolute;inset:0;z-index:0;
 }
-.hero-grid::before{
-  content:'';position:absolute;inset:0;
-  background-image:
-    radial-gradient(1px 1px at 10% 20%,rgba(255,255,255,.12),transparent),
-    radial-gradient(1px 1px at 30% 65%,rgba(255,255,255,.08),transparent),
-    radial-gradient(1px 1px at 55% 15%,rgba(255,255,255,.1),transparent),
-    radial-gradient(1px 1px at 70% 80%,rgba(255,255,255,.06),transparent),
-    radial-gradient(1px 1px at 90% 40%,rgba(255,255,255,.1),transparent),
-    radial-gradient(2px 2px at 20% 45%,rgba(255,255,255,.12),transparent),
-    radial-gradient(2px 2px at 50% 50%,rgba(255,255,255,.08),transparent),
-    radial-gradient(2px 2px at 80% 25%,rgba(255,255,255,.1),transparent),
-    radial-gradient(1px 1px at 15% 75%,rgba(255,255,255,.07),transparent),
-    radial-gradient(1px 1px at 40% 10%,rgba(255,255,255,.09),transparent),
-    radial-gradient(1px 1px at 60% 90%,rgba(255,255,255,.06),transparent),
-    radial-gradient(1px 1px at 85% 55%,rgba(255,255,255,.08),transparent),
-    radial-gradient(2px 2px at 35% 35%,rgba(255,255,255,.05),transparent),
-    radial-gradient(1px 1px at 65% 5%,rgba(255,255,255,.1),transparent),
-    radial-gradient(1px 1px at 5% 50%,rgba(255,255,255,.07),transparent);
-  animation:drift 120s linear infinite;
+.hero-bg img{
+  width:100%;height:100%;object-fit:cover;
+  position:absolute;inset:0;
 }
-@keyframes drift{
-  0%{transform:translateY(0)}
-  100%{transform:translateY(-200px)}
+.hero-bg .overlay{
+  position:absolute;inset:0;
+  background:var(--gradient-hero);
+}
+.hero-bg .grain{
+  position:absolute;inset:0;
+  opacity:.035;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat:repeat;background-size:256px 256px;
 }
 .hero-glow{
-  position:absolute;top:50%;left:50%;width:600px;height:600px;
+  position:absolute;top:45%;left:50%;width:700px;height:700px;
   transform:translate(-50%,-50%);
-  background:radial-gradient(circle,rgba(0,212,255,.08) 0%,rgba(79,140,255,.04) 30%,transparent 60%);
-  pointer-events:none;
+  background:radial-gradient(circle,rgba(201,149,74,.06) 0%,transparent 60%);
+  pointer-events:none;z-index:1;
 }
-.hero .container{position:relative;z-index:2}
+.hero .container{position:relative;z-index:2;text-align:center}
 .hero-badge{
   display:inline-flex;align-items:center;gap:8px;
-  padding:6px 16px;border-radius:20px;
-  border:1px solid var(--border);font-size:13px;color:var(--text-dim);
-  margin-bottom:32px;transition:border-color .3s;
+  padding:6px 16px;border-radius:4px;
+  border:1px solid var(--border);font-size:12.5px;color:var(--text-dim);
+  margin-bottom:32px;font-weight:500;letter-spacing:.01em;
+  backdrop-filter:blur(4px);background:rgba(12,11,9,.3);
 }
-.hero-badge span{color:var(--accent);font-weight:600}
+.hero-badge span{color:var(--gold);font-weight:600}
 .hero h1{
-  font-size:clamp(36px,6vw,72px);font-weight:800;letter-spacing:-.04em;
-  line-height:1.05;margin-bottom:20px;
-  background:var(--gradient-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  background-clip:text;
+  font-family:var(--font-serif);
+  font-size:clamp(40px,7vw,82px);font-weight:400;font-style:italic;
+  letter-spacing:-.03em;
+  line-height:1.05;margin-bottom:20px;color:var(--text);
 }
-.hero p{
-  font-size:clamp(16px,2vw,20px);color:var(--text-dim);
-  max-width:560px;line-height:1.7;margin-bottom:40px;
+.hero h1 .gold{color:var(--gold);font-style:italic}
+.hero .sub{
+  font-size:clamp(16px,1.8vw,19px);color:var(--text-dim);
+  max-width:600px;line-height:1.7;margin:0 auto 36px;
+  letter-spacing:-.005em;
 }
-.hero-buttons{display:flex;gap:12px;flex-wrap:wrap}
+.hero .sub strong{color:var(--text);font-weight:600}
+.hero-buttons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:14px 30px;border-radius:6px;border:none;
+  font-size:14.5px;font-weight:600;cursor:pointer;
+  transition:opacity .25s,transform .25s,box-shadow .3s;
+  font-family:var(--font-ui);letter-spacing:-.005em;
+}
 .btn-primary{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:14px 32px;border-radius:30px;border:none;
-  background:var(--gradient);color:#fff;font-size:15px;font-weight:600;
-  cursor:pointer;transition:opacity .2s,transform .2s,box-shadow .3s;
-  font-family:var(--font);
+  background:var(--gradient-gold);color:#0c0b09!important;
+  clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%);
 }
-.btn-primary:hover{opacity:.92;transform:translateY(-2px);box-shadow:0 8px 32px var(--glow)}
+.btn-primary:hover{opacity:.9;transform:translateY(-2px);box-shadow:0 6px 24px var(--gold-glow)}
 .btn-secondary{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:14px 28px;border-radius:30px;border:1px solid var(--border-hover);
-  color:var(--text);font-size:15px;font-weight:500;
-  cursor:pointer;transition:background .2s,transform .2s,border-color .2s;
-  font-family:var(--font);background:transparent;
+  background:rgba(255,255,255,.04);color:var(--text);
+  border:1px solid var(--border-strong);backdrop-filter:blur(4px);
+  clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%);
 }
-.btn-secondary:hover{background:var(--bg-surface);border-color:rgba(255,255,255,.2);transform:translateY(-2px)}
+.btn-secondary:hover{background:rgba(255,255,255,.08);transform:translateY(-2px);border-color:rgba(230,215,195,.2)}
 .hero-stats{
-  display:grid;grid-template-columns:repeat(4,1fr);gap:16px;
-  margin-top:64px;padding-top:40px;border-top:1px solid var(--border);
+  display:grid;grid-template-columns:repeat(4,1fr);gap:12px;
+  margin-top:60px;padding-top:36px;border-top:1px solid var(--border);
 }
 .hero-stat{text-align:center}
-.hero-stat-value{font-size:clamp(24px,3vw,40px);font-weight:700;letter-spacing:-.03em;background:var(--gradient-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero-stat-label{font-size:13px;color:var(--text-dim);margin-top:4px}
+.hero-stat-value{
+  font-size:clamp(22px,2.8vw,36px);font-weight:700;letter-spacing:-.03em;
+  color:var(--text);line-height:1.1;
+}
+.hero-stat-value .num-spec{font-family:var(--font-mono);font-weight:500}
+.hero-stat-label{font-size:12.5px;color:var(--text-dim);margin-top:3px;letter-spacing:.02em}
 
 /* === METRICS === */
 .metrics-grid{
-  display:grid;grid-template-columns:repeat(4,1fr);gap:16px;
+  display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:16px;
 }
+.metrics-grid .metric-card:first-child{grid-row:span 2}
 .metric-card{
   background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
-  padding:32px 24px;text-align:center;transition:border-color .3s,transform .3s,background .3s;
+  padding:32px 28px;text-align:center;
+  transition:border-color .35s,transform .35s,background .35s;
+  clip-path:polygon(0 0,100% 0,calc(100% - 8px) 100%,0 100%);
 }
-.metric-card:hover{border-color:rgba(0,212,255,.2);transform:translateY(-4px);background:var(--bg-card-hover)}
-.metric-icon{font-size:28px;margin-bottom:12px;display:block}
-.metric-value{font-size:clamp(28px,3.5vw,44px);font-weight:800;letter-spacing:-.03em;background:var(--gradient-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.metric-label{font-size:14px;color:var(--text-dim);margin-top:6px;font-weight:500}
-.metric-desc{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height:1.4}
+.metric-card:hover{border-color:var(--gold);transform:translateY(-3px);background:var(--bg-card-hover)}
+.metric-icon{font-size:24px;margin-bottom:14px;display:block;opacity:.7}
+.metric-value{
+  font-size:clamp(26px,3vw,40px);font-weight:800;letter-spacing:-.03em;
+  color:var(--gold);font-family:var(--font-mono);line-height:1.1;
+}
+.metric-card:first-child .metric-value{font-size:clamp(32px,4vw,52px)}
+.metric-label{font-size:14px;color:var(--text-dim);margin-top:8px;font-weight:500}
+.metric-desc{font-size:12.5px;color:var(--text-dimmer);margin-top:4px;line-height:1.45}
 
 /* === HOW IT WORKS === */
-.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;position:relative}
-.step-card{
+.how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;position:relative}
+.how-card{
   background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
-  padding:36px 28px;position:relative;transition:border-color .3s,transform .3s,background .3s;
+  padding:38px 30px;position:relative;
+  transition:border-color .35s,transform .35s,background .35s;
 }
-.step-card:hover{border-color:rgba(0,212,255,.2);transform:translateY(-4px);background:var(--bg-card-hover)}
-.step-number{
-  width:44px;height:44px;border-radius:50%;
-  background:var(--gradient);display:flex;align-items:center;justify-content:center;
-  font-size:18px;font-weight:700;color:#fff;margin-bottom:20px;
+.how-card:hover{border-color:rgba(201,149,74,.2);transform:translateY(-4px);background:var(--bg-card-hover)}
+.how-num{
+  width:40px;height:40px;border-radius:4px;
+  background:var(--gradient-gold);display:flex;align-items:center;justify-content:center;
+  font-size:15px;font-weight:700;color:#0c0b09;margin-bottom:18px;
+  clip-path:polygon(3px 0,100% 0,calc(100% - 3px) 100%,0 100%);
 }
-.step-icon{font-size:24px;margin-bottom:16px}
-.step-card h3{font-size:20px;font-weight:700;margin-bottom:10px;letter-spacing:-.02em}
-.step-card p{font-size:14px;color:var(--text-dim);line-height:1.7}
-.step-divider{display:none}
-.steps-connector{display:none}
+.how-card h3{font-size:20px;font-weight:700;margin-bottom:10px;letter-spacing:-.02em}
+.how-card p{font-size:14px;color:var(--text-dim);line-height:1.7}
+.how-card .tag{
+  display:inline-block;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--teal);margin-top:14px;
+}
 
 /* === BENCHMARK === */
-.benchmark-wrapper{
+.bench-wrap{
   background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
   overflow:hidden;overflow-x:auto;
 }
-table{width:100%;border-collapse:collapse;font-size:14px;min-width:640px}
+table{width:100%;border-collapse:collapse;font-size:14px;min-width:620px}
 thead{background:var(--bg-surface)}
-th{padding:16px 20px;text-align:left;font-weight:600;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--text-dim);border-bottom:1px solid var(--border)}
-td{padding:14px 20px;border-bottom:1px solid var(--border);color:var(--text-dim)}
-tr:last-child td{border-bottom:none}
-tr:hover td{background:rgba(0,212,255,.03)}
-td:first-child{font-weight:600;color:var(--text)}
-td.highlight{color:var(--accent);font-weight:600}
-td.check{color:#22c55e;font-weight:700}
-td.cross{color:rgba(255,255,255,.15)}
-.benchmark-note{font-size:13px;color:var(--text-dimmer);margin-top:16px;font-style:italic}
+th{
+  padding:14px 18px;text-align:left;font-weight:600;font-size:11.5px;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--text-dim);
+  border-bottom:1px solid var(--border);
+}
+th:first-child{color:var(--text-dimmer)}
+th.highlight-col{color:var(--gold)}
+td{padding:12px 18px;border-bottom:1px solid var(--border);color:var(--text-dim)}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:rgba(201,149,74,.04)}
+td:first-child{font-weight:500;color:var(--text)}
+td.highlight{color:var(--gold);font-family:var(--font-mono);font-weight:500}
+td.check{color:var(--teal);font-weight:600}
+td.cross{color:var(--text-dimmer)}
+td.yes-badge{
+  display:inline-flex;align-items:center;gap:4px;
+  color:var(--ember);font-weight:600;
+}
+td.yes-badge::before{content:'\2716';font-size:11px}
+td.no-badge{
+  display:inline-flex;align-items:center;gap:4px;
+  color:var(--teal);font-weight:600;
+}
+td.no-badge::before{content:'\2714';font-size:11px}
+.bench-note{font-size:13px;color:var(--text-dimmer);margin-top:16px;font-style:italic;line-height:1.5}
 
 /* === HARDWARE === */
-.hardware-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.hw-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
 .hw-card{
   background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
-  padding:28px 20px;text-align:center;transition:border-color .3s,transform .3s,background .3s;
+  padding:28px 22px;text-align:center;
+  transition:border-color .35s,transform .35s,background .35s;
 }
-.hw-card:hover{border-color:rgba(0,212,255,.2);transform:translateY(-4px);background:var(--bg-card-hover)}
-.hw-chip{font-size:32px;margin-bottom:12px}
-.hw-name{font-size:17px;font-weight:700;margin-bottom:4px;letter-spacing:-.01em}
-.hw-core{font-size:13px;color:var(--accent);margin-bottom:12px;font-weight:500}
-.hw-specs{list-style:none;font-size:13px;color:var(--text-dim);line-height:1.8}
-.hw-specs li::before{content:'\2713\0020';color:#22c55e}
+.hw-card:hover{border-color:rgba(201,149,74,.2);transform:translateY(-4px);background:var(--bg-card-hover)}
+.hw-icon{font-size:28px;margin-bottom:14px;display:block;opacity:.6}
+.hw-name{font-size:17px;font-weight:700;margin-bottom:3px;letter-spacing:-.01em}
+.hw-core{font-size:12.5px;color:var(--gold);margin-bottom:14px;font-weight:500;font-family:var(--font-mono)}
+.hw-specs{list-style:none;font-size:13px;color:var(--text-dim);line-height:1.9}
+.hw-specs li{display:flex;align-items:center;justify-content:center;gap:6px}
+.hw-specs li::before{content:'\2714';color:var(--teal);font-size:11px}
 
 /* === ABOUT === */
-.about-content{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
-.about-text p{font-size:16px;color:var(--text-dim);line-height:1.8;margin-bottom:16px}
+.about-wrap{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.about-text p{font-size:16px;color:var(--text-dim);line-height:1.8;margin-bottom:18px}
 .about-text p:last-child{margin-bottom:0}
-.about-highlights{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.about-highlight{
-  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);
-  padding:16px 20px;display:flex;align-items:center;gap:12px;font-size:14px;font-weight:500;
-  transition:border-color .3s,background .3s;
+.about-text .highlight-quote{
+  border-left:2px solid var(--gold);padding:16px 0 16px 20px;
+  font-family:var(--font-serif);font-size:20px;font-style:italic;
+  color:var(--text);line-height:1.5;margin:24px 0;
 }
-.about-highlight:hover{border-color:rgba(0,212,255,.2);background:var(--bg-card-hover)}
-.about-highlight-icon{font-size:18px;flex-shrink:0}
-.about-links{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+.about-text .highlight-quote cite{font-size:13px;font-style:normal;color:var(--text-dim);font-family:var(--font-ui);display:block;margin-top:6px}
+.about-badges{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.about-badge{
+  background:var(--bg-card);border:1px solid var(--border);border-radius:6px;
+  padding:14px 18px;display:flex;align-items:center;gap:10px;
+  font-size:13.5px;font-weight:500;color:var(--text-dim);
+  transition:border-color .3s,background .3s,color .3s;
+}
+.about-badge:hover{border-color:var(--gold);background:var(--bg-card-hover);color:var(--text)}
+.about-badge .icon{font-size:16px;flex-shrink:0;opacity:.7}
+.about-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
 
-/* === CONTACT / CTA === */
-.contact-cta{
+/* === CTA === */
+.cta-block{
   background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
   padding:64px;text-align:center;position:relative;overflow:hidden;
 }
-.contact-cta::before{
-  content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;
-  background:radial-gradient(circle at 50% 50%,rgba(0,212,255,.05),transparent 50%);
-  animation:pulse-bg 6s ease-in-out infinite;
+.cta-block::before{
+  content:'';position:absolute;top:-80%;left:-50%;width:200%;height:200%;
+  background:radial-gradient(circle at 50% 50%,rgba(201,149,74,.04),transparent 50%);
   pointer-events:none;
 }
-@keyframes pulse-bg{0%,100%{opacity:.5}50%{opacity:1}}
-.contact-cta *{position:relative;z-index:2}
-.contact-cta h2{font-size:32px;font-weight:700;letter-spacing:-.03em;margin-bottom:12px}
-.contact-cta p{font-size:16px;color:var(--text-dim);margin-bottom:32px;max-width:480px;margin-left:auto;margin-right:auto}
-.contact-links{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
-.contact-btn{
-  display:flex;align-items:center;gap:8px;
-  padding:14px 28px;border-radius:30px;
-  font-size:14px;font-weight:600;transition:transform .2s,opacity .2s;
-  font-family:var(--font);
+.cta-block *{position:relative;z-index:2}
+.cta-block h2{font-size:clamp(24px,3vw,34px);font-weight:700;letter-spacing:-.025em;margin-bottom:10px}
+.cta-block p{font-size:16px;color:var(--text-dim);margin-bottom:30px;max-width:460px;margin-left:auto;margin-right:auto}
+.cta-btns{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.cta-btn{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:12px 24px;border-radius:6px;
+  font-size:13.5px;font-weight:600;
+  transition:transform .25s,opacity .25s,background .25s;
+  font-family:var(--font-ui);
 }
-.contact-btn:hover{transform:translateY(-2px)}
-.contact-btn.telegram{background:#0088cc;color:#fff}
-.contact-btn.email{background:var(--bg-surface);color:var(--text);border:1px solid var(--border-hover)}
-.contact-btn.github{background:var(--bg-surface);color:var(--text);border:1px solid var(--border-hover)}
-.contact-btn.habr{background:var(--bg-surface);color:var(--text);border:1px solid var(--border-hover)}
-.contact-btn.doi{background:var(--bg-surface);color:var(--text);border:1px solid var(--border-hover)}
+.cta-btn:hover{transform:translateY(-2px)}
+.cta-btn.primary-b{background:var(--gradient-gold);color:#0c0b09;clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%)}
+.cta-btn.primary-b:hover{opacity:.9}
+.cta-btn.ghost{background:rgba(255,255,255,.04);color:var(--text);border:1px solid var(--border-strong);clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%)}
+.cta-btn.ghost:hover{background:rgba(255,255,255,.08)}
+.cta-btn .icon{font-size:15px;opacity:.7}
 
 /* === FOOTER === */
-footer{
-  padding:40px 0 32px;border-top:1px solid var(--border);
-  text-align:center;font-size:13px;color:var(--text-dimmer);
-}
-footer .container{display:flex;flex-direction:column;align-items:center;gap:12px}
+footer{padding:36px 0 28px;border-top:1px solid var(--border);text-align:center;font-size:13px;color:var(--text-dimmer)}
+footer .container{display:flex;flex-direction:column;align-items:center;gap:10px}
 footer a{color:var(--text-dim)}
-footer a:hover{color:var(--accent)}
-.footer-links{display:flex;gap:24px;flex-wrap:wrap;justify-content:center}
-.footer-links a{font-size:13px}
-footer .patent{color:var(--text-dimmer);font-size:12px;margin-top:8px}
-
-/* === GITHUB CORNER === */
-.github-corner{position:fixed;top:0;right:0;z-index:200;width:80px;height:80px}
-.github-corner svg{fill:var(--bg-card);color:var(--text);position:absolute;top:0;right:0;border:0}
-.github-corner .octo-arm{transform-origin:130px 106px}
-.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}
-@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}
-@media(max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}
+footer a:hover{color:var(--gold)}
+.footer-links{display:flex;gap:20px;flex-wrap:wrap;justify-content:center}
+.footer-links a{font-size:13px;position:relative}
+.footer-links a::after{content:'/';color:var(--text-dimmer);margin-left:20px;position:absolute;right:-14px}
+.footer-links a:last-child::after{display:none}
+footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height:1.5;max-width:520px;opacity:.7}
 
 /* === RESPONSIVE === */
-@media(max-width:900px){
-  .metrics-grid{grid-template-columns:repeat(2,1fr)}
-  .steps{grid-template-columns:1fr}
-  .hardware-grid{grid-template-columns:repeat(2,1fr)}
-  .about-content{grid-template-columns:1fr}
+@media(max-width:960px){
+  .metrics-grid{grid-template-columns:1fr 1fr}
+  .metrics-grid .metric-card:first-child{grid-row:auto}
+  .hw-grid{grid-template-columns:repeat(2,1fr)}
+  .about-wrap{grid-template-columns:1fr}
+  .about-badges{grid-template-columns:1fr 1fr}
   .hero-stats{grid-template-columns:repeat(2,1fr);gap:12px}
-  .contact-cta{padding:40px 24px}
-  .nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(6,6,11,.95);backdrop-filter:blur(16px);flex-direction:column;padding:16px 24px;gap:16px;border-bottom:1px solid var(--border)}
+  .cta-block{padding:40px 28px}
+  .how-grid{grid-template-columns:1fr;max-width:480px;margin:0 auto}
+}
+@media(max-width:720px){
+  .nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(12,11,9,.95);backdrop-filter:blur(14px);flex-direction:column;padding:16px 24px;gap:12px;border-bottom:1px solid var(--border)}
   .nav-links.open{display:flex}
   .nav-toggle{display:block}
-}
-@media(max-width:600px){
   .metrics-grid{grid-template-columns:1fr 1fr}
-  .hardware-grid{grid-template-columns:1fr 1fr}
+  .hw-grid{grid-template-columns:1fr 1fr}
   .hero-stats{grid-template-columns:1fr 1fr}
-  .hero h1{font-size:28px;line-height:1.15}
+  .about-badges{grid-template-columns:1fr}
+  .hero h1{font-size:32px}
   .section{padding:60px 0 40px}
-  .about-highlights{grid-template-columns:1fr}
-  .container{padding:0 16px}
+  .container{padding:0 20px}
 }
-@media(max-width:400px){
+@media(max-width:480px){
   .metrics-grid{grid-template-columns:1fr}
-  .hardware-grid{grid-template-columns:1fr}
+  .hw-grid{grid-template-columns:1fr}
   .hero-stats{grid-template-columns:1fr}
+  .hero h1{font-size:28px;line-height:1.1}
+  .hero .sub{font-size:15px}
+  .section-title{font-size:22px}
+  .cta-block{padding:28px 20px}
+  .about-badges{grid-template-columns:1fr}
 }
 @media(prefers-reduced-motion:reduce){
   .reveal,.reveal.visible{opacity:1;transform:none;transition:none}
-  .hero-glow,.hero-grid::before,.contact-cta::before,.step-card,.metric-card,.hw-card{animation:none!important}
+  .hero-glow,.hero-bg .grain,.how-card,.metric-card,.hw-card{animation:none!important;transition:none!important}
 }
 </style>
 </head>
@@ -331,17 +386,16 @@ footer .patent{color:var(--text-dimmer);font-size:12px;margin-top:8px}
   <div class="container">
     <a href="#" class="nav-logo">
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-        <rect width="28" height="28" rx="8" fill="url(#lg)"/>
-        <path d="M8 14L12 10L16 14L20 10" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M8 18L12 14L16 18L20 14" stroke="rgba(255,255,255,.4)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-        <defs><linearGradient id="lg" x1="0" y1="0" x2="28" y2="28"><stop stop-color="#00d4ff"/><stop offset="1" stop-color="#4f8cff"/></linearGradient></defs>
+        <rect width="28" height="28" rx="6" fill="#c9954a"/>
+        <path d="M8 14L12 10L16 14L20 10" stroke="#0c0b09" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M8 18L12 14L16 18L20 14" stroke="rgba(12,11,9,.4)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
       TernML
     </a>
     <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">&#9776;</button>
     <ul class="nav-links">
       <li><a href="#metrics">Metrics</a></li>
-      <li><a href="#how-it-works">How It Works</a></li>
+      <li><a href="#how">How It Works</a></li>
       <li><a href="#benchmarks">Benchmarks</a></li>
       <li><a href="#hardware">Hardware</a></li>
       <li><a href="#about">About</a></li>
@@ -351,23 +405,27 @@ footer .patent{color:var(--text-dimmer);font-size:12px;margin-top:8px}
 </nav>
 
 <section class="hero" id="hero">
-  <div class="hero-grid"></div>
+  <div class="hero-bg">
+    <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1920&q=80" alt="" aria-hidden="true" loading="eager">
+    <div class="overlay"></div>
+    <div class="grain"></div>
+  </div>
   <div class="hero-glow"></div>
   <div class="container">
     <div class="reveal visible">
       <div class="hero-badge"><span>&#9679; v1.0</span> &middot; Ternary Neural Network Framework</div>
     </div>
-    <h1 class="reveal visible reveal-delay-1">Neural networks<br>on a $0.50 chip.</h1>
-    <p class="reveal visible reveal-delay-2">TernML is the first framework to deliver production-ready ternary neural networks with {-1,0,+1} weights — <strong>improving accuracy over float baselines</strong> while fitting in 15 KB. No DSP. No FPU. Just pure add-and-shift inference on the cheapest microcontrollers.</p>
-    <div class="hero-buttons reveal visible reveal-delay-3">
-      <a href="#contact" class="btn-primary">Get Early Access &rarr;</a>
-      <a href="https://habr.com/ru/articles/1049822/" target="_blank" rel="noopener" class="btn-secondary">Read Research</a>
+    <h1 class="reveal visible reveal-d1">The <span class="gold">$0.50</span> neural<br>network.</h1>
+    <p class="sub reveal visible reveal-d2">TernML is the first production framework for ternary neural networks with <strong>{-1,0,+1}</strong> weights — improving accuracy over float baselines while fitting in <strong>15 KB</strong>. No DSP. No FPU. Just pure add-and-shift inference on the cheapest microcontrollers.</p>
+    <div class="hero-buttons reveal visible reveal-d3">
+      <a href="#contact" class="btn btn-primary">Get Early Access &rarr;</a>
+      <a href="https://habr.com/ru/articles/1049822/" target="_blank" rel="noopener" class="btn btn-secondary">Read the Research</a>
     </div>
-    <div class="hero-stats reveal visible reveal-delay-4">
-      <div class="hero-stat"><div class="hero-stat-value">96.15%</div><div class="hero-stat-label">MNIST Accuracy</div></div>
-      <div class="hero-stat"><div class="hero-stat-value">15 KB</div><div class="hero-stat-label">Model Size</div></div>
-      <div class="hero-stat"><div class="hero-stat-value">1.58</div><div class="hero-stat-label">Bits / Parameter</div></div>
-      <div class="hero-stat"><div class="hero-stat-value">0</div><div class="hero-stat-label">DSP / FPU Required</div></div>
+    <div class="hero-stats reveal visible reveal-d4">
+      <div class="hero-stat"><div class="hero-stat-value"><span class="num-spec">96.15%</span></div><div class="hero-stat-label">MNIST Accuracy</div></div>
+      <div class="hero-stat"><div class="hero-stat-value"><span class="num-spec">15 KB</span></div><div class="hero-stat-label">Model Size</div></div>
+      <div class="hero-stat"><div class="hero-stat-value"><span class="num-spec">1.58</span></div><div class="hero-stat-label">Bits / Parameter</div></div>
+      <div class="hero-stat"><div class="hero-stat-value"><span class="num-spec">0</span></div><div class="hero-stat-label">DSP / FPU Required</div></div>
     </div>
   </div>
 </section>
@@ -376,56 +434,64 @@ footer .patent{color:var(--text-dimmer);font-size:12px;margin-top:8px}
   <div class="container">
     <div class="section-header reveal">
       <div class="section-label">Key Metrics</div>
-      <h2 class="section-title">Redefining efficiency.</h2>
-      <p class="section-subtitle">TernML achieves float-beating accuracy at a fraction of the size and cost of traditional quantized models.</p>
+      <h2 class="section-title">Fits in L1 cache. Barely.</h2>
+      <p class="section-subtitle">TernML achieves float-beating accuracy at a fraction of the size — fitting entirely in a Cortex-M0+ L1 cache.</p>
     </div>
     <div class="metrics-grid">
-      <div class="metric-card reveal reveal-delay-1">
-        <div class="metric-value">1.58</div>
-        <div class="metric-label">Bits per Parameter</div>
-        <div class="metric-desc">Ternary encoding — 8&#215; compression vs 8-bit</div>
+      <div class="metric-card reveal reveal-d1">
+        <div class="metric-value">96.15%</div>
+        <div class="metric-label">MNIST Accuracy</div>
+        <div class="metric-desc">Exceeds the float baseline — regularization by quantization</div>
       </div>
-      <div class="metric-card reveal reveal-delay-2">
+      <div class="metric-card reveal reveal-d2">
+        <div class="metric-value">1.58</div>
+        <div class="metric-label">Bits / Parameter</div>
+        <div class="metric-desc">8× compression vs 8-bit quantized</div>
+      </div>
+      <div class="metric-card reveal reveal-d3">
         <div class="metric-value">15 KB</div>
         <div class="metric-label">Full Model Size</div>
-        <div class="metric-desc">Fits entirely in Cortex-M0+ L1 cache</div>
+        <div class="metric-desc">Fits entirely in M0+ L1 cache</div>
       </div>
-      <div class="metric-card reveal reveal-delay-3">
+      <div class="metric-card reveal reveal-d2">
         <div class="metric-value">49%</div>
         <div class="metric-label">Natural Sparsity</div>
-        <div class="metric-desc">Zero weights skip compute automatically</div>
+        <div class="metric-desc">Zero weights skip compute for free</div>
       </div>
-      <div class="metric-card reveal reveal-delay-4">
+      <div class="metric-card reveal reveal-d3">
         <div class="metric-value">0</div>
         <div class="metric-label">DSP / FPU Needed</div>
-        <div class="metric-desc">Pure add-shift — any MCU can run it</div>
+        <div class="metric-desc">Pure add-shift — runs on any MCU</div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="section" id="how-it-works">
+<section class="section" id="how">
   <div class="container">
     <div class="section-header reveal">
       <div class="section-label">How It Works</div>
-      <h2 class="section-title">Train normally.<br>Quantize once. Deploy anywhere.</h2>
-      <p class="section-subtitle">A three-step pipeline that turns standard PyTorch/TensorFlow models into ultra-efficient ternary networks.</p>
+      <h2 class="section-title">Train. Quantize. Deploy.<br>Three steps, one framework.</h2>
+      <p class="section-subtitle">A pipeline that turns standard PyTorch or TensorFlow models into ultra-efficient ternary networks for any microcontroller.</p>
     </div>
-    <div class="steps">
-      <div class="step-card reveal reveal-delay-1">
-        <div class="step-number">1</div>
-        <h3>Train</h3>
-        <p>Define your architecture using standard layers. TernML's quantization-aware training automatically learns ternary weight distributions while backpropagating through discrete constraints.</p>
+    <div class="how-grid">
+      <div class="how-card reveal reveal-d1">
+        <div class="how-num">01</div>
+        <h3>Train with QAT</h3>
+        <p>Define your architecture with standard layers. TernML's quantization-aware training learns ternary weight distributions while backpropagating through discrete constraints — no custom ops needed.</p>
+        <span class="tag">PyTorch &bull; TensorFlow</span>
       </div>
-      <div class="step-card reveal reveal-delay-2">
-        <div class="step-number">2</div>
-        <h3>Quantize</h3>
-        <p>The trained float weights are converted to {-1,0,+1} using a threshold-aware scheme. The result: 1.58 bit per parameter with natural sparsity — zeros are free.</p>
+      <div class="how-card reveal reveal-d2">
+        <div class="how-num">02</div>
+        <h3>Quantize to {-1,0,+1}</h3>
+        <p>Trained float weights convert to ternary values using a threshold-aware scheme. The result: 1.58 bits per parameter with ~49% natural sparsity — zeros cost nothing in compute or storage.</p>
+        <span class="tag">1.58 bit &bull; 8&times; smaller</span>
       </div>
-      <div class="step-card reveal reveal-delay-3">
-        <div class="step-number">3</div>
-        <h3>Deploy</h3>
-        <p>Export to a 15 KB binary. Flash onto any Cortex-M0+, ESP32, RISC-V, or MIK32 Amur. No DSP, no FPU, no OS — just bare-metal inference with millisecond latency.</p>
+      <div class="how-card reveal reveal-d3">
+        <div class="how-num">03</div>
+        <h3>Deploy Anywhere</h3>
+        <p>Export a 15 KB binary. Flash to any Cortex-M0+, ESP32, RISC-V, or MIK32 Amur. No DSP, no FPU, no OS — just bare-metal inference in milliseconds.</p>
+        <span class="tag">From $0.50 MCU</span>
       </div>
     </div>
   </div>
@@ -435,15 +501,15 @@ footer .patent{color:var(--text-dimmer);font-size:12px;margin-top:8px}
   <div class="container">
     <div class="section-header reveal">
       <div class="section-label">Benchmarks</div>
-      <h2 class="section-title">Smaller, cheaper,<br>just as accurate.</h2>
-      <p class="section-subtitle">Head-to-head against industry-standard TinyML frameworks. TernML delivers comparable or better accuracy at 10&#215; smaller model size.</p>
+      <h2 class="section-title">Comparable accuracy.<br>10× smaller.</h2>
+      <p class="section-subtitle">Head-to-head against industry-standard TinyML frameworks. TernML delivers competitive accuracy at a fraction of the memory footprint.</p>
     </div>
-    <div class="benchmark-wrapper reveal">
+    <div class="bench-wrap reveal">
       <table>
         <thead>
           <tr>
             <th>Metric</th>
-            <th>TernML</th>
+            <th class="highlight-col">TernML</th>
             <th>TFLite Micro (8-bit)</th>
             <th>Edge Impulse</th>
           </tr>
@@ -493,15 +559,15 @@ footer .patent{color:var(--text-dimmer);font-size:12px;margin-top:8px}
           </tr>
           <tr>
             <td>DSP Required</td>
-            <td class="cross check">No</td>
-            <td class="check cross">Yes</td>
-            <td class="check cross">Yes</td>
+            <td><span class="no-badge">No</span></td>
+            <td><span class="yes-badge">Yes</span></td>
+            <td><span class="yes-badge">Yes</span></td>
           </tr>
           <tr>
             <td>FPU Required</td>
-            <td class="cross check">No</td>
+            <td><span class="no-badge">No</span></td>
             <td class="cross">Optional</td>
-            <td class="check cross">Yes</td>
+            <td><span class="yes-badge">Yes</span></td>
           </tr>
           <tr>
             <td>Min. MCU Cost</td>
@@ -512,7 +578,7 @@ footer .patent{color:var(--text-dimmer);font-size:12px;margin-top:8px}
         </tbody>
       </table>
     </div>
-    <p class="benchmark-note reveal">* TFLite and Edge Impulse benchmarks based on default 8-bit quantized models for comparable architectures. TernML accuracy exceeds float baseline due to regularization-by-quantization effect.</p>
+    <p class="bench-note reveal">* TFLite and Edge Impulse benchmarks based on default 8-bit quantized models for comparable architectures. TernML accuracy exceeds float baseline due to regularization-by-quantization effect.</p>
   </div>
 </section>
 
@@ -520,22 +586,22 @@ footer .patent{color:var(--text-dimmer);font-size:12px;margin-top:8px}
   <div class="container">
     <div class="section-header reveal">
       <div class="section-label">Hardware Support</div>
-      <h2 class="section-title">From $0.50 MCUs to modern SoCs.</h2>
-      <p class="section-subtitle">TernML runs on any platform with a C compiler — no hardware accelerator required.</p>
+      <h2 class="section-title">Runs on anything with a C compiler.</h2>
+      <p class="section-subtitle">No hardware accelerator, no DSP, no FPU. TernML runs on the cheapest MCUs on the market.</p>
     </div>
-    <div class="hardware-grid">
-      <div class="hw-card reveal reveal-delay-1">
-        <div class="hw-chip">&#9881;</div>
+    <div class="hw-grid">
+      <div class="hw-card reveal reveal-d1">
+        <span class="hw-icon">&#9812;</span>
         <div class="hw-name">Cortex-M0+</div>
         <div class="hw-core">ARM Cortex-M0+</div>
         <ul class="hw-specs">
-          <li>16 KB SRAM &#8212; fits entirely</li>
+          <li>16 KB SRAM &mdash; fits entirely</li>
           <li>$0.50 MCU cost</li>
           <li>&lt;100 ms inference</li>
         </ul>
       </div>
-      <div class="hw-card reveal reveal-delay-2">
-        <div class="hw-chip">&#9881;</div>
+      <div class="hw-card reveal reveal-d2">
+        <span class="hw-icon">&#9813;</span>
         <div class="hw-name">ESP32-S3</div>
         <div class="hw-core">Xtensa LX7</div>
         <ul class="hw-specs">
@@ -544,8 +610,8 @@ footer .patent{color:var(--text-dimmer);font-size:12px;margin-top:8px}
           <li>Headroom for sensors</li>
         </ul>
       </div>
-      <div class="hw-card reveal reveal-delay-3">
-        <div class="hw-chip">&#9881;</div>
+      <div class="hw-card reveal reveal-d3">
+        <span class="hw-icon">&#9819;</span>
         <div class="hw-name">GD32V</div>
         <div class="hw-core">RISC-V RV32IMAC</div>
         <ul class="hw-specs">
@@ -554,8 +620,8 @@ footer .patent{color:var(--text-dimmer);font-size:12px;margin-top:8px}
           <li>Open ISA</li>
         </ul>
       </div>
-      <div class="hw-card reveal reveal-delay-4">
-        <div class="hw-chip">&#9881;</div>
+      <div class="hw-card reveal reveal-d4">
+        <span class="hw-icon">&#9818;</span>
         <div class="hw-name">MIK32 Amur</div>
         <div class="hw-core">RISC-V RV32IMC</div>
         <ul class="hw-specs">
@@ -572,24 +638,28 @@ footer .patent{color:var(--text-dimmer);font-size:12px;margin-top:8px}
   <div class="container">
     <div class="section-header reveal">
       <div class="section-label">About</div>
-      <h2 class="section-title">Built by an independent researcher.</h2>
-      <p class="section-subtitle">TernML is the work of a single developer driven by a simple belief: intelligence should run on the cheapest hardware.</p>
+      <h2 class="section-title">Built for the edge.&zwnj;</h2>
+      <p class="section-subtitle">TernML is an independent research project focused on bringing neural network inference to the cheapest microcontrollers.</p>
     </div>
-    <div class="about-content">
+    <div class="about-wrap">
       <div class="about-text reveal">
-        <p>Fakeonomics started building TernML at <strong>17 years old</strong>, after completing 9th grade — driven by the conviction that neural networks should not require expensive GPUs or specialized hardware. Entirely self-taught, they developed a novel ternary quantization pipeline that, counterintuitively, <strong>improves accuracy over the float baseline</strong>.</p>
-        <p>The core insight: discrete ternary weights act as a regularizer during training, naturally pruning noise while preserving signal. This regularization-by-quantization effect means TernML models don't just compress well — they generalize better.</p>
+        <p>TernML was developed from the conviction that neural networks should not require expensive GPUs or specialized hardware. The core discovery: ternary quantization acts as a regularizer during training, <strong>improving generalization over the float baseline</strong>.</p>
+        <div class="highlight-quote">
+          &ldquo;Discrete ternary weights act as a regularizer during training, naturally pruning noise while preserving signal.&rdquo;
+          <cite>&mdash; Regularization-by-Quantization Effect</cite>
+        </div>
+        <p>The result: models that don't just compress well &mdash; they generalize better. This is TernML&rsquo;s core insight.</p>
         <div class="about-links">
-          <a href="https://github.com/Fakeonomics/TernML" target="_blank" rel="noopener" class="btn-secondary">GitHub &rarr;</a>
-          <a href="https://habr.com/ru/articles/1049822/" target="_blank" rel="noopener" class="btn-secondary">Habr Article &rarr;</a>
-          <a href="https://doi.org/10.5281/zenodo.20752769" target="_blank" rel="noopener" class="btn-secondary">Zenodo DOI &rarr;</a>
+          <a href="https://github.com/Fakeonomics/TernML" target="_blank" rel="noopener" class="btn btn-secondary">GitHub &rarr;</a>
+          <a href="https://habr.com/ru/articles/1049822/" target="_blank" rel="noopener" class="btn btn-secondary">Habr Article &rarr;</a>
+          <a href="https://doi.org/10.5281/zenodo.20752769" target="_blank" rel="noopener" class="btn btn-secondary">Zenodo DOI &rarr;</a>
         </div>
       </div>
-      <div class="about-highlights reveal reveal-delay-2">
-        <div class="about-highlight"><span class="about-highlight-icon">&#128197;</span> Started at 17 years old</div>
-        <div class="about-highlight"><span class="about-highlight-icon">&#127891;</span> After 9th grade</div>
-        <div class="about-highlight"><span class="about-highlight-icon">&#128218;</span> Entirely self-taught</div>
-        <div class="about-highlight"><span class="about-highlight-icon">&#128200;</span> Independent research</div>
+      <div class="about-badges reveal reveal-d2">
+        <div class="about-badge"><span class="icon">&#9881;</span> Independent research</div>
+        <div class="about-badge"><span class="icon">&#128200;</span> Regularization-by-quantization</div>
+        <div class="about-badge"><span class="icon">&#128268;</span> No DSP / No FPU</div>
+        <div class="about-badge"><span class="icon">&#9889;</span> Production-ready</div>
       </div>
     </div>
   </div>
@@ -597,15 +667,15 @@ footer .patent{color:var(--text-dimmer);font-size:12px;margin-top:8px}
 
 <section class="section" id="contact">
   <div class="container">
-    <div class="contact-cta reveal">
+    <div class="cta-block reveal">
       <h2>Get in touch.</h2>
       <p>Interested in licensing, collaboration, or early access? Reach out directly.</p>
-      <div class="contact-links">
-        <a href="https://t.me/fakeonomics" target="_blank" rel="noopener" class="contact-btn telegram">&#9992; Telegram</a>
-        <a href="mailto:fakeonomics@duck.com" class="contact-btn email">&#9993; Email</a>
-        <a href="https://github.com/Fakeonomics/TernML" target="_blank" rel="noopener" class="contact-btn github">&#128187; GitHub</a>
-        <a href="https://habr.com/ru/articles/1049822/" target="_blank" rel="noopener" class="contact-btn habr">&#128214; Habr</a>
-        <a href="https://doi.org/10.5281/zenodo.20752769" target="_blank" rel="noopener" class="contact-btn doi">&#128220; DOI</a>
+      <div class="cta-btns">
+        <a href="https://t.me/fakeonomics" target="_blank" rel="noopener" class="cta-btn primary-b"><span class="icon">&#9992;</span> Telegram</a>
+        <a href="mailto:fakeonomics@duck.com" class="cta-btn ghost"><span class="icon">&#9993;</span> Email</a>
+        <a href="https://github.com/Fakeonomics/TernML" target="_blank" rel="noopener" class="cta-btn ghost"><span class="icon">&#128187;</span> GitHub</a>
+        <a href="https://habr.com/ru/articles/1049822/" target="_blank" rel="noopener" class="cta-btn ghost"><span class="icon">&#128214;</span> Habr</a>
+        <a href="https://doi.org/10.5281/zenodo.20752769" target="_blank" rel="noopener" class="cta-btn ghost"><span class="icon">&#128220;</span> DOI</a>
       </div>
     </div>
   </div>
@@ -620,37 +690,26 @@ footer .patent{color:var(--text-dimmer);font-size:12px;margin-top:8px}
       <a href="https://fakeonomics.github.io/TernML-overview/" target="_blank" rel="noopener">Live Site</a>
     </div>
     <p>Proprietary Technology &mdash; All Rights Reserved. Codebase is private.</p>
-    <p class="patent">TernML ternary quantization pipeline and regularization-by-quantization method are protected by applicable intellectual property laws. Unauthorized reproduction or distribution prohibited.</p>
+    <p class="legal">TernML ternary quantization pipeline and regularization-by-quantization method are protected by applicable intellectual property laws. Unauthorized reproduction or distribution prohibited.</p>
   </div>
 </footer>
 
-<!-- GitHub Corner -->
-<a href="https://github.com/Fakeonomics/TernML" class="github-corner" target="_blank" rel="noopener" aria-label="View source on GitHub">
-  <svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true">
-    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
-    <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
-    <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.5 141.8,141.6 Z" fill="currentColor" class="octo-body"></path>
-  </svg>
-</a>
-
 <script>
 document.addEventListener('DOMContentLoaded',function(){
-  // Scroll reveal
   var els=document.querySelectorAll('.reveal');
   var obs=new IntersectionObserver(function(entries){
     entries.forEach(function(e){
       if(e.isIntersecting){e.target.classList.add('visible')}
     });
-  },{threshold:0.1});
+  },{threshold:0.08});
   els.forEach(function(el){obs.observe(el)});
 
-  // Navbar background on scroll
   var nav=document.getElementById('navbar');
   var ticking=false;
   window.addEventListener('scroll',function(){
     if(!ticking){
       requestAnimationFrame(function(){
-        nav.classList.toggle('scrolled',window.scrollY>40);
+        nav.classList.toggle('scrolled',window.scrollY>50);
         ticking=false;
       });
       ticking=true;
