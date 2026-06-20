@@ -260,11 +260,11 @@ td:first-child{font-weight:500;color:var(--text)}
 td.highlight{color:var(--gold);font-family:var(--font-mono);font-weight:500}
 td.check{color:var(--teal);font-weight:600}
 td.cross{color:var(--text-dimmer)}
-td.yes-badge{
+td.cross-badge{
   display:inline-flex;align-items:center;gap:4px;
   color:var(--ember);font-weight:600;
 }
-td.no-badge{
+td.check-badge{
   display:inline-flex;align-items:center;gap:4px;
   color:var(--teal);font-weight:600;
 }
@@ -564,15 +564,15 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
           </tr>
           <tr>
             <td>DSP Required</td>
-            <td><span class="no-badge"><i class="ph ph-check"></i> No</span></td>
-            <td><span class="yes-badge"><i class="ph ph-x"></i> Yes</span></td>
-            <td><span class="yes-badge"><i class="ph ph-x"></i> Yes</span></td>
+            <td><span class="check-badge"><i class="ph ph-check"></i> No</span></td>
+            <td><span class="cross-badge"><i class="ph ph-x"></i> Yes</span></td>
+            <td><span class="cross-badge"><i class="ph ph-x"></i> Yes</span></td>
           </tr>
           <tr>
             <td>FPU Required</td>
-            <td><span class="no-badge"><i class="ph ph-check"></i> No</span></td>
+            <td><span class="check-badge"><i class="ph ph-check"></i> No</span></td>
             <td class="cross">Optional</td>
-            <td><span class="yes-badge"><i class="ph ph-x"></i> Yes</span></td>
+            <td><span class="cross-badge"><i class="ph ph-x"></i> Yes</span></td>
           </tr>
           <tr>
             <td>Min. MCU Cost</td>
