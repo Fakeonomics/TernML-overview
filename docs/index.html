@@ -62,13 +62,19 @@ img{max-width:100%}
   font-size:17px;color:var(--text-dim);max-width:520px;line-height:1.6;
   font-weight:400;
 }
-.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1)}
-.reveal.visible{opacity:1;transform:translateY(0)}
-.reveal-d1{transition-delay:.08s}
-.reveal-d2{transition-delay:.16s}
-.reveal-d3{transition-delay:.24s}
-.reveal-d4{transition-delay:.32s}
-.reveal-d5{transition-delay:.40s}
+.reveal{clip-path:inset(0 0 100% 0);transform:perspective(800px) rotateX(4deg) translateY(24px);opacity:.01;transition:clip-path 1.2s cubic-bezier(.77,0,.175,1),transform 1.2s cubic-bezier(.77,0,.175,1),opacity .5s ease;will-change:clip-path,transform}
+.reveal.visible{clip-path:inset(0);transform:perspective(800px) rotateX(0) translateY(0);opacity:1}
+.reveal-alt{clip-path:polygon(0 100%,100% 100%,100% 100%,0 100%);transform:perspective(800px) rotateY(-3deg) translateY(20px);opacity:.01;transition:clip-path 1.2s cubic-bezier(.77,0,.175,1),transform 1.2s cubic-bezier(.77,0,.175,1),opacity .5s ease}
+.reveal-alt.visible{clip-path:polygon(0 0,100% 0,100% 100%,0 100%);transform:perspective(800px) rotateY(0) translateY(0);opacity:1}
+.reveal-rotate{clip-path:inset(0 0 100% 0);transform:perspective(600px) rotateX(2deg) rotateY(-2deg) translateY(24px);transition:clip-path 1s cubic-bezier(.65,0,.35,1),transform 1s cubic-bezier(.65,0,.35,1)}
+.reveal-rotate.visible{clip-path:inset(0);transform:perspective(600px) rotateX(0) rotateY(0) translateY(0)}
+.title-reveal{background:linear-gradient(90deg,var(--text),var(--text) 40%,var(--gold));background-clip:text;-webkit-background-clip:text;color:transparent;background-size:0% 100%;background-repeat:no-repeat;transition:background-size 1.5s cubic-bezier(.77,0,.175,1)}
+.title-reveal.visible{background-size:100% 100%}
+.reveal-d1{transition-delay:.06s}
+.reveal-d2{transition-delay:.14s}
+.reveal-d3{transition-delay:.22s}
+.reveal-d4{transition-delay:.30s}
+.reveal-d5{transition-delay:.38s}
 
 /* === NAV === */
 nav{
@@ -375,7 +381,8 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
   .about-badges{grid-template-columns:1fr}
 }
 @media(prefers-reduced-motion:reduce){
-  .reveal,.reveal.visible{opacity:1;transform:none;transition:none}
+  .reveal,.reveal-alt,.reveal-rotate,.reveal.visible,.reveal-alt.visible,.reveal-rotate.visible{clip-path:inset(0)!important;transform:none!important;opacity:1!important;transition:none!important}
+  .title-reveal,.title-reveal.visible{background-size:100% 100%!important;color:var(--text)!important;background-clip:unset!important;-webkit-background-clip:unset!important;transition:none!important}
   .hero-glow,.hero-bg .grain,.how-card,.metric-card,.hw-card{animation:none!important;transition:none!important}
 }
 </style>
@@ -434,7 +441,7 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
   <div class="container">
     <div class="section-header reveal">
       <div class="section-label">Key Metrics</div>
-      <h2 class="section-title">Fits in L1 cache. Barely.</h2>
+      <h2 class="section-title title-reveal">Fits in L1 cache. Barely.</h2>
       <p class="section-subtitle">TernML achieves float-beating accuracy at a fraction of the size — fitting entirely in a Cortex-M0+ L1 cache.</p>
     </div>
     <div class="metrics-grid">
@@ -471,23 +478,23 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
   <div class="container">
     <div class="section-header reveal">
       <div class="section-label">How It Works</div>
-      <h2 class="section-title">Train. Quantize. Deploy.<br>Three steps, one framework.</h2>
+      <h2 class="section-title title-reveal">Train. Quantize. Deploy.<br>Three steps, one framework.</h2>
       <p class="section-subtitle">A pipeline that turns standard PyTorch or TensorFlow models into ultra-efficient ternary networks for any microcontroller.</p>
     </div>
     <div class="how-grid">
-      <div class="how-card reveal reveal-d1">
+      <div class="how-card reveal-rotate reveal-d1">
         <div class="how-num">01</div>
         <h3>Train with QAT</h3>
         <p>Define your architecture with standard layers. TernML's quantization-aware training learns ternary weight distributions while backpropagating through discrete constraints — no custom ops needed.</p>
         <span class="tag">PyTorch &bull; TensorFlow</span>
       </div>
-      <div class="how-card reveal reveal-d2">
+      <div class="how-card reveal-rotate reveal-d2">
         <div class="how-num">02</div>
         <h3>Quantize to {-1,0,+1}</h3>
         <p>Trained float weights convert to ternary values using a threshold-aware scheme. The result: 1.58 bits per parameter with ~49% natural sparsity — zeros cost nothing in compute or storage.</p>
         <span class="tag">1.58 bit &bull; 8&times; smaller</span>
       </div>
-      <div class="how-card reveal reveal-d3">
+      <div class="how-card reveal-rotate reveal-d3">
         <div class="how-num">03</div>
         <h3>Deploy Anywhere</h3>
         <p>Export a 15 KB binary. Flash to any Cortex-M0+, ESP32, RISC-V, or MIK32 Amur. No DSP, no FPU, no OS — just bare-metal inference in milliseconds.</p>
@@ -501,7 +508,7 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
   <div class="container">
     <div class="section-header reveal">
       <div class="section-label">Benchmarks</div>
-      <h2 class="section-title">Comparable accuracy.<br>10× smaller.</h2>
+      <h2 class="section-title title-reveal">Comparable accuracy.<br>10× smaller.</h2>
       <p class="section-subtitle">Head-to-head against industry-standard TinyML frameworks. TernML delivers competitive accuracy at a fraction of the memory footprint.</p>
     </div>
     <div class="bench-wrap reveal">
@@ -586,12 +593,12 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
   <div class="container">
     <div class="section-header reveal">
       <div class="section-label">Hardware Support</div>
-      <h2 class="section-title">Runs on anything with a C compiler.</h2>
+      <h2 class="section-title title-reveal">Runs on anything with a C compiler.</h2>
       <p class="section-subtitle">No hardware accelerator, no DSP, no FPU. TernML runs on the cheapest MCUs on the market.</p>
     </div>
     <div class="hw-grid">
-      <div class="hw-card reveal reveal-d1">
-        <span class="hw-icon">&#9812;</span>
+      <div class="hw-card reveal-alt reveal-d1">
+        <span class="hw-icon">&#9670;</span>
         <div class="hw-name">Cortex-M0+</div>
         <div class="hw-core">ARM Cortex-M0+</div>
         <ul class="hw-specs">
@@ -600,8 +607,8 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
           <li>&lt;100 ms inference</li>
         </ul>
       </div>
-      <div class="hw-card reveal reveal-d2">
-        <span class="hw-icon">&#9813;</span>
+      <div class="hw-card reveal-alt reveal-d2">
+        <span class="hw-icon">&#9670;</span>
         <div class="hw-name">ESP32-S3</div>
         <div class="hw-core">Xtensa LX7</div>
         <ul class="hw-specs">
@@ -610,8 +617,8 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
           <li>Headroom for sensors</li>
         </ul>
       </div>
-      <div class="hw-card reveal reveal-d3">
-        <span class="hw-icon">&#9819;</span>
+      <div class="hw-card reveal-alt reveal-d3">
+        <span class="hw-icon">&#9670;</span>
         <div class="hw-name">GD32V</div>
         <div class="hw-core">RISC-V RV32IMAC</div>
         <ul class="hw-specs">
@@ -620,8 +627,8 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
           <li>Open ISA</li>
         </ul>
       </div>
-      <div class="hw-card reveal reveal-d4">
-        <span class="hw-icon">&#9818;</span>
+      <div class="hw-card reveal-alt reveal-d4">
+        <span class="hw-icon">&#9670;</span>
         <div class="hw-name">MIK32 Amur</div>
         <div class="hw-core">RISC-V RV32IMC</div>
         <ul class="hw-specs">
@@ -638,7 +645,7 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
   <div class="container">
     <div class="section-header reveal">
       <div class="section-label">About</div>
-      <h2 class="section-title">Built for the edge.&zwnj;</h2>
+      <h2 class="section-title title-reveal">Built for the edge.&zwnj;</h2>
       <p class="section-subtitle">TernML is an independent research project focused on bringing neural network inference to the cheapest microcontrollers.</p>
     </div>
     <div class="about-wrap">
@@ -656,10 +663,10 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
         </div>
       </div>
       <div class="about-badges reveal reveal-d2">
-        <div class="about-badge"><span class="icon">&#9881;</span> Independent research</div>
-        <div class="about-badge"><span class="icon">&#128200;</span> Regularization-by-quantization</div>
-        <div class="about-badge"><span class="icon">&#128268;</span> No DSP / No FPU</div>
-        <div class="about-badge"><span class="icon">&#9889;</span> Production-ready</div>
+<div class="about-badge"><span class="icon">&#9670;</span> Independent research</div>
+          <div class="about-badge"><span class="icon">&#9651;</span> Regularization-by-quantization</div>
+          <div class="about-badge"><span class="icon">&#10010;</span> No DSP / No FPU</div>
+          <div class="about-badge"><span class="icon">&#9655;</span> Production-ready</div>
       </div>
     </div>
   </div>
@@ -671,11 +678,11 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
       <h2>Get in touch.</h2>
       <p>Interested in licensing, collaboration, or early access? Reach out directly.</p>
       <div class="cta-btns">
-        <a href="https://t.me/fakeonomics" target="_blank" rel="noopener" class="cta-btn primary-b"><span class="icon">&#9992;</span> Telegram</a>
-        <a href="mailto:fakeonomics@duck.com" class="cta-btn ghost"><span class="icon">&#9993;</span> Email</a>
-        <a href="https://github.com/Fakeonomics/TernML" target="_blank" rel="noopener" class="cta-btn ghost"><span class="icon">&#128187;</span> GitHub</a>
-        <a href="https://habr.com/ru/articles/1049822/" target="_blank" rel="noopener" class="cta-btn ghost"><span class="icon">&#128214;</span> Habr</a>
-        <a href="https://doi.org/10.5281/zenodo.20752769" target="_blank" rel="noopener" class="cta-btn ghost"><span class="icon">&#128220;</span> DOI</a>
+        <a href="https://t.me/fakeonomics" target="_blank" rel="noopener" class="cta-btn primary-b"><span class="icon">&rarr;</span> Telegram</a>
+        <a href="mailto:fakeonomics@duck.com" class="cta-btn ghost"><span class="icon">&rarr;</span> Email</a>
+        <a href="https://github.com/Fakeonomics/TernML" target="_blank" rel="noopener" class="cta-btn ghost"><span class="icon">&#9670;</span> GitHub</a>
+        <a href="https://habr.com/ru/articles/1049822/" target="_blank" rel="noopener" class="cta-btn ghost"><span class="icon">&#9670;</span> Habr</a>
+        <a href="https://doi.org/10.5281/zenodo.20752769" target="_blank" rel="noopener" class="cta-btn ghost"><span class="icon">&#9670;</span> DOI</a>
       </div>
     </div>
   </div>
@@ -696,12 +703,12 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
 
 <script>
 document.addEventListener('DOMContentLoaded',function(){
-  var els=document.querySelectorAll('.reveal');
+  var els=document.querySelectorAll('.reveal,.reveal-alt,.reveal-rotate,.title-reveal');
   var obs=new IntersectionObserver(function(entries){
     entries.forEach(function(e){
-      if(e.isIntersecting){e.target.classList.add('visible')}
+      if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}
     });
-  },{threshold:0.08});
+  },{threshold:0.06});
   els.forEach(function(el){obs.observe(el)});
 
   var nav=document.getElementById('navbar');
