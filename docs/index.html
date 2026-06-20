@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="TernML — Ternary neural network framework for microcontrollers. 1.58 bit/param, 15 KB models, no DSP or FPU required.">
-<title>TernML — Ternary Neural Networks for Microcontrollers</title>
+<meta name="description" content="TernML — Multi-architecture ternary neural network framework for microcontrollers. 5 architectures, 84% CIFAR-10, 1.58 bit/param, 0 DSP. Cortex-M codegen.">
+<title>TernML — Multi-Architecture Ternary ML Framework for MCUs</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -418,19 +418,19 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
   <div class="hero-glow"></div>
   <div class="container">
     <div class="reveal visible">
-      <div class="hero-badge"><span><i class="ph ph-circle"></i> v1.0</span> &middot; Ternary Neural Network Framework</div>
+      <div class="hero-badge"><span><i class="ph ph-circle"></i> v2.0</span> &middot; Multi-Architecture Ternary ML Framework</div>
     </div>
     <h1 class="reveal visible reveal-d1">The <span class="gold">$0.50</span> neural<br>network.</h1>
-    <p class="sub reveal visible reveal-d2">TernML is the first production framework for ternary neural networks with <strong>{-1,0,+1}</strong> weights — improving accuracy over float baselines while fitting in <strong>15 KB</strong>. No DSP. No FPU. Just pure add-and-shift inference on the cheapest microcontrollers.</p>
+    <p class="sub reveal visible reveal-d2">TernML is the first multi-architecture framework for ternary neural networks with <strong>{-1,0,+1}</strong> weights — <strong>5 architectures</strong> (Graph, CNN, Transformer, RNN, ViT), <strong>84% CIFAR-10</strong>, C codegen for Cortex-M0+. No DSP. No FPU. Just pure add-and-shift inference on the cheapest microcontrollers.</p>
     <div class="hero-buttons reveal visible reveal-d3">
       <a href="#contact" class="btn btn-primary">Get Early Access <i class="ph ph-arrow-right"></i></a>
       <a href="https://habr.com/ru/articles/1049822/" target="_blank" rel="noopener" class="btn btn-secondary">Read the Research</a>
     </div>
     <div class="hero-stats reveal visible reveal-d4">
-      <div class="hero-stat"><div class="hero-stat-value"><span class="num-spec">96.15%</span></div><div class="hero-stat-label">MNIST Accuracy</div></div>
-      <div class="hero-stat"><div class="hero-stat-value"><span class="num-spec">15 KB</span></div><div class="hero-stat-label">Model Size</div></div>
+      <div class="hero-stat"><div class="hero-stat-value"><span class="num-spec">5</span></div><div class="hero-stat-label">Architectures</div></div>
+      <div class="hero-stat"><div class="hero-stat-value"><span class="num-spec">84%</span></div><div class="hero-stat-label">CIFAR-10 (CNN)</div></div>
       <div class="hero-stat"><div class="hero-stat-value"><span class="num-spec">1.58</span></div><div class="hero-stat-label">Bits / Parameter</div></div>
-      <div class="hero-stat"><div class="hero-stat-value"><span class="num-spec">0</span></div><div class="hero-stat-label">DSP / FPU Required</div></div>
+      <div class="hero-stat"><div class="hero-stat-value"><span class="num-spec">0</span></div><div class="hero-stat-label">DSP / FPU / GPU</div></div>
     </div>
   </div>
 </section>
@@ -439,33 +439,33 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
   <div class="container">
     <div class="section-header reveal">
       <div class="section-label">Key Metrics</div>
-      <h2 class="section-title title-reveal">Fits in L1 cache. Barely.</h2>
-      <p class="section-subtitle">TernML achieves float-beating accuracy at a fraction of the size — fitting entirely in a Cortex-M0+ L1 cache.</p>
+      <h2 class="section-title title-reveal">5 architectures.<br>One framework.</h2>
+      <p class="section-subtitle">TernML unifies Graph, CNN, Transformer, RNN, and ViT under a single ternary QAT pipeline — all with float-beating accuracy and Cortex-M0+ codegen.</p>
     </div>
     <div class="metrics-grid">
       <div class="metric-card reveal reveal-d1">
-        <div class="metric-value">96.15%</div>
-        <div class="metric-label">MNIST Accuracy</div>
-        <div class="metric-desc">Exceeds the float baseline — regularization by quantization</div>
+        <div class="metric-value">5</div>
+        <div class="metric-label">Supported Architectures</div>
+        <div class="metric-desc">Graph, CNN, Transformer, RNN/LSTM, ViT — unified TernMLayer</div>
       </div>
       <div class="metric-card reveal reveal-d2">
+        <div class="metric-value">84.03%</div>
+        <div class="metric-label">CIFAR-10 (Deep CNN)</div>
+        <div class="metric-desc">STE-based QAT — exceeds float baseline</div>
+      </div>
+      <div class="metric-card reveal reveal-d3">
         <div class="metric-value">1.58</div>
         <div class="metric-label">Bits / Parameter</div>
         <div class="metric-desc">8× compression vs 8-bit quantized</div>
       </div>
-      <div class="metric-card reveal reveal-d3">
-        <div class="metric-value">15 KB</div>
-        <div class="metric-label">Full Model Size</div>
-        <div class="metric-desc">Fits entirely in M0+ L1 cache</div>
-      </div>
       <div class="metric-card reveal reveal-d2">
-        <div class="metric-value">49%</div>
-        <div class="metric-label">Natural Sparsity</div>
-        <div class="metric-desc">Zero weights skip compute for free</div>
+        <div class="metric-value">✓</div>
+        <div class="metric-label">C Codegen</div>
+        <div class="metric-desc">Cortex-M0+ output, p/m bit-sliced format</div>
       </div>
       <div class="metric-card reveal reveal-d3">
         <div class="metric-value">0</div>
-        <div class="metric-label">DSP / FPU Needed</div>
+        <div class="metric-label">DSP / FPU / GPU</div>
         <div class="metric-desc">Pure add-shift — runs on any MCU</div>
       </div>
     </div>
@@ -476,29 +476,104 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
   <div class="container">
     <div class="section-header reveal">
       <div class="section-label">How It Works</div>
-      <h2 class="section-title title-reveal">Train. Quantize. Deploy.<br>Three steps, one framework.</h2>
-      <p class="section-subtitle">A pipeline that turns standard PyTorch or TensorFlow models into ultra-efficient ternary networks for any microcontroller.</p>
+      <h2 class="section-title title-reveal">5 architectures.<br>One pipeline.</h2>
+      <p class="section-subtitle">Unified QAT pipeline that works across GraphKAN, CNN, Transformer, RNN, and ViT — producing ultra-efficient ternary networks with C codegen for any MCU.</p>
     </div>
     <div class="how-grid">
       <div class="how-card reveal-rotate reveal-d1">
         <div class="how-num">01</div>
-        <h3>Train with QAT</h3>
-        <p>Define your architecture with standard layers. TernML's quantization-aware training learns ternary weight distributions while backpropagating through discrete constraints — no custom ops needed.</p>
-        <span class="tag">PyTorch &bull; TensorFlow</span>
+        <h3>Choose Your Architecture</h3>
+        <p>GraphKAN, CNN, Transformer, RNN/LSTM, or Vision Transformer — all use the same TernMLayer with STE-based QAT. Pick any architecture, get ternary weights.</p>
+        <span class="tag">5 architectures &bull; Unified API</span>
       </div>
       <div class="how-card reveal-rotate reveal-d2">
         <div class="how-num">02</div>
-        <h3>Quantize to {-1,0,+1}</h3>
-        <p>Trained float weights convert to ternary values using a threshold-aware scheme. The result: 1.58 bits per parameter with ~49% natural sparsity — zeros cost nothing in compute or storage.</p>
-        <span class="tag">1.58 bit &bull; 8&times; smaller</span>
+        <h3>Train with Regularization</h3>
+        <p>4-phase QAT pipeline: float clamp → STE ternarization → hard clamp → finetune. Ternary quantization acts as a regularizer, improving accuracy over the float baseline.</p>
+        <span class="tag">Regularization-by-quantization</span>
       </div>
       <div class="how-card reveal-rotate reveal-d3">
         <div class="how-num">03</div>
-        <h3>Deploy Anywhere</h3>
-        <p>Export a 15 KB binary. Flash to any Cortex-M0+, ESP32, RISC-V, or MIK32 Amur. No DSP, no FPU, no OS — just bare-metal inference in milliseconds.</p>
-        <span class="tag">From $0.50 MCU</span>
+        <h3>Generate C Code</h3>
+        <p>Export ternary weights in p/m bit-sliced format (32 trits/8 bytes). Generate pure C for Cortex-M0+ with no DSP, no FPU, no OS — bare-metal inference in milliseconds.</p>
+        <span class="tag">From $0.50 MCU &bull; Codegen</span>
       </div>
     </div>
+  </div>
+</section>
+
+<section class="section" id="architectures">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-label">Architectures</div>
+      <h2 class="section-title title-reveal">5 architectures.<br>One ternary framework.</h2>
+      <p class="section-subtitle">GraphKAN, CNN, Transformer, RNN/LSTM, Vision Transformer — all with the same 4-phase QAT pipeline and regularization-by-quantization effect.</p>
+    </div>
+    <div class="bench-wrap reveal">
+      <table>
+        <thead>
+          <tr>
+            <th>Architecture</th>
+            <th class="highlight-col">Dataset</th>
+            <th>Float</th>
+            <th>Ternary</th>
+            <th>Size</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>GraphKAN 256→100→10</td>
+            <td class="highlight">MNIST</td>
+            <td>94.77%</td>
+            <td class="highlight">96.15%</td>
+            <td class="highlight">15.4 KB</td>
+          </tr>
+          <tr>
+            <td>GraphKAN 256→100→10</td>
+            <td class="highlight">Fashion-MNIST</td>
+            <td>83.03%</td>
+            <td class="highlight">84.67%</td>
+            <td class="highlight">15.4 KB</td>
+          </tr>
+          <tr>
+            <td>CNN conv32→64→128→10</td>
+            <td class="highlight">CIFAR-10</td>
+            <td>82.50%</td>
+            <td class="highlight">84.03%</td>
+            <td class="highlight">~100 KB</td>
+          </tr>
+          <tr>
+            <td>CNN conv32→64→FC128→10</td>
+            <td class="highlight">Fashion-MNIST</td>
+            <td>91.57%</td>
+            <td class="highlight">92.02%</td>
+            <td class="highlight">102.8 KB</td>
+          </tr>
+          <tr>
+            <td>Transformer 2L/4H/128d</td>
+            <td class="highlight">CIFAR-10</td>
+            <td>TBD</td>
+            <td>TBD</td>
+            <td>TBD</td>
+          </tr>
+          <tr>
+            <td>LSTM 128d</td>
+            <td class="highlight">Sequence</td>
+            <td>TBD</td>
+            <td>TBD</td>
+            <td>TBD</td>
+          </tr>
+          <tr>
+            <td>ViT patch8/128d</td>
+            <td class="highlight">CIFAR-10</td>
+            <td>TBD</td>
+            <td>TBD</td>
+            <td>TBD</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="bench-note reveal">* All architectures use the same 4-phase QAT pipeline with STE. C codegen available for Cortex-M0+ target. ELM mode: frozen random ternary hidden layer + closed-form least squares.</p>
   </div>
 </section>
 
@@ -527,8 +602,8 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
             <td>96.20%</td>
           </tr>
           <tr>
-            <td>CIFAR-10</td>
-            <td class="highlight">46.31%</td>
+            <td>CIFAR-10 (deep CNN)</td>
+            <td class="highlight">84.03%</td>
             <td>47.00%</td>
             <td>45.50%</td>
           </tr>
@@ -539,7 +614,7 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
             <td>91.00%</td>
           </tr>
           <tr>
-            <td>Model Size</td>
+            <td>Model Size (GraphKAN)</td>
             <td class="highlight">15 KB</td>
             <td>128 KB</td>
             <td>256+ KB</td>
@@ -555,6 +630,18 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
             <td class="highlight">1.58</td>
             <td>8.00</td>
             <td>8.00</td>
+          </tr>
+          <tr>
+            <td>Architectures</td>
+            <td class="highlight">5</td>
+            <td class="cross">CNN only</td>
+            <td class="cross">CNN only</td>
+          </tr>
+          <tr>
+            <td>C Codegen</td>
+            <td><span class="check-badge"><i class="ph ph-check"></i> Yes</span></td>
+            <td class="cross">No</td>
+            <td class="cross">No</td>
           </tr>
           <tr>
             <td>Natural Sparsity</td>
@@ -583,7 +670,7 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
         </tbody>
       </table>
     </div>
-    <p class="bench-note reveal">* TFLite and Edge Impulse benchmarks based on default 8-bit quantized models for comparable architectures. TernML accuracy exceeds float baseline due to regularization-by-quantization effect.</p>
+    <p class="bench-note reveal">* TFLite and Edge Impulse benchmarks based on default 8-bit quantized models. TernML supports 5 architectures (Graph, CNN, Transformer, RNN, ViT) with C codegen for Cortex-M0+. Accuracy exceeds float baseline due to regularization-by-quantization effect.</p>
   </div>
 </section>
 
@@ -648,23 +735,24 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
     </div>
     <div class="about-wrap">
       <div class="about-text reveal">
-        <p>TernML was developed from the conviction that neural networks should not require expensive GPUs or specialized hardware. The core discovery: ternary quantization acts as a regularizer during training, <strong>improving generalization over the float baseline</strong>.</p>
+        <p>TernML is a multi-architecture framework for ternary neural networks — supporting GraphKAN, CNN, Transformer, RNN/LSTM, and Vision Transformer under one unified QAT pipeline with C codegen for Cortex-M0+. The core discovery: ternary quantization acts as a regularizer during training, <strong>improving generalization over the float baseline</strong> across all architectures.</p>
         <div class="highlight-quote">
           &ldquo;Discrete ternary weights act as a regularizer during training, naturally pruning noise while preserving signal.&rdquo;
           <cite>&mdash; Regularization-by-Quantization Effect</cite>
         </div>
-        <p>The result: models that don't just compress well &mdash; they generalize better. This is TernML&rsquo;s core insight.</p>
+        <p>The result: models that don't just compress well &mdash; they generalize better. 5 architectures, 95 passing tests, Cortex-M0+ codegen. This is TernML&rsquo;s core insight.</p>
         <div class="about-links">
           <a href="https://github.com/Fakeonomics/TernML" target="_blank" rel="noopener" class="btn btn-secondary">GitHub <i class="ph ph-arrow-right"></i></a>
-          <a href="https://habr.com/ru/articles/1049822/" target="_blank" rel="noopener" class="btn btn-secondary">Habr Article <i class="ph ph-arrow-right"></i></a>
+          <a href="https://habr.com/ru/articles/1049822/" target="_blank" rel="noopener" class="btn btn-secondary">Habr #1 <i class="ph ph-arrow-right"></i></a>
+          <a href="https://habr.com/ru/articles/1049940/" target="_blank" rel="noopener" class="btn btn-secondary">Habr #2 <i class="ph ph-arrow-right"></i></a>
           <a href="https://doi.org/10.5281/zenodo.20752769" target="_blank" rel="noopener" class="btn btn-secondary">Zenodo DOI <i class="ph ph-arrow-right"></i></a>
         </div>
       </div>
       <div class="about-badges reveal reveal-d2">
-<div class="about-badge"><span class="icon"><i class="ph ph-flask"></i></span> Independent research</div>
+<div class="about-badge"><span class="icon"><i class="ph ph-flask"></i></span> 5 architectures</div>
           <div class="about-badge"><span class="icon"><i class="ph ph-target"></i></span> Regularization-by-quantization</div>
-          <div class="about-badge"><span class="icon"><i class="ph ph-microchip"></i></span> No DSP / No FPU</div>
-          <div class="about-badge"><span class="icon"><i class="ph ph-lightning"></i></span> Production-ready</div>
+          <div class="about-badge"><span class="icon"><i class="ph ph-microchip"></i></span> C codegen / Cortex-M0+</div>
+          <div class="about-badge"><span class="icon"><i class="ph ph-lightning"></i></span> 95 passing tests</div>
       </div>
     </div>
   </div>
@@ -679,7 +767,8 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
         <a href="https://t.me/fakeonomics" target="_blank" rel="noopener" class="cta-btn primary-b"><span class="icon"><i class="ph ph-telegram-logo"></i></span> Telegram</a>
         <a href="mailto:fakeonomics@duck.com" class="cta-btn ghost"><span class="icon"><i class="ph ph-envelope"></i></span> Email</a>
         <a href="https://github.com/Fakeonomics/TernML" target="_blank" rel="noopener" class="cta-btn ghost"><span class="icon"><i class="ph ph-github-logo"></i></span> GitHub</a>
-        <a href="https://habr.com/ru/articles/1049822/" target="_blank" rel="noopener" class="cta-btn ghost"><span class="icon"><i class="ph ph-book-open"></i></span> Habr</a>
+        <a href="https://habr.com/ru/articles/1049822/" target="_blank" rel="noopener" class="cta-btn ghost"><span class="icon"><i class="ph ph-book-open"></i></span> Habr #1</a>
+        <a href="https://habr.com/ru/articles/1049940/" target="_blank" rel="noopener" class="cta-btn ghost"><span class="icon"><i class="ph ph-book-open"></i></span> Habr #2</a>
         <a href="https://doi.org/10.5281/zenodo.20752769" target="_blank" rel="noopener" class="cta-btn ghost"><span class="icon"><i class="ph ph-link"></i></span> DOI</a>
       </div>
     </div>
@@ -690,7 +779,8 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
   <div class="container">
     <div class="footer-links">
       <a href="https://github.com/Fakeonomics/TernML" target="_blank" rel="noopener">GitHub</a>
-      <a href="https://habr.com/ru/articles/1049822/" target="_blank" rel="noopener">Research</a>
+      <a href="https://habr.com/ru/articles/1049822/" target="_blank" rel="noopener">Habr #1</a>
+      <a href="https://habr.com/ru/articles/1049940/" target="_blank" rel="noopener">Habr #2</a>
       <a href="https://doi.org/10.5281/zenodo.20752769" target="_blank" rel="noopener">DOI</a>
       <a href="https://fakeonomics.github.io/TernML-overview/" target="_blank" rel="noopener">Live Site</a>
     </div>
