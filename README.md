@@ -7,5 +7,3 @@ First neural network with **discrete ternary weights** {-1, 0, +1}.
 
 Proprietary technology — All Rights Reserved.  
 Codebase is private. Landing page at [fakeonomics.github.io/TernML-overview/](https://fakeonomics.github.io/TernML-overview/).
-
-*Created by Yuriy Venediktov, June 2026.*

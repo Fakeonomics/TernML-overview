@@ -264,12 +264,10 @@ td.yes-badge{
   display:inline-flex;align-items:center;gap:4px;
   color:var(--ember);font-weight:600;
 }
-td.yes-badge::before{content:'\2716';font-size:11px}
 td.no-badge{
   display:inline-flex;align-items:center;gap:4px;
   color:var(--teal);font-weight:600;
 }
-td.no-badge::before{content:'\2714';font-size:11px}
 .bench-note{font-size:13px;color:var(--text-dimmer);margin-top:16px;font-style:italic;line-height:1.5}
 
 /* === HARDWARE === */
@@ -285,7 +283,6 @@ td.no-badge::before{content:'\2714';font-size:11px}
 .hw-core{font-size:12.5px;color:var(--gold);margin-bottom:14px;font-weight:500;font-family:var(--font-mono)}
 .hw-specs{list-style:none;font-size:13px;color:var(--text-dim);line-height:1.9}
 .hw-specs li{display:flex;align-items:center;justify-content:center;gap:6px}
-.hw-specs li::before{content:'\2714';color:var(--teal);font-size:11px}
 
 /* === ABOUT === */
 .about-wrap{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
@@ -386,6 +383,7 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
   .hero-glow,.hero-bg .grain,.how-card,.metric-card,.hw-card{animation:none!important;transition:none!important}
 }
 </style>
+<script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
 </head>
 <body>
 
@@ -399,7 +397,7 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
       </svg>
       TernML
     </a>
-    <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">&#9776;</button>
+    <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu"><i class="ph ph-list"></i></button>
     <ul class="nav-links">
       <li><a href="#metrics">Metrics</a></li>
       <li><a href="#how">How It Works</a></li>
@@ -420,12 +418,12 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
   <div class="hero-glow"></div>
   <div class="container">
     <div class="reveal visible">
-      <div class="hero-badge"><span>&#9679; v1.0</span> &middot; Ternary Neural Network Framework</div>
+      <div class="hero-badge"><span><i class="ph ph-circle"></i> v1.0</span> &middot; Ternary Neural Network Framework</div>
     </div>
     <h1 class="reveal visible reveal-d1">The <span class="gold">$0.50</span> neural<br>network.</h1>
     <p class="sub reveal visible reveal-d2">TernML is the first production framework for ternary neural networks with <strong>{-1,0,+1}</strong> weights — improving accuracy over float baselines while fitting in <strong>15 KB</strong>. No DSP. No FPU. Just pure add-and-shift inference on the cheapest microcontrollers.</p>
     <div class="hero-buttons reveal visible reveal-d3">
-      <a href="#contact" class="btn btn-primary">Get Early Access &rarr;</a>
+      <a href="#contact" class="btn btn-primary">Get Early Access <i class="ph ph-arrow-right"></i></a>
       <a href="https://habr.com/ru/articles/1049822/" target="_blank" rel="noopener" class="btn btn-secondary">Read the Research</a>
     </div>
     <div class="hero-stats reveal visible reveal-d4">
@@ -566,15 +564,15 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
           </tr>
           <tr>
             <td>DSP Required</td>
-            <td><span class="no-badge">No</span></td>
-            <td><span class="yes-badge">Yes</span></td>
-            <td><span class="yes-badge">Yes</span></td>
+            <td><span class="no-badge"><i class="ph ph-check"></i> No</span></td>
+            <td><span class="yes-badge"><i class="ph ph-x"></i> Yes</span></td>
+            <td><span class="yes-badge"><i class="ph ph-x"></i> Yes</span></td>
           </tr>
           <tr>
             <td>FPU Required</td>
-            <td><span class="no-badge">No</span></td>
+            <td><span class="no-badge"><i class="ph ph-check"></i> No</span></td>
             <td class="cross">Optional</td>
-            <td><span class="yes-badge">Yes</span></td>
+            <td><span class="yes-badge"><i class="ph ph-x"></i> Yes</span></td>
           </tr>
           <tr>
             <td>Min. MCU Cost</td>
@@ -598,43 +596,43 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
     </div>
     <div class="hw-grid">
       <div class="hw-card reveal-alt reveal-d1">
-        <span class="hw-icon">&#9670;</span>
+        <i class="ph ph-cpu hw-icon"></i>
         <div class="hw-name">Cortex-M0+</div>
         <div class="hw-core">ARM Cortex-M0+</div>
         <ul class="hw-specs">
-          <li>16 KB SRAM &mdash; fits entirely</li>
-          <li>$0.50 MCU cost</li>
-          <li>&lt;100 ms inference</li>
+          <li><i class="ph ph-check-circle" style="color:var(--teal)"></i> 16 KB SRAM &mdash; fits entirely</li>
+          <li><i class="ph ph-check-circle" style="color:var(--teal)"></i> $0.50 MCU cost</li>
+          <li><i class="ph ph-check-circle" style="color:var(--teal)"></i> &lt;100 ms inference</li>
         </ul>
       </div>
       <div class="hw-card reveal-alt reveal-d2">
-        <span class="hw-icon">&#9670;</span>
+        <i class="ph ph-cpu hw-icon"></i>
         <div class="hw-name">ESP32-S3</div>
         <div class="hw-core">Xtensa LX7</div>
         <ul class="hw-specs">
-          <li>512 KB SRAM</li>
-          <li>WiFi + BLE on-chip</li>
-          <li>Headroom for sensors</li>
+          <li><i class="ph ph-check-circle" style="color:var(--teal)"></i> 512 KB SRAM</li>
+          <li><i class="ph ph-check-circle" style="color:var(--teal)"></i> WiFi + BLE on-chip</li>
+          <li><i class="ph ph-check-circle" style="color:var(--teal)"></i> Headroom for sensors</li>
         </ul>
       </div>
       <div class="hw-card reveal-alt reveal-d3">
-        <span class="hw-icon">&#9670;</span>
+        <i class="ph ph-cpu hw-icon"></i>
         <div class="hw-name">GD32V</div>
         <div class="hw-core">RISC-V RV32IMAC</div>
         <ul class="hw-specs">
-          <li>32 KB SRAM</li>
-          <li>Full model fits</li>
-          <li>Open ISA</li>
+          <li><i class="ph ph-check-circle" style="color:var(--teal)"></i> 32 KB SRAM</li>
+          <li><i class="ph ph-check-circle" style="color:var(--teal)"></i> Full model fits</li>
+          <li><i class="ph ph-check-circle" style="color:var(--teal)"></i> Open ISA</li>
         </ul>
       </div>
       <div class="hw-card reveal-alt reveal-d4">
-        <span class="hw-icon">&#9670;</span>
+        <i class="ph ph-cpu hw-icon"></i>
         <div class="hw-name">MIK32 Amur</div>
         <div class="hw-core">RISC-V RV32IMC</div>
         <ul class="hw-specs">
-          <li>8 KB SRAM</li>
-          <li>Flash-optimized</li>
-          <li>Ultra-low power</li>
+          <li><i class="ph ph-check-circle" style="color:var(--teal)"></i> 8 KB SRAM</li>
+          <li><i class="ph ph-check-circle" style="color:var(--teal)"></i> Flash-optimized</li>
+          <li><i class="ph ph-check-circle" style="color:var(--teal)"></i> Ultra-low power</li>
         </ul>
       </div>
     </div>
@@ -657,16 +655,16 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
         </div>
         <p>The result: models that don't just compress well &mdash; they generalize better. This is TernML&rsquo;s core insight.</p>
         <div class="about-links">
-          <a href="https://github.com/Fakeonomics/TernML" target="_blank" rel="noopener" class="btn btn-secondary">GitHub &rarr;</a>
-          <a href="https://habr.com/ru/articles/1049822/" target="_blank" rel="noopener" class="btn btn-secondary">Habr Article &rarr;</a>
-          <a href="https://doi.org/10.5281/zenodo.20752769" target="_blank" rel="noopener" class="btn btn-secondary">Zenodo DOI &rarr;</a>
+          <a href="https://github.com/Fakeonomics/TernML" target="_blank" rel="noopener" class="btn btn-secondary">GitHub <i class="ph ph-arrow-right"></i></a>
+          <a href="https://habr.com/ru/articles/1049822/" target="_blank" rel="noopener" class="btn btn-secondary">Habr Article <i class="ph ph-arrow-right"></i></a>
+          <a href="https://doi.org/10.5281/zenodo.20752769" target="_blank" rel="noopener" class="btn btn-secondary">Zenodo DOI <i class="ph ph-arrow-right"></i></a>
         </div>
       </div>
       <div class="about-badges reveal reveal-d2">
-<div class="about-badge"><span class="icon">&#9670;</span> Independent research</div>
-          <div class="about-badge"><span class="icon">&#9651;</span> Regularization-by-quantization</div>
-          <div class="about-badge"><span class="icon">&#10010;</span> No DSP / No FPU</div>
-          <div class="about-badge"><span class="icon">&#9655;</span> Production-ready</div>
+<div class="about-badge"><span class="icon"><i class="ph ph-flask"></i></span> Independent research</div>
+          <div class="about-badge"><span class="icon"><i class="ph ph-target"></i></span> Regularization-by-quantization</div>
+          <div class="about-badge"><span class="icon"><i class="ph ph-microchip"></i></span> No DSP / No FPU</div>
+          <div class="about-badge"><span class="icon"><i class="ph ph-lightning"></i></span> Production-ready</div>
       </div>
     </div>
   </div>
@@ -678,11 +676,11 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
       <h2>Get in touch.</h2>
       <p>Interested in licensing, collaboration, or early access? Reach out directly.</p>
       <div class="cta-btns">
-        <a href="https://t.me/fakeonomics" target="_blank" rel="noopener" class="cta-btn primary-b"><span class="icon">&rarr;</span> Telegram</a>
-        <a href="mailto:fakeonomics@duck.com" class="cta-btn ghost"><span class="icon">&rarr;</span> Email</a>
-        <a href="https://github.com/Fakeonomics/TernML" target="_blank" rel="noopener" class="cta-btn ghost"><span class="icon">&#9670;</span> GitHub</a>
-        <a href="https://habr.com/ru/articles/1049822/" target="_blank" rel="noopener" class="cta-btn ghost"><span class="icon">&#9670;</span> Habr</a>
-        <a href="https://doi.org/10.5281/zenodo.20752769" target="_blank" rel="noopener" class="cta-btn ghost"><span class="icon">&#9670;</span> DOI</a>
+        <a href="https://t.me/fakeonomics" target="_blank" rel="noopener" class="cta-btn primary-b"><span class="icon"><i class="ph ph-telegram-logo"></i></span> Telegram</a>
+        <a href="mailto:fakeonomics@duck.com" class="cta-btn ghost"><span class="icon"><i class="ph ph-envelope"></i></span> Email</a>
+        <a href="https://github.com/Fakeonomics/TernML" target="_blank" rel="noopener" class="cta-btn ghost"><span class="icon"><i class="ph ph-github-logo"></i></span> GitHub</a>
+        <a href="https://habr.com/ru/articles/1049822/" target="_blank" rel="noopener" class="cta-btn ghost"><span class="icon"><i class="ph ph-book-open"></i></span> Habr</a>
+        <a href="https://doi.org/10.5281/zenodo.20752769" target="_blank" rel="noopener" class="cta-btn ghost"><span class="icon"><i class="ph ph-link"></i></span> DOI</a>
       </div>
     </div>
   </div>
