@@ -3,7 +3,7 @@
 # TernML: Multi-Architecture Ternary Machine Learning Framework
 
 First neural network framework with **discrete ternary weights** {-1, 0, +1}.  
-**1.58 bits/param · 5 architectures · 84% CIFAR-10 · 0 DSP inference · C codegen for Cortex-M0+**
+**1.58 bits/param · 5 architectures · 90.54% Fashion-MNIST · 0 DSP inference · C codegen for Cortex-M0+**
 
 Supports **5 architectures**: GraphKAN, CNN, Transformer, RNN/LSTM, Vision Transformer (ViT).  
 All with the same 4-phase QAT pipeline and **regularization-by-quantization** effect.
@@ -14,7 +14,7 @@ All with the same 4-phase QAT pipeline and **regularization-by-quantization** ef
 |-------------|---------|:--------:|:----------:|
 | GraphKAN 256→100→10 | MNIST | **96.15%** | **15.4 KB** |
 | GraphKAN 256→100→10 | Fashion-MNIST | **84.67%** | **15.4 KB** |
-| CNN conv32→64→128→10 | CIFAR-10 | **84.03%** | **~100 KB** |
+| CNN conv32→64→128→10 | Fashion-MNIST | **90.54%** | **~100 KB** |
 | CNN conv32→64→FC128→10 | Fashion-MNIST | **92.02%** | **102.8 KB** |
 | Transformer 2L/4H/128d | CIFAR-10 | TBD | TBD |
 | LSTM 128d | Sequence | TBD | TBD |
