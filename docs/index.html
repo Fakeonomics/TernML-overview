@@ -461,7 +461,7 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
       <div class="metric-card reveal reveal-d2">
         <div class="metric-value">✓</div>
         <div class="metric-label">C Codegen</div>
-        <div class="metric-desc">Cortex-M0+ output, p/m bit-sliced format</div>
+        <div class="metric-desc">5 architectures, p/m bit-sliced, verified under Unicorn</div>
       </div>
       <div class="metric-card reveal reveal-d3">
         <div class="metric-value">0</div>
@@ -496,7 +496,7 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
         <div class="how-num">03</div>
         <h3>Generate C Code</h3>
         <p>Export ternary weights in p/m bit-sliced format (32 trits/8 bytes). Generate pure C for Cortex-M0+ with no DSP, no FPU, no OS — bare-metal inference in milliseconds.</p>
-        <span class="tag">From $0.50 MCU &bull; Codegen</span>
+        <span class="tag">From $0.50 MCU &bull; 5 archs &bull; Verified</span>
       </div>
     </div>
   </div>
@@ -529,11 +529,11 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
             <td class="highlight">15.4 KB</td>
           </tr>
           <tr>
-            <td>GraphKAN 256→100→10</td>
+            <td>GraphKAN 256→300→10</td>
             <td class="highlight">Fashion-MNIST</td>
-            <td>83.03%</td>
-            <td class="highlight">84.67%</td>
-            <td class="highlight">15.4 KB</td>
+            <td>86.48%</td>
+            <td class="highlight">86.73%</td>
+            <td class="highlight">58.5 KB</td>
           </tr>
           <tr>
             <td>CNN conv32→64→128→10</td>
@@ -551,29 +551,29 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
           </tr>
           <tr>
             <td>Transformer 2L/4H/128d</td>
-            <td class="highlight">CIFAR-10</td>
-            <td>TBD</td>
-            <td>TBD</td>
-            <td>TBD</td>
+            <td class="highlight">Copy Task</td>
+            <td>—</td>
+            <td>100%</td>
+            <td class="highlight">20 KB</td>
           </tr>
           <tr>
             <td>LSTM 128d</td>
-            <td class="highlight">Sequence</td>
-            <td>TBD</td>
-            <td>TBD</td>
-            <td>TBD</td>
+            <td class="highlight">Seq MNIST</td>
+            <td>—</td>
+            <td>27.8%</td>
+            <td class="highlight">16 KB</td>
           </tr>
           <tr>
-            <td>ViT patch8/128d</td>
+            <td>ViT patch4/64d</td>
             <td class="highlight">CIFAR-10</td>
-            <td>TBD</td>
-            <td>TBD</td>
-            <td>TBD</td>
+            <td>—</td>
+            <td class="highlight">60.3%</td>
+            <td class="highlight">25 KB</td>
           </tr>
         </tbody>
       </table>
     </div>
-    <p class="bench-note reveal">* All architectures use the same 4-phase QAT pipeline with STE. C codegen available for Cortex-M0+ target. ELM mode: frozen random ternary hidden layer + closed-form least squares.</p>
+    <p class="bench-note reveal">* All architectures use the same 4-phase QAT pipeline with STE. C codegen available for Cortex-M0+ — verified bit-exact under Unicorn emulator. ELM mode: frozen random ternary hidden layer + closed-form least squares.</p>
   </div>
 </section>
 
@@ -699,7 +699,7 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
         <ul class="hw-specs">
           <li><i class="ph ph-check-circle" style="color:var(--teal)"></i> 512 KB SRAM</li>
           <li><i class="ph ph-check-circle" style="color:var(--teal)"></i> WiFi + BLE on-chip</li>
-          <li><i class="ph ph-check-circle" style="color:var(--teal)"></i> Headroom for sensors</li>
+          <li><i class="ph ph-check-circle" style="color:var(--teal)"></i> Port in progress</li>
         </ul>
       </div>
       <div class="hw-card reveal-alt reveal-d3">
@@ -765,10 +765,11 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
       <p>Interested in licensing, collaboration, or early access? Reach out directly.</p>
       <div class="cta-btns">
         <a href="https://t.me/fakeonomics" target="_blank" rel="noopener" class="cta-btn primary-b"><span class="icon"><i class="ph ph-telegram-logo"></i></span> Telegram</a>
-        <a href="mailto:fakeonomics@duck.com" class="cta-btn ghost"><span class="icon"><i class="ph ph-envelope"></i></span> Email</a>
+        <a href="mailto:uv20817@gmail.com" class="cta-btn ghost"><span class="icon"><i class="ph ph-envelope"></i></span> Email</a>
         <a href="https://github.com/Fakeonomics/TernML" target="_blank" rel="noopener" class="cta-btn ghost"><span class="icon"><i class="ph ph-github-logo"></i></span> GitHub</a>
-        <a href="https://habr.com/ru/articles/1049822/" target="_blank" rel="noopener" class="cta-btn ghost"><span class="icon"><i class="ph ph-book-open"></i></span> Habr #1</a>
-        <a href="https://habr.com/ru/articles/1049940/" target="_blank" rel="noopener" class="cta-btn ghost"><span class="icon"><i class="ph ph-book-open"></i></span> Habr #2</a>
+        <a href="https://habr.com/ru/articles/1049822/" target="_blank" rel="noopener" class="cta-btn ghost"><span class="icon"><i class="ph ph-book-open"></i></span> GraphKAN Story</a>
+        <a href="https://habr.com/ru/articles/1049940/" target="_blank" rel="noopener" class="cta-btn ghost"><span class="icon"><i class="ph ph-book-open"></i></span> TernML Overview</a>
+        <a href="https://habr.com/ru/articles/1050030/" target="_blank" rel="noopener" class="cta-btn ghost"><span class="icon"><i class="ph ph-book-open"></i></span> TernML Retrain</a>
         <a href="https://doi.org/10.5281/zenodo.20752769" target="_blank" rel="noopener" class="cta-btn ghost"><span class="icon"><i class="ph ph-link"></i></span> DOI</a>
       </div>
     </div>
