@@ -13,7 +13,7 @@ All with the same 4-phase QAT pipeline and **regularization-by-quantization** ef
 | Architecture | Dataset | Accuracy | Model Size |
 |-------------|---------|:--------:|:----------:|
 | GraphKAN 256→100→10 | MNIST | **96.15%** | **15.4 KB** |
-| GraphKAN 256→100→10 | Fashion-MNIST | **84.67%** | **15.4 KB** |
+| GraphKAN 256→100→10 | Fashion-MNIST | **86.73%** | **15.4 KB** |
 | CNN conv32→64→128→10 | Fashion-MNIST | **90.54%** | **~100 KB** |
 | CNN conv32→64→FC128→10 | Fashion-MNIST | **92.02%** | **102.8 KB** |
 | Transformer 2L/4H/128d | CIFAR-10 | TBD | TBD |
