@@ -28,8 +28,7 @@
     "price": "0",
     "priceCurrency": "USD",
     "description": "Contact for commercial licensing"
-  },
-  "screenshot": "https://fakeonomics.github.io/TernML-overview/"
+  }
 }
 </script>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230c0b09'/%3E%3Ctext x='16' y='22' font-family='Inter,sans-serif' font-weight='800' font-size='18' fill='%23c9954a' text-anchor='middle'%3ET%3C/text%3E%3Ctext x='6' y='8' font-size='6' fill='%232dd4bf'%3E%2B1%3C/text%3E%3Ctext x='22' y='28' font-size='6' fill='%237b2ff7'%3E-1%3C/text%3E%3C/svg%3E">
@@ -71,6 +70,7 @@ body{font-family:var(--font-ui);background:var(--bg);color:var(--text);line-heig
 a{color:var(--gold);text-decoration:none;transition:color .25s}
 a:hover{color:var(--gold-light)}
 img{max-width:100%}
+section[id]{scroll-margin-top:70px}
 .container{width:100%;max-width:var(--max-w);margin:0 auto;padding:0 24px}
 .section{padding:100px 0 80px;position:relative}
 .section-header{margin-bottom:48px}
@@ -332,7 +332,7 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
 
 <nav id="navbar">
   <div class="container">
-    <a href="#" class="nav-logo">
+    <a href="#hero" class="nav-logo">
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
         <rect width="28" height="28" rx="6" fill="#c9954a"/>
         <path d="M8 14L12 10L16 14L20 10" stroke="#0c0b09" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -544,7 +544,7 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
         </thead>
         <tbody>
           <tr><td>MNIST</td><td class="highlight">96.15%</td><td>96.80%</td><td>96.20%</td></tr>
-          <tr><td>CIFAR-10 (deep CNN)</td><td class="highlight">84.46%</td><td>47.00%</td><td>45.50%</td></tr>
+          <tr><td>CIFAR-10 (ViT)</td><td class="highlight">65.43%</td><td>47.00%</td><td>45.50%</td></tr>
           <tr><td>Fashion-MNIST (CNN)</td><td class="highlight">92.02%</td><td>91.50%</td><td>91.00%</td></tr>
           <tr><td>Model Size (GraphKAN)</td><td class="highlight">15.4 KB</td><td>128 KB</td><td>256+ KB</td></tr>
           <tr><td>Peak RAM</td><td class="highlight">4 KB</td><td>32 KB</td><td>64 KB</td></tr>
@@ -577,7 +577,7 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
         <ul class="hw-specs">
           <li>16 KB SRAM — fits entirely</li>
           <li>$0.50 MCU cost</li>
-          <li>&lt;100 ms inference</li>
+          <li>~1-3 s inference</li>
         </ul>
       </div>
       <div class="hw-card reveal-alt reveal-d2" data-tilt>
@@ -714,7 +714,7 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
         </div>
         <p>The result: models that don't just compress well — they generalize better. 5 architectures, 95 passing tests, Cortex-M0+ codegen. This is TernML's core insight.</p>
         <div class="about-links">
-          <a href="https://github.com/Fakeonomics/TernML" target="_blank" rel="noopener" class="btn btn-secondary">GitHub</a>
+          <a href="https://fakeonomics.github.io/TernML-overview/" target="_blank" rel="noopener" class="btn btn-secondary">GitHub</a>
           <a href="https://habr.com/ru/articles/1049822/" target="_blank" rel="noopener" class="btn btn-secondary">Habr #1</a>
           <a href="https://habr.com/ru/articles/1049940/" target="_blank" rel="noopener" class="btn btn-secondary">Habr #2</a>
           <a href="https://doi.org/10.5281/zenodo.20752769" target="_blank" rel="noopener" class="btn btn-secondary">Zenodo DOI</a>
@@ -738,7 +738,7 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
       <div class="cta-btns">
         <a href="https://t.me/fakeonomics" target="_blank" rel="noopener" class="cta-btn primary-b">Telegram</a>
         <a href="mailto:uv20817@gmail.com" class="cta-btn ghost">Email</a>
-        <a href="https://github.com/Fakeonomics/TernML" target="_blank" rel="noopener" class="cta-btn ghost">GitHub</a>
+        <a href="https://fakeonomics.github.io/TernML-overview/" target="_blank" rel="noopener" class="cta-btn ghost">GitHub</a>
         <a href="https://habr.com/ru/articles/1049822/" target="_blank" rel="noopener" class="cta-btn ghost">Habr #1</a>
         <a href="https://habr.com/ru/articles/1049940/" target="_blank" rel="noopener" class="cta-btn ghost">Habr #2</a>
         <a href="https://habr.com/ru/articles/1050030/" target="_blank" rel="noopener" class="cta-btn ghost">Habr #3</a>
@@ -751,7 +751,7 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
 <footer>
   <div class="container">
     <div class="footer-links">
-      <a href="https://github.com/Fakeonomics/TernML" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://fakeonomics.github.io/TernML-overview/" target="_blank" rel="noopener">GitHub</a>
       <a href="https://habr.com/ru/articles/1049822/" target="_blank" rel="noopener">Habr #1</a>
       <a href="https://habr.com/ru/articles/1049940/" target="_blank" rel="noopener">Habr #2</a>
       <a href="https://doi.org/10.5281/zenodo.20752769" target="_blank" rel="noopener">DOI</a>

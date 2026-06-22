@@ -16,9 +16,10 @@ All with the same 4-phase QAT pipeline and **regularization-by-quantization** ef
 | GraphKAN 256→100→10 | Fashion-MNIST | **86.73%** | **15.4 KB** |
 | CNN conv32→64→128→10 | Fashion-MNIST | **90.54%** | **~100 KB** |
 | CNN conv32→64→FC128→10 | Fashion-MNIST | **92.02%** | **102.8 KB** |
-| Transformer 2L/4H/128d | CIFAR-10 | TBD | TBD |
-| LSTM 128d | Sequence | TBD | TBD |
-| ViT patch8/128d | CIFAR-10 | TBD | TBD |
+| Transformer 3L/4H/48d | Copy task | **100.00%** | **10.4 KB** |
+| RNN 2L/64d | Seq MNIST | **18.2%** | **2.7 KB** |
+| LSTM 2L/64d | Seq MNIST | **20.6%** | **10.9 KB** |
+| ViT patch8/128d/4L | CIFAR-10 | **60.30%** | **25.4 KB** |
 
 All improve over float baseline — **regularization-by-quantization**.
 
