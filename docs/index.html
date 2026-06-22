@@ -4,10 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="TernML — Multi-architecture ternary neural network framework for microcontrollers. 5 architectures, 90.54% Fashion-MNIST, 1.58 bit/param, 0 DSP. Cortex-M codegen.">
+<meta property="og:title" content="TernML: Multi-Architecture Ternary ML Framework">
+<meta property="og:description" content="5 architectures (GraphKAN, CNN, Transformer, RNN/LSTM, ViT). Ternary weights {-1,0,+1}. Models from 15 KB to 100 KB. C codegen for Cortex-M0+.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://fakeonomics.github.io/TernML-overview/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230c0b09'/%3E%3Ctext x='16' y='22' font-family='Inter,sans-serif' font-weight='800' font-size='18' fill='%23c9954a' text-anchor='middle'%3ET%3C/text%3E%3Ctext x='6' y='8' font-size='6' fill='%232dd4bf'%3E%2B1%3C/text%3E%3Ctext x='22' y='28' font-size='6' fill='%237b2ff7'%3E-1%3C/text%3E%3C/svg%3E">
 <title>TernML — Multi-Architecture Ternary ML Framework for MCUs</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com?v=20260622">
+<link rel="preconnect" href="https://fonts.gstatic.com?v=20260622" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=JetBrains+Mono:wght@400;500&display=swap&v=20260622" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -25,8 +31,11 @@
   --gold-glow:rgba(201,149,74,.15);
   --teal:#2dd4bf;
   --ember:#d4603a;
+  --cyan:#00d4ff;
+  --purple:#7b2ff7;
   --gradient-hero:linear-gradient(180deg,rgba(12,11,9,.3) 0%,rgba(12,11,9,.92) 60%,var(--bg) 100%);
   --gradient-gold:linear-gradient(135deg,#c9954a,#e2c278);
+  --gradient-cyber:linear-gradient(135deg,var(--cyan),var(--purple));
   --font-ui:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
   --font-serif:'Instrument Serif',Georgia,serif;
   --font-mono:'JetBrains Mono','SF Mono','Fira Code',monospace;
@@ -62,11 +71,11 @@ img{max-width:100%}
   font-size:17px;color:var(--text-dim);max-width:520px;line-height:1.6;
   font-weight:400;
 }
-.reveal{transform:perspective(800px) rotateX(4deg) translateY(24px);opacity:.7;transition:transform 1.2s cubic-bezier(.77,0,.175,1),opacity .8s ease;will-change:transform}
+.reveal{transform:perspective(800px) rotateX(4deg) translateY(30px);opacity:0;transition:transform 1.2s cubic-bezier(.77,0,.175,1),opacity .8s ease;will-change:transform}
 .reveal.visible{transform:perspective(800px) rotateX(0) translateY(0);opacity:1}
-.reveal-alt{transform:perspective(800px) rotateY(-3deg) translateY(20px);opacity:.7;transition:transform 1.2s cubic-bezier(.77,0,.175,1),opacity .8s ease}
+.reveal-alt{transform:perspective(800px) rotateY(-3deg) translateY(30px);opacity:0;transition:transform 1.2s cubic-bezier(.77,0,.175,1),opacity .8s ease}
 .reveal-alt.visible{transform:perspective(800px) rotateY(0) translateY(0);opacity:1}
-.reveal-rotate{transform:perspective(600px) rotateX(2deg) rotateY(-2deg) translateY(24px);opacity:.85;transition:transform 1s cubic-bezier(.65,0,.35,1),opacity .7s ease}
+.reveal-rotate{transform:perspective(600px) rotateX(2deg) rotateY(-2deg) translateY(30px);opacity:0;transition:transform 1s cubic-bezier(.65,0,.35,1),opacity .7s ease}
 .reveal-rotate.visible{transform:perspective(600px) rotateX(0) rotateY(0) translateY(0);opacity:1}
 .title-reveal{color:var(--text);transition:color 1.2s cubic-bezier(.77,0,.175,1)}
 .title-reveal.visible{color:var(--gold-light)}
@@ -356,6 +365,59 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
 .lang-dropdown button.active { color: var(--gold); font-weight: 600; }
 .i18n-container { transition: opacity .3s ease; }
 .i18n-container.fading { opacity: 0; }
+
+/* === SCROLL PROGRESS === */
+#scroll-progress{position:fixed;top:0;left:0;height:3px;z-index:10001;background:var(--gradient-cyber);width:0%;transition:width .1s linear}
+
+/* === SCROLL TOP === */
+#scroll-top{position:fixed;bottom:30px;right:30px;z-index:9999;width:44px;height:44px;border-radius:12px;background:var(--bg-card);border:1px solid var(--border-strong);color:var(--gold);cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transform:translateY(10px);transition:opacity .35s,visibility .35s,transform .35s,background .3s;backdrop-filter:blur(8px)}
+#scroll-top.visible{opacity:1;visibility:visible;transform:translateY(0)}
+#scroll-top:hover{background:var(--bg-card-hover);border-color:var(--gold);transform:translateY(-2px)}
+#scroll-top svg{width:20px;height:20px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+
+/* === NAV SCROLL-SPY === */
+.nav-links a.active{color:var(--gold);text-shadow:0 0 20px rgba(201,149,74,.3)}
+.nav-links a.active::after{width:100%;background:var(--gradient-cyber);height:2px}
+
+/* === ARCHITECTURE EXPAND === */
+.arch-row{cursor:pointer;position:relative}
+.arch-row td:first-child::after{content:'+';position:absolute;left:4px;top:50%;transform:translateY(-50%);font-size:11px;color:var(--text-dimmer);font-family:var(--font-mono);transition:transform .3s,color .3s}
+.arch-row.expanded td:first-child::after{content:'\2212';color:var(--gold)}
+.arch-desc-row{display:none}
+.arch-desc-row.visible{display:table-row}
+.arch-desc-row td{padding:0 18px 16px;font-size:13px;color:var(--text-dim);line-height:1.7;border-bottom:1px solid var(--border);animation:archSlide .35s ease}
+@keyframes archSlide{0%{padding-top:0;opacity:.3}100%{padding-top:8px;opacity:1}}
+
+/* === PAPERS === */
+.papers-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.paper-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:32px;transition:border-color .35s,transform .35s,background .35s}
+.paper-card:hover{border-color:rgba(201,149,74,.2);transform:translateY(-3px);background:var(--bg-card-hover)}
+.paper-card .paper-icon{font-size:28px;display:block;margin-bottom:14px;opacity:.7}
+.paper-card h3{font-size:17px;font-weight:700;margin-bottom:8px;letter-spacing:-.01em;line-height:1.4}
+.paper-card p{font-size:13.5px;color:var(--text-dim);line-height:1.7;margin-bottom:16px}
+.paper-card .doi-badge{display:inline-block;padding:4px 10px;background:var(--bg-surface);border:1px solid var(--border);border-radius:4px;font-size:11px;font-family:var(--font-mono);color:var(--text-dimmer);margin-bottom:14px}
+.paper-card .paper-link{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;background:var(--gradient-gold);color:#0c0b09!important;font-size:13px;font-weight:600;border-radius:6px;clip-path:polygon(5px 0,100% 0,calc(100% - 5px) 100%,0 100%);transition:opacity .25s,transform .25s}
+.paper-card .paper-link:hover{opacity:.88;transform:translateY(-2px)}
+.paper-card .paper-link.ghost-link{background:rgba(255,255,255,.04);color:var(--text)!important;border:1px solid var(--border-strong);clip-path:polygon(5px 0,100% 0,calc(100% - 5px) 100%,0 100%)}
+.paper-card .paper-link.ghost-link:hover{background:rgba(255,255,255,.08)}
+
+/* === CODEGEN PIPELINE === */
+.codegen-pipeline{display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:nowrap;padding:8px 0;overflow-x:auto}
+.pipeline-step{display:flex;flex-direction:column;align-items:center;gap:8px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 16px;min-width:110px;flex-shrink:0;transition:border-color .35s,transform .35s}
+.pipeline-step:hover{border-color:var(--gold);transform:translateY(-3px)}
+.pipeline-step .step-icon{font-size:22px;opacity:.7}
+.pipeline-step .step-label{font-size:11px;font-weight:600;color:var(--text-dim);text-align:center;line-height:1.3}
+.pipeline-step .step-sub{font-size:10px;color:var(--text-dimmer);text-align:center}
+.pipeline-arrow{flex-shrink:0;color:var(--gold);font-size:18px;padding:0 8px;opacity:.5}
+.codegen-note{text-align:center;font-size:13px;color:var(--text-dim);margin-top:28px;padding:16px 24px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);line-height:1.7}
+.codegen-note strong{color:var(--gold)}
+
+/* === TILT CARDS === */
+[data-tilt]{transition:transform .35s ease-out!important;transform-style:preserve-3d;will-change:transform}
+
+/* === HERO CANVAS === */
+#hero-canvas{position:absolute;inset:0;z-index:1;pointer-events:none;width:100%;height:100%}
+
 @keyframes breathe { 0%, 100% { opacity: .3; transform: scale(1); } 50% { opacity: .6; transform: scale(1.05); } }
 @keyframes pulse-dot { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .5; transform: scale(0.8); } }
 
@@ -369,6 +431,8 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
   .hero-stats{grid-template-columns:repeat(2,1fr);gap:12px}
   .cta-block{padding:40px 28px}
   .how-grid{grid-template-columns:1fr;max-width:480px;margin:0 auto}
+  .papers-grid{grid-template-columns:1fr}
+  .codegen-pipeline{justify-content:flex-start}
 }
 @media(max-width:720px){
   .nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(12,11,9,.95);backdrop-filter:blur(14px);flex-direction:column;padding:16px 24px;gap:12px;border-bottom:1px solid var(--border)}
@@ -381,6 +445,9 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
   .hero h1{font-size:32px}
   .section{padding:60px 0 40px}
   .container{padding:0 20px}
+  .papers-grid{grid-template-columns:1fr}
+  .pipeline-step{min-width:90px;padding:14px 10px}
+  .pipeline-arrow{padding:0 4px;font-size:14px}
 }
 @media(max-width:480px){
   .metrics-grid{grid-template-columns:1fr}
@@ -391,17 +458,25 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
   .section-title{font-size:22px}
   .cta-block{padding:28px 20px}
   .about-badges{grid-template-columns:1fr}
+  .pipeline-step{min-width:80px;padding:10px 8px}
+  .pipeline-step .step-label{font-size:10px}
+  #scroll-top{bottom:16px;right:16px;width:38px;height:38px}
 }
 @media(prefers-reduced-motion:reduce){
   .reveal,.reveal-alt,.reveal-rotate,.reveal.visible,.reveal-alt.visible,.reveal-rotate.visible{transform:none!important;opacity:1!important;transition:none!important}
   .title-reveal,.title-reveal.visible{color:var(--text)!important;transition:none!important}
   .hero-glow,.hero-bg .grain,.how-card,.metric-card,.hw-card{animation:none!important;transition:none!important}
+  #hero-canvas{display:none!important}
+  .arch-row td:first-child::after{display:none!important}
+  #scroll-top,#scroll-progress{display:none!important}
+  [data-tilt]{transform:none!important}
 }
 </style>
-<script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+<script src="https://unpkg.com/@phosphor-icons/web@2.1.1?v=20260622"></script>
 </head>
 <body>
 
+<div id="scroll-progress"></div>
 <nav id="navbar">
   <div class="container">
     <a href="#" class="nav-logo">
@@ -416,8 +491,10 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
     <ul class="nav-links">
       <li><a href="#metrics" data-i18n="nav.metrics">Metrics</a></li>
       <li><a href="#how" data-i18n="nav.how">How It Works</a></li>
+      <li><a href="#architectures" data-i18n="nav.architectures">Architectures</a></li>
       <li><a href="#benchmarks" data-i18n="nav.benchmarks">Benchmarks</a></li>
       <li><a href="#hardware" data-i18n="nav.hardware">Hardware</a></li>
+      <li><a href="#papers" data-i18n="nav.papers">Papers</a></li>
       <li><a href="#about" data-i18n="nav.about">About</a></li>
       <li><a href="#contact" class="nav-cta" data-i18n="nav.cta">Get in Touch</a></li>
     </ul>
@@ -440,6 +517,7 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
     <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1920&q=80" alt="" aria-hidden="true" loading="eager">
     <div class="overlay"></div>
     <div class="grain"></div>
+    <canvas id="hero-canvas"></canvas>
   </div>
   <div class="hero-glow"></div>
   <div class="container i18n-container">
@@ -453,10 +531,10 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
       <a href="https://habr.com/ru/articles/1049822/" target="_blank" rel="noopener" class="btn btn-secondary" data-i18n="hero.btn.research">Read the Research</a>
     </div>
     <div class="hero-stats reveal visible reveal-d4">
-      <div class="hero-stat"><div class="hero-stat-value"><span class="num-spec">5</span></div><div class="hero-stat-label" data-i18n="hero.stat.architectures">Architectures</div></div>
-      <div class="hero-stat"><div class="hero-stat-value"><span class="num-spec">90.54%</span></div><div class="hero-stat-label" data-i18n="hero.stat.fashion">Fashion-MNIST (CNN)</div></div>
-      <div class="hero-stat"><div class="hero-stat-value"><span class="num-spec">1.58</span></div><div class="hero-stat-label" data-i18n="hero.stat.bits">Bits / Parameter</div></div>
-      <div class="hero-stat"><div class="hero-stat-value"><span class="num-spec">0</span></div><div class="hero-stat-label" data-i18n="hero.stat.dsp">DSP / FPU / GPU</div></div>
+      <div class="hero-stat"><div class="hero-stat-value"><span class="num-spec" data-count-to="5">5</span></div><div class="hero-stat-label" data-i18n="hero.stat.architectures">Architectures</div></div>
+      <div class="hero-stat"><div class="hero-stat-value"><span class="num-spec" data-count-to="90.54">90.54%</span></div><div class="hero-stat-label" data-i18n="hero.stat.fashion">Fashion-MNIST (CNN)</div></div>
+      <div class="hero-stat"><div class="hero-stat-value"><span class="num-spec" data-count-to="1.58">1.58</span></div><div class="hero-stat-label" data-i18n="hero.stat.bits">Bits / Parameter</div></div>
+      <div class="hero-stat"><div class="hero-stat-value"><span class="num-spec" data-count-to="0">0</span></div><div class="hero-stat-label" data-i18n="hero.stat.dsp">DSP / FPU / GPU</div></div>
     </div>
   </div>
 </section>
@@ -469,28 +547,28 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
       <p class="section-subtitle" data-i18n="metrics.subtitle">TernML unifies Graph, CNN, Transformer, RNN, and ViT under a single ternary QAT pipeline — all with float-beating accuracy and Cortex-M0+ codegen.</p>
     </div>
     <div class="metrics-grid">
-      <div class="metric-card reveal reveal-d1">
-        <div class="metric-value">5</div>
+      <div class="metric-card reveal reveal-d1" data-tilt>
+        <div class="metric-value" data-count-to="5">5</div>
         <div class="metric-label" data-i18n="metrics.card1.label">Supported Architectures</div>
         <div class="metric-desc" data-i18n="metrics.card1.desc">Graph, CNN, Transformer, RNN/LSTM, ViT — unified TernMLayer</div>
       </div>
-      <div class="metric-card reveal reveal-d2">
-        <div class="metric-value">90.54%</div>
+      <div class="metric-card reveal reveal-d2" data-tilt>
+        <div class="metric-value" data-count-to="90.54">90.54%</div>
         <div class="metric-label" data-i18n="metrics.card2.label">Fashion-MNIST (CNN)</div>
         <div class="metric-desc" data-i18n="metrics.card2.desc">Ternary QAT — finetune phase</div>
       </div>
-      <div class="metric-card reveal reveal-d3">
-        <div class="metric-value">1.58</div>
+      <div class="metric-card reveal reveal-d3" data-tilt>
+        <div class="metric-value" data-count-to="1.58">1.58</div>
         <div class="metric-label" data-i18n="metrics.card3.label">Bits / Parameter</div>
         <div class="metric-desc" data-i18n="metrics.card3.desc">8× compression vs 8-bit quantized</div>
       </div>
-      <div class="metric-card reveal reveal-d2">
-        <div class="metric-value">✓</div>
+      <div class="metric-card reveal reveal-d2" data-tilt>
+        <div class="metric-value">&#10003;</div>
         <div class="metric-label" data-i18n="metrics.card4.label">C Codegen</div>
         <div class="metric-desc" data-i18n="metrics.card4.desc">5 architectures, p/m bit-sliced, verified under Unicorn</div>
       </div>
-      <div class="metric-card reveal reveal-d3">
-        <div class="metric-value">0</div>
+      <div class="metric-card reveal reveal-d3" data-tilt>
+        <div class="metric-value" data-count-to="0">0</div>
         <div class="metric-label" data-i18n="metrics.card5.label">DSP / FPU / GPU</div>
         <div class="metric-desc" data-i18n="metrics.card5.desc">Pure add-shift — runs on any MCU</div>
       </div>
@@ -506,19 +584,19 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
       <p class="section-subtitle" data-i18n="how.subtitle">Unified QAT pipeline that works across GraphKAN, CNN, Transformer, RNN, and ViT — producing ultra-efficient ternary networks with C codegen for any MCU.</p>
     </div>
     <div class="how-grid">
-      <div class="how-card reveal-rotate reveal-d1">
+      <div class="how-card reveal-rotate reveal-d1" data-tilt>
         <div class="how-num">01</div>
         <h3 data-i18n="how.card1.title">Choose Your Architecture</h3>
         <p data-i18n="how.card1.desc">GraphKAN, CNN, Transformer, RNN/LSTM, or Vision Transformer — all use the same TernMLayer with STE-based QAT. Pick any architecture, get ternary weights.</p>
         <span class="tag" data-i18n="how.card1.tag">5 architectures · Unified API</span>
       </div>
-      <div class="how-card reveal-rotate reveal-d2">
+      <div class="how-card reveal-rotate reveal-d2" data-tilt>
         <div class="how-num">02</div>
         <h3 data-i18n="how.card2.title">Train with Regularization</h3>
         <p data-i18n="how.card2.desc">Train normally, then ternarize gradually — accuracy stays or improves. Ternary quantization acts as a regularizer, improving generalization over the float baseline.</p>
         <span class="tag" data-i18n="how.card2.tag">Regularization-by-quantization</span>
       </div>
-      <div class="how-card reveal-rotate reveal-d3">
+      <div class="how-card reveal-rotate reveal-d3" data-tilt>
         <div class="how-num">03</div>
         <h3 data-i18n="how.card3.title">Generate C Code</h3>
         <p data-i18n="how.card3.desc">Export ternary weights in p/m bit-sliced format (32 trits/8 bytes). Generate pure C for Cortex-M0+ with no DSP, no FPU, no OS — bare-metal inference in milliseconds.</p>
@@ -536,7 +614,7 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
       <p class="section-subtitle" data-i18n="arch.subtitle">GraphKAN, CNN, Transformer, RNN/LSTM, Vision Transformer — all with the same 4-phase QAT pipeline and regularization-by-quantization effect.</p>
     </div>
     <div class="bench-wrap reveal">
-      <table>
+      <table id="arch-table">
         <thead>
           <tr>
             <th data-i18n="arch.th.arch">Architecture</th>
@@ -547,54 +625,54 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr class="arch-row" data-arch="graphkan">
             <td>GraphKAN 256→100→10</td>
             <td class="highlight">MNIST</td>
             <td>94.77%</td>
-            <td class="highlight">96.15%</td>
-            <td class="highlight">15.4 KB</td>
+            <td class="highlight"><span data-count-to="96.15">96.15%</span></td>
+            <td class="highlight"><span data-count-to="15.4">15.4 KB</span></td>
           </tr>
-          <tr>
+          <tr class="arch-row" data-arch="graphkan_fashion">
             <td>GraphKAN 256→300→10</td>
             <td class="highlight">Fashion-MNIST</td>
             <td>86.48%</td>
-            <td class="highlight">86.73%</td>
-            <td class="highlight">58.5 KB</td>
+            <td class="highlight"><span data-count-to="86.73">86.73%</span></td>
+            <td class="highlight"><span data-count-to="58.5">58.5 KB</span></td>
           </tr>
-          <tr>
+          <tr class="arch-row" data-arch="cnn">
             <td>CNN conv32→64→128→10</td>
             <td class="highlight">Fashion-MNIST</td>
             <td>90.10%</td>
-            <td class="highlight">90.54%</td>
-            <td class="highlight">~100 KB</td>
+            <td class="highlight"><span data-count-to="90.54">90.54%</span></td>
+            <td class="highlight"><span data-count-to="100">~100 KB</span></td>
           </tr>
-          <tr>
+          <tr class="arch-row" data-arch="cnn_fc">
             <td>CNN conv32→64→FC128→10</td>
             <td class="highlight">Fashion-MNIST</td>
             <td>91.57%</td>
-            <td class="highlight">92.02%</td>
-            <td class="highlight">102.8 KB</td>
+            <td class="highlight"><span data-count-to="92.02">92.02%</span></td>
+            <td class="highlight"><span data-count-to="102.8">102.8 KB</span></td>
           </tr>
-          <tr>
+          <tr class="arch-row" data-arch="transformer">
             <td>Transformer 2L/4H/128d</td>
             <td class="highlight">Copy Task</td>
             <td>—</td>
-            <td>100%</td>
-            <td class="highlight">20 KB</td>
+            <td><span data-count-to="100">100%</span></td>
+            <td class="highlight"><span data-count-to="20">20 KB</span></td>
           </tr>
-          <tr>
+          <tr class="arch-row" data-arch="rnn">
             <td>LSTM 128d</td>
             <td class="highlight">Seq MNIST</td>
             <td>—</td>
-            <td>27.8%</td>
-            <td class="highlight">16 KB</td>
+            <td><span data-count-to="27.8">27.8%</span></td>
+            <td class="highlight"><span data-count-to="16">16 KB</span></td>
           </tr>
-          <tr>
+          <tr class="arch-row" data-arch="vit">
             <td>ViT patch4/64d</td>
             <td class="highlight">CIFAR-10</td>
             <td>—</td>
-            <td class="highlight">65.43%</td>
-            <td class="highlight">25.4 KB</td>
+            <td class="highlight"><span data-count-to="65.43">65.43%</span></td>
+            <td class="highlight"><span data-count-to="25.4">25.4 KB</span></td>
           </tr>
         </tbody>
       </table>
@@ -648,7 +726,7 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
       <p class="section-subtitle" data-i18n="hw.subtitle">No hardware accelerator, no DSP, no FPU. TernML runs on the cheapest MCUs on the market.</p>
     </div>
     <div class="hw-grid">
-      <div class="hw-card reveal-alt reveal-d1">
+      <div class="hw-card reveal-alt reveal-d1" data-tilt>
         <i class="ph ph-cpu hw-icon"></i>
         <div class="hw-name" data-i18n="hw.card1.name">Cortex-M0+</div>
         <div class="hw-core">ARM Cortex-M0+</div>
@@ -658,7 +736,7 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
           <li><i class="ph ph-check-circle" style="color:var(--teal)"></i> <span data-i18n="hw.card1.spec3"><100 ms inference</span></li>
         </ul>
       </div>
-      <div class="hw-card reveal-alt reveal-d2">
+      <div class="hw-card reveal-alt reveal-d2" data-tilt>
         <i class="ph ph-cpu hw-icon"></i>
         <div class="hw-name" data-i18n="hw.card2.name">ESP32-S3</div>
         <div class="hw-core">Xtensa LX7</div>
@@ -668,7 +746,7 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
           <li><i class="ph ph-check-circle" style="color:var(--teal)"></i> <span data-i18n="hw.card2.spec3">Port in progress</span></li>
         </ul>
       </div>
-      <div class="hw-card reveal-alt reveal-d3">
+      <div class="hw-card reveal-alt reveal-d3" data-tilt>
         <i class="ph ph-cpu hw-icon"></i>
         <div class="hw-name" data-i18n="hw.card3.name">GD32V</div>
         <div class="hw-core">RISC-V RV32IMAC</div>
@@ -678,7 +756,7 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
           <li><i class="ph ph-check-circle" style="color:var(--teal)"></i> <span data-i18n="hw.card3.spec3">Open ISA</span></li>
         </ul>
       </div>
-      <div class="hw-card reveal-alt reveal-d4">
+      <div class="hw-card reveal-alt reveal-d4" data-tilt>
         <i class="ph ph-cpu hw-icon"></i>
         <div class="hw-name" data-i18n="hw.card4.name">MIK32 Amur</div>
         <div class="hw-core">RISC-V RV32IMC</div>
@@ -724,6 +802,74 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
   </div>
 </section>
 
+<section class="section" id="papers">
+  <div class="container i18n-container">
+    <div class="section-header reveal">
+      <div class="section-label" data-i18n="papers.label">Papers</div>
+      <h2 class="section-title title-reveal" data-i18n-html="papers.title">Research<br>Papers.</h2>
+      <p class="section-subtitle" data-i18n="papers.desc">Published research and codebase on Zenodo.</p>
+    </div>
+    <div class="papers-grid">
+      <div class="paper-card reveal reveal-d1">
+        <span class="paper-icon"><i class="ph ph-file-text"></i></span>
+        <h3 data-i18n="papers.paper_title">TernML: Multi-Architecture Ternary ML Framework</h3>
+        <div class="doi-badge">10.5281/zenodo.20752769</div>
+        <p data-i18n="papers.paper_desc">Full paper covering all 5 architectures, QAT pipeline, regularization-by-quantization effect, and benchmarks against TFLite Micro and Edge Impulse.</p>
+        <a href="https://doi.org/10.5281/zenodo.20752769" target="_blank" rel="noopener" class="paper-link" data-i18n="papers.download"><i class="ph ph-download-simple"></i> Download Paper</a>
+      </div>
+      <div class="paper-card reveal reveal-d2">
+        <span class="paper-icon"><i class="ph ph-lock-key"></i></span>
+        <h3 data-i18n="papers.code_title">TernML + TernaT Codebase</h3>
+        <div class="doi-badge">10.5281/zenodo.20778118</div>
+        <p data-i18n="papers.code_desc">Complete codebase including TernML framework and TernaT VSA Reasoner. Restricted access — available upon request.</p>
+        <a href="https://doi.org/10.5281/zenodo.20778118" target="_blank" rel="noopener" class="paper-link ghost-link" data-i18n="papers.code_repo"><i class="ph ph-lock-simple"></i> Code Repository (Restricted Access)</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="codegen">
+  <div class="container i18n-container">
+    <div class="section-header reveal">
+      <div class="section-label" data-i18n="codegen.label">Code Generation</div>
+      <h2 class="section-title title-reveal" data-i18n-html="codegen.title">From Python<br>to Cortex-M0+.</h2>
+      <p class="section-subtitle" data-i18n="codegen.desc">End-to-end pipeline from trained model to bare-metal binary, all without DSP or FPU.</p>
+    </div>
+    <div class="codegen-pipeline">
+      <div class="pipeline-step" data-tilt>
+        <span class="step-icon"><i class="ph ph-brain"></i></span>
+        <span class="step-label" data-i18n="codegen.step1">Train Model</span>
+        <span class="step-sub">Python + PyTorch</span>
+      </div>
+      <span class="pipeline-arrow"><i class="ph ph-arrow-right"></i></span>
+      <div class="pipeline-step" data-tilt>
+        <span class="step-icon"><i class="ph ph-package"></i></span>
+        <span class="step-label" data-i18n="codegen.step2">Export Weights</span>
+        <span class="step-sub">p/m bit-sliced</span>
+      </div>
+      <span class="pipeline-arrow"><i class="ph ph-arrow-right"></i></span>
+      <div class="pipeline-step" data-tilt>
+        <span class="step-icon"><i class="ph ph-file-code"></i></span>
+        <span class="step-label" data-i18n="codegen.step3">Generate C</span>
+        <span class="step-sub">Pure C, no deps</span>
+      </div>
+      <span class="pipeline-arrow"><i class="ph ph-arrow-right"></i></span>
+      <div class="pipeline-step" data-tilt>
+        <span class="step-icon"><i class="ph ph-wrench"></i></span>
+        <span class="step-label" data-i18n="codegen.step4">Cross-Compile</span>
+        <span class="step-sub">arm-none-eabi-gcc</span>
+      </div>
+      <span class="pipeline-arrow"><i class="ph ph-arrow-right"></i></span>
+      <div class="pipeline-step" data-tilt>
+        <span class="step-icon"><i class="ph ph-microchip"></i></span>
+        <span class="step-label" data-i18n="codegen.step5">Run on MCU</span>
+        <span class="step-sub">Cortex-M0+</span>
+      </div>
+    </div>
+    <div class="codegen-note reveal"><i class="ph ph-check-circle" style="color:var(--teal)"></i> <strong data-i18n="codegen.note_strong">All 5 architectures</strong> <span data-i18n="codegen.note">compiled and verified under Unicorn Engine (Cortex-M0+ simulator).</span></div>
+  </div>
+</section>
+
 <section class="section" id="contact">
   <div class="container i18n-container">
     <div class="cta-block reveal">
@@ -756,14 +902,46 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
   </div>
 </footer>
 
+<button id="scroll-top" aria-label="Scroll to top">
+  <svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+
 <script>
-const i18n = {
+var i18n = {
   "nav.metrics": { "en": "Metrics", "ru": "Метрики", "uk": "Метрики", "be": "Метрыкі", "pl": "Metryki", "de": "Kennzahlen" },
   "nav.how": { "en": "How It Works", "ru": "Как это работает", "uk": "Як це працює", "be": "Як гэта працуе", "pl": "Jak to działa", "de": "So funktioniert's" },
   "nav.benchmarks": { "en": "Benchmarks", "ru": "Бенчмарки", "uk": "Бенчмарки", "be": "Бенчмаркі", "pl": "Wydajność", "de": "Vergleich" },
   "nav.hardware": { "en": "Hardware", "ru": "Железо", "uk": "Залізо", "be": "Абсталяванне", "pl": "Sprzęt", "de": "Hardware" },
   "nav.about": { "en": "About", "ru": "О проекте", "uk": "Про проєкт", "be": "Аб праекце", "pl": "O projekcie", "de": "Über" },
   "nav.cta": { "en": "Get in Touch", "ru": "Связаться", "uk": "Зв'язатися", "be": "Звязацца", "pl": "Kontakt", "de": "Kontakt" },
+  "nav.architectures": { "en": "Architectures", "ru": "Архитектуры", "uk": "Архітектури", "be": "Архітэктуры", "pl": "Architektury", "de": "Architekturen" },
+  "nav.papers": { "en": "Papers", "ru": "Статьи", "uk": "Статті", "be": "Артыкулы", "pl": "Artykuły", "de": "Papiere" },
+  "papers.label": { "en": "Papers", "ru": "Статьи", "uk": "Статті", "be": "Артыкулы", "pl": "Artykuły", "de": "Publikationen" },
+  "papers.title": { "en": "Research<br>Papers.", "ru": "Научные<br>статьи.", "uk": "Наукові<br>статті.", "be": "Навуковыя<br>артыкулы.", "pl": "Artykuły<br>naukowe.", "de": "Fach<br>artikel." },
+  "papers.desc": { "en": "Published research and codebase on Zenodo.", "ru": "Опубликованные статьи и код на Zenodo.", "uk": "Опубліковані статті та код на Zenodo.", "be": "Апублікаваныя артыкулы і код на Zenodo.", "pl": "Opublikowane artykuły i kod na Zenodo.", "de": "Veröffentlichte Artikel und Code auf Zenodo." },
+  "papers.paper_title": { "en": "TernML: Multi-Architecture Ternary ML Framework", "ru": "TernML: Мультиархитектурный тернарный ML-фреймворк", "uk": "TernML: Багатоархітектурний тернарний ML-фреймворк", "be": "TernML: Мультыархітэктурны тэрнарны ML-фрэймворк", "pl": "TernML: Wieloarchitekturowy framework ML", "de": "TernML: Multi-Architektur Framework" },
+  "papers.paper_desc": { "en": "Full paper covering all 5 architectures, QAT pipeline, regularization-by-quantization effect, and benchmarks against TFLite Micro and Edge Impulse.", "ru": "Полная статья, охватывающая все 5 архитектур, QAT-пайплайн, эффект регуляризации квантизацией и бенчмарки.", "uk": "Повна стаття, що охоплює всі 5 архітектур, QAT-пайплайн, ефект регуляризації.", "be": "Поўны артыкул, які ахоплівае ўсе 5 архітэктур.", "pl": "Pełny artykuł obejmujący wszystkie 5 architektur, pipeline QAT.", "de": "Vollständiger Artikel über alle 5 Architekturen, QAT-Pipeline." },
+  "papers.download": { "en": "Download Paper", "ru": "Скачать статью", "uk": "Завантажити статтю", "be": "Спампаваць артыкул", "pl": "Pobierz artykuł", "de": "Artikel herunterladen" },
+  "papers.code_title": { "en": "TernML + TernaT Codebase", "ru": "TernML + TernaT код", "uk": "TernML + TernaT код", "be": "TernML + TernaT код", "pl": "Kod TernML + TernaT", "de": "TernML + TernaT Codebasis" },
+  "papers.code_desc": { "en": "Complete codebase including TernML framework and TernaT VSA Reasoner. Restricted access.", "ru": "Полная кодовая база TernML и TernaT. Ограниченный доступ.", "uk": "Повна кодова база TernML та TernaT. Обмежений доступ.", "be": "Поўная кодавая база TernML і TernaT. Абмежаваны доступ.", "pl": "Pełna baza kodu TernML i TernaT. Ograniczony dostęp.", "de": "Vollständige Codebasis von TernML und TernaT. Eingeschränkter Zugriff." },
+  "papers.code_repo": { "en": "Code Repository (Restricted Access)", "ru": "Репозиторий кода (ограниченный доступ)", "uk": "Репозиторій коду (обмежений доступ)", "be": "Рэпазіторый кода (абмежаваны доступ)", "pl": "Repozytorium kodu (dostęp ograniczony)", "de": "Code-Repository (eingeschränkter Zugriff)" },
+  "codegen.label": { "en": "Code Generation", "ru": "Генерация кода", "uk": "Генерація коду", "be": "Генерацыя кода", "pl": "Generowanie kodu", "de": "Code-Generierung" },
+  "codegen.title": { "en": "From Python<br>to Cortex-M0+.", "ru": "От Python<br>до Cortex-M0+.", "uk": "Від Python<br>до Cortex-M0+.", "be": "Ад Python<br>да Cortex-M0+.", "pl": "Od Pythona<br>do Cortex-M0+.", "de": "Von Python<br>zu Cortex-M0+." },
+  "codegen.desc": { "en": "End-to-end pipeline from trained model to bare-metal binary, all without DSP or FPU.", "ru": "Сквозной пайплайн от обученной модели до bare-metal бинарника, без DSP и FPU.", "uk": "Наскрізний пайплайн від навченої моделі до bare-metal бінарника.", "be": "Наскрозны пайплайн ад навучанай мадэлі да bare-metal бінарніка.", "pl": "Kompletny pipeline od wytrenowanego modelu do pliku binarnego bare-metal.", "de": "End-to-End-Pipeline vom trainierten Modell zur Bare-Metal-Binärdatei." },
+  "codegen.step1": { "en": "Train Model", "ru": "Обучение", "uk": "Навчання", "be": "Навучанне", "pl": "Trening", "de": "Training" },
+  "codegen.step2": { "en": "Export Weights", "ru": "Экспорт весов", "uk": "Експорт ваг", "be": "Экспарт ваг", "pl": "Eksport wag", "de": "Export Gewichte" },
+  "codegen.step3": { "en": "Generate C", "ru": "Генерация C", "uk": "Генерація C", "be": "Генерацыя C", "pl": "Generowanie C", "de": "C-Code" },
+  "codegen.step4": { "en": "Cross-Compile", "ru": "Кросс-компиляция", "uk": "Крос-компіляція", "be": "Крос-кампіляцыя", "pl": "Kompilacja", "de": "Cross-Compile" },
+  "codegen.step5": { "en": "Run on MCU", "ru": "Запуск на MCU", "uk": "Запуск на MCU", "be": "Запуск на MCU", "pl": "Uruchom na MCU", "de": "Ausführen auf MCU" },
+  "codegen.note_strong": { "en": "All 5 architectures", "ru": "Все 5 архитектур", "uk": "Всі 5 архітектур", "be": "Усе 5 архітэктур", "pl": "Wszystkie 5 architektur", "de": "Alle 5 Architekturen" },
+  "codegen.note": { "en": "compiled and verified under Unicorn Engine (Cortex-M0+ simulator).", "ru": "скомпилированы и верифицированы в Unicorn Engine (симулятор Cortex-M0+).", "uk": "скомпільовані та верифіковані в Unicorn Engine.", "be": "скампіляваны і верыфікаваны ў Unicorn Engine.", "pl": "skompilowane i zweryfikowane w Unicorn Engine.", "de": "kompiliert und verifiziert unter Unicorn Engine." },
+  "arch.desc.graphkan": { "en": "Graph-based Kolmogorov-Arnold Network with learnable edge weights on a 256-100-10 topology.", "ru": "Графовая сеть Колмогорова-Арнольда с обучаемыми весами ребер.", "uk": "Графова мережа Колмогорова-Арнольда.", "be": "Графавая сетка Калмагорава-Арнольда.", "pl": "Sieć Kolmogorova-Arnolda oparta na grafach.", "de": "Graph-basiertes Kolmogorov-Arnold-Netzwerk." },
+  "arch.desc.graphkan_fashion": { "en": "GraphKAN with 256 inputs, 300 hidden, 10 outputs for Fashion-MNIST classification.", "ru": "GraphKAN 256-300-10 для классификации Fashion-MNIST.", "uk": "GraphKAN 256-300-10 для класифікації Fashion-MNIST.", "be": "GraphKAN 256-300-10 для класіфікацыі Fashion-MNIST.", "pl": "GraphKAN 256-300-10 do klasyfikacji Fashion-MNIST.", "de": "GraphKAN 256-300-10 für Fashion-MNIST-Klassifikation." },
+  "arch.desc.cnn": { "en": "Convolutional Neural Network with ternary conv2d, maxpool, and dense layers.", "ru": "Сверточная нейросеть с тернарными conv2d, maxpool и полносвязными слоями.", "uk": "Згорткова нейромережа з тернарними шарами.", "be": "Згорткавая нейрасетка з тэрнарнымі слаямі.", "pl": "Konwolucyjna sieć neuronowa z ternarnymi warstwami.", "de": "Convolutional Neural Network mit ternären Schichten." },
+  "arch.desc.cnn_fc": { "en": "CNN with additional fully-connected layer after convolution for improved accuracy.", "ru": "CNN с дополнительным полносвязным слоем после свертки.", "uk": "CNN з додатковим повнозв'язним шаром.", "be": "CNN з дадатковым поўназвязным слоем.", "pl": "CNN z dodatkową warstwą w pełni połączoną.", "de": "CNN mit zusätzlicher vollvernetzter Schicht." },
+  "arch.desc.transformer": { "en": "Transformer with 2 layers, 4 heads, 128-dim embeddings for sequence copy task.", "ru": "Трансформер с 2 слоями, 4 головами, 128-мерными эмбеддингами.", "uk": "Трансформер з 2 шарами, 4 головами.", "be": "Трансформер з 2 слаямі, 4 галовамі.", "pl": "Transformer z 2 warstwami, 4 głowami.", "de": "Transformer mit 2 Schichten, 4 Köpfen." },
+  "arch.desc.rnn": { "en": "LSTM-based recurrent network with 128 hidden units for sequential MNIST classification.", "ru": "Рекуррентная сеть на LSTM со 128 скрытыми нейронами.", "uk": "Рекурентна мережа на LSTM зі 128 прихованими.", "be": "Рэкурэнтная сетка на LSTM са 128 скрытымі.", "pl": "Sieć rekurencyjna LSTM ze 128 ukrytymi.", "de": "LSTM-basiertes rekurrentes Netz mit 128 versteckten." },
+  "arch.desc.vit": { "en": "Vision Transformer with patch size 4, embed dim 64, 4 blocks, 4 heads for CIFAR-10.", "ru": "Vision Transformer с patch 4, embed 64, 4 блоками, 4 головами для CIFAR-10.", "uk": "Vision Transformer з patch 4, embed 64 для CIFAR-10.", "be": "Vision Transformer з patch 4, embed 64 для CIFAR-10.", "pl": "Vision Transformer z patchem 4, embed 64 dla CIFAR-10.", "de": "Vision Transformer mit Patch-Größe 4, Embed 64 für CIFAR-10." },
   "hero.badge.desc": { "en": "Multi-Architecture Ternary ML Framework", "ru": "Мультиархитектурный тернарный ML-фреймворк", "uk": "Багатоархітектурний тернарний ML-фреймворк", "be": "Мультыархітэктурны тэрнарны ML-фрэймворк", "pl": "Wieloarchitekturowy ternarny framework ML", "de": "Multi-Architektur ternäres ML-Framework" },
   "hero.title": { "en": "The <span class=\"gold\">$0.50</span> neural<br>network.", "ru": "Нейросеть за <span class=\"gold\">$0.50</span>.<br>Без DSP. Без FPU.", "uk": "Нейромережа за <span class=\"gold\">$0.50</span>.<br>Без DSP. Без FPU.", "be": "Нейрасетка за <span class=\"gold\">$0.50</span>.<br>Без DSP. Без FPU.", "pl": "Sieć neuronowa za <span class=\"gold\">$0.50</span>.<br>Bez DSP. Bez FPU.", "de": "Das neuronale Netz für <span class=\"gold\">$0,50</span>.<br>Ohne DSP. Ohne FPU." },
   "hero.sub": { "en": "TernML turns neural nets into a format that runs on $0.50 MCUs. 5 architectures. C codegen. No DSP, no FPU — just add-and-shift.", "ru": "TernML превращает нейросети в формат для $0.50 микроконтроллеров. 5 архитектур. C codegen. Без DSP, без FPU — только сложение и сдвиг.", "uk": "TernML перетворює нейромережі у формат для $0.50 мікроконтролерів. 5 архітектур. C codegen. Без DSP, без FPU — лише додавання та зсув.", "be": "TernML пераўтварае нейрасеткі ў фармат для $0.50 мікракантролераў. 5 архітэктур. C codegen. Без DSP, без FPU — толькі складанне і зрух.", "pl": "TernML zamienia sieci neuronowe w format działający na MCU za $0.50. 5 architektur. C codegen. Bez DSP, bez FPU — tylko dodawanie i przesunięcie.", "de": "TernML wandelt neuronale Netze in ein Format um, das auf $0,50 MCUs läuft. 5 Architekturen. C Codegen. Kein DSP, kein FPU — nur Addieren und Schieben." },
@@ -959,6 +1137,170 @@ document.addEventListener('DOMContentLoaded', function() {
       });
       ticking = true;
     }
+  });
+
+  // === SCROLL PROGRESS BAR ===
+  var progBar = document.getElementById('scroll-progress');
+  window.addEventListener('scroll', function() {
+    var h = document.documentElement.scrollHeight - window.innerHeight;
+    progBar.style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + '%';
+  });
+
+  // === SCROLL-TO-TOP ===
+  var scrollTop = document.getElementById('scroll-top');
+  window.addEventListener('scroll', function() {
+    scrollTop.classList.toggle('visible', window.scrollY > 300);
+  });
+  scrollTop.addEventListener('click', function() { window.scrollTo({top:0,behavior:'smooth'}); });
+
+  // === SCROLL-SPY ===
+  var navLinks = document.querySelectorAll('.nav-links a:not(.nav-cta)');
+  var sections = [];
+  navLinks.forEach(function(a) {
+    var href = a.getAttribute('href');
+    if (href && href.startsWith('#')) { sections.push(document.getElementById(href.substring(1))); }
+  });
+  var spyTicking = false;
+  window.addEventListener('scroll', function() {
+    if (!spyTicking) {
+      requestAnimationFrame(function() {
+        var scrollY = window.scrollY + 120;
+        var activeIdx = 0;
+        for (var si = 0; si < sections.length; si++) {
+          if (sections[si] && sections[si].offsetTop <= scrollY) { activeIdx = si; }
+        }
+        navLinks.forEach(function(l, i) { l.classList.toggle('active', i === activeIdx); });
+        spyTicking = false;
+      });
+      spyTicking = true;
+    }
+  });
+
+  // === ANIMATED COUNTERS ===
+  var counters = document.querySelectorAll('[data-count-to]');
+  var counterObs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        var el = entry.target;
+        var target = parseFloat(el.getAttribute('data-count-to'));
+        var isInt = target % 1 === 0;
+        var dur = 1200;
+        var start = performance.now();
+        var suffix = el.textContent.replace(/[\d.,]/g,'');
+        function tick(now) {
+          var p = Math.min((now - start) / dur, 1);
+          var val = target * p;
+          el.textContent = (isInt ? Math.round(val) : val.toFixed(2).replace(/\.?0+$/,'')) + suffix;
+          if (p < 1) { requestAnimationFrame(tick); }
+        }
+        requestAnimationFrame(tick);
+        counterObs.unobserve(el);
+      }
+    });
+  }, {threshold:0.3});
+  counters.forEach(function(el) { counterObs.observe(el); });
+
+  // === 3D TILT ===
+  var isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  if (!isTouch) {
+    document.querySelectorAll('[data-tilt]').forEach(function(card) {
+      card.addEventListener('mousemove', function(e) {
+        var rect = card.getBoundingClientRect();
+        var x = (e.clientX - rect.left) / rect.width - 0.5;
+        var y = (e.clientY - rect.top) / rect.height - 0.5;
+        card.style.transform = 'perspective(1000px) rotateX(' + (-y * 12) + 'deg) rotateY(' + (x * 12) + 'deg)';
+      });
+      card.addEventListener('mouseleave', function() { card.style.transform = ''; });
+    });
+  }
+
+  // === PARTICLE HERO ===
+  var canvas = document.getElementById('hero-canvas');
+  if (canvas) {
+    var ctx = canvas.getContext('2d');
+    var hero = document.querySelector('.hero');
+    var particles = [];
+    var NUM_PARTICLES = 70;
+    var CONNECT_DIST = 140;
+    function resizeCanvas() {
+      canvas.width = hero.offsetWidth;
+      canvas.height = hero.offsetHeight;
+    }
+    function initParticles() {
+      particles = [];
+      for (var i = 0; i < NUM_PARTICLES; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          vx: (Math.random() - 0.5) * 0.4,
+          vy: (Math.random() - 0.5) * 0.4,
+          r: Math.random() * 1.8 + 0.5,
+          hue: Math.random() > 0.5 ? 190 : 270
+        });
+      }
+    }
+    function drawParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (var i = 0; i < particles.length; i++) {
+        var p = particles[i];
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'hsla(' + p.hue + ',80%,60%,0.5)';
+        ctx.fill();
+        for (var j = i + 1; j < particles.length; j++) {
+          var p2 = particles[j];
+          var dx = p.x - p2.x, dy = p.y - p2.y;
+          var dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < CONNECT_DIST) {
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.strokeStyle = 'hsla(' + ((p.hue + p2.hue) / 2) + ',70%,60%,' + (0.12 * (1 - dist / CONNECT_DIST)) + ')';
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(drawParticles);
+    }
+    resizeCanvas();
+    initParticles();
+    drawParticles();
+    window.addEventListener('resize', resizeCanvas);
+  }
+
+  // === ARCHITECTURE EXPAND ===
+  var archRows = document.querySelectorAll('.arch-row');
+  archRows.forEach(function(row) {
+    row.addEventListener('click', function() {
+      var alreadyExpanded = row.classList.contains('expanded');
+      document.querySelectorAll('.arch-row.expanded').forEach(function(r) {
+        r.classList.remove('expanded');
+        var next = r.nextElementSibling;
+        if (next && next.classList.contains('arch-desc-row')) { next.classList.remove('visible'); }
+      });
+      if (!alreadyExpanded) {
+        row.classList.add('expanded');
+        var key = row.getAttribute('data-arch');
+        var descRow = row.nextElementSibling;
+        if (!descRow || !descRow.classList.contains('arch-desc-row')) {
+          descRow = document.createElement('tr');
+          descRow.className = 'arch-desc-row';
+          var td = document.createElement('td');
+          td.colSpan = 5;
+          var lang = 'en';
+          try { var s = localStorage.getItem('ternml_lang'); if (s) lang = s; } catch(ex) {}
+          var descKey = 'arch.desc.' + key;
+          td.textContent = (i18n[descKey] && i18n[descKey][lang]) ? i18n[descKey][lang] : '';
+          descRow.appendChild(td);
+          row.parentNode.insertBefore(descRow, row.nextElementSibling);
+        }
+        descRow.classList.add('visible');
+      }
+    });
   });
 });
 </script>
