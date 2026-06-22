@@ -51,4 +51,4 @@ All improve over float baseline — **regularization-by-quantization**.
 
 Proprietary technology — All Rights Reserved.  
 Codebase is private. [Paper on Zenodo](https://doi.org/10.5281/zenodo.20752769).  
-For licensing inquiries, contact via GitHub.
+Contact: [Telegram](https://t.me/fakeonomics) · [Email](mailto:uv20817@gmail.com)
