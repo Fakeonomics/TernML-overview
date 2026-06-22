@@ -893,11 +893,7 @@ function setLang(lang) {
       var el = els[i];
       var key = el.getAttribute('data-i18n');
       if (i18n[key] && i18n[key][lang]) {
-        if (el.hasAttribute('data-i18n-html') || el.querySelector('i') || el.querySelector('strong') || el.querySelector('span')) {
-          el.innerHTML = i18n[key][lang];
-        } else {
-          el.textContent = i18n[key][lang];
-        }
+        el.innerHTML = i18n[key][lang];
       }
     }
     var elsHtml = document.querySelectorAll('[data-i18n-html]');
