@@ -143,6 +143,7 @@ nav .container{display:flex;align-items:center;justify-content:space-between}
   transform:translate(-50%,-50%);
   background:radial-gradient(circle,rgba(201,149,74,.06) 0%,transparent 60%);
   pointer-events:none;z-index:1;
+  animation:breathe 4s ease-in-out infinite;
 }
 .hero .container{position:relative;z-index:2;text-align:center}
 .hero-badge{
@@ -344,6 +345,20 @@ footer a:hover{color:var(--gold)}
 .footer-links a:last-child::after{display:none}
 footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height:1.5;max-width:520px;opacity:.7}
 
+/* === I18N / LANG SWITCHER === */
+.lang-switcher { position: relative; display: inline-block; }
+.lang-btn { background: rgba(255,255,255,.06); border: 1px solid var(--border); color: var(--text); padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; font-family: var(--font-ui); transition: background .25s; }
+.lang-btn:hover { background: rgba(255,255,255,.1); }
+.lang-dropdown { display: none; position: absolute; top: 100%; right: 0; margin-top: 4px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; min-width: 110px; z-index: 200; overflow: hidden; }
+.lang-dropdown.open { display: block; }
+.lang-dropdown button { display: block; width: 100%; padding: 8px 16px; text-align: left; background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 13px; font-family: var(--font-ui); transition: background .2s, color .2s; }
+.lang-dropdown button:hover { background: rgba(255,255,255,.05); color: var(--text); }
+.lang-dropdown button.active { color: var(--gold); font-weight: 600; }
+.i18n-container { transition: opacity .3s ease; }
+.i18n-container.fading { opacity: 0; }
+@keyframes breathe { 0%, 100% { opacity: .3; transform: scale(1); } 50% { opacity: .6; transform: scale(1.05); } }
+@keyframes pulse-dot { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .5; transform: scale(0.8); } }
+
 /* === RESPONSIVE === */
 @media(max-width:960px){
   .metrics-grid{grid-template-columns:1fr 1fr}
@@ -399,13 +414,24 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
     </a>
     <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu"><i class="ph ph-list"></i></button>
     <ul class="nav-links">
-      <li><a href="#metrics">Metrics</a></li>
-      <li><a href="#how">How It Works</a></li>
-      <li><a href="#benchmarks">Benchmarks</a></li>
-      <li><a href="#hardware">Hardware</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#contact" class="nav-cta">Get in Touch</a></li>
+      <li><a href="#metrics" data-i18n="nav.metrics">Metrics</a></li>
+      <li><a href="#how" data-i18n="nav.how">How It Works</a></li>
+      <li><a href="#benchmarks" data-i18n="nav.benchmarks">Benchmarks</a></li>
+      <li><a href="#hardware" data-i18n="nav.hardware">Hardware</a></li>
+      <li><a href="#about" data-i18n="nav.about">About</a></li>
+      <li><a href="#contact" class="nav-cta" data-i18n="nav.cta">Get in Touch</a></li>
     </ul>
+    <div class="lang-switcher">
+      <button class="lang-btn" onclick="toggleLangDropdown()">EN ▾</button>
+      <div class="lang-dropdown" id="langDropdown">
+        <button class="active" onclick="setLang('en')" data-lang="en">English</button>
+        <button onclick="setLang('ru')" data-lang="ru">Русский</button>
+        <button onclick="setLang('uk')" data-lang="uk">Українська</button>
+        <button onclick="setLang('be')" data-lang="be">Беларуская</button>
+        <button onclick="setLang('pl')" data-lang="pl">Polski</button>
+        <button onclick="setLang('de')" data-lang="de">Deutsch</button>
+      </div>
+    </div>
   </div>
 </nav>
 
@@ -416,108 +442,108 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
     <div class="grain"></div>
   </div>
   <div class="hero-glow"></div>
-  <div class="container">
+  <div class="container i18n-container">
     <div class="reveal visible">
-      <div class="hero-badge"><span><i class="ph ph-circle"></i> v2.0</span> &middot; Multi-Architecture Ternary ML Framework</div>
+      <div class="hero-badge"><span><i class="ph ph-circle" style="animation:pulse-dot 2s ease-in-out infinite"></i> v2.0</span> &middot; <span data-i18n="hero.badge.desc">Multi-Architecture Ternary ML Framework</span></div>
     </div>
-    <h1 class="reveal visible reveal-d1">The <span class="gold">$0.50</span> neural<br>network.</h1>
-    <p class="sub reveal visible reveal-d2">TernML is the first multi-architecture framework for ternary neural networks with <strong>{-1,0,+1}</strong> weights — <strong>5 architectures</strong> (Graph, CNN, Transformer, RNN, ViT), <strong>90.54% Fashion-MNIST</strong>, C codegen for Cortex-M0+. No DSP. No FPU. Just pure add-and-shift inference on the cheapest microcontrollers.</p>
+    <h1 class="reveal visible reveal-d1" data-i18n-html="hero.title">The <span class="gold">$0.50</span> neural<br>network.</h1>
+    <p class="sub reveal visible reveal-d2" data-i18n="hero.sub">TernML turns neural nets into a format that runs on $0.50 MCUs. 5 architectures. C codegen. No DSP, no FPU — just add-and-shift.</p>
     <div class="hero-buttons reveal visible reveal-d3">
-      <a href="#contact" class="btn btn-primary">Get Early Access <i class="ph ph-arrow-right"></i></a>
-      <a href="https://habr.com/ru/articles/1049822/" target="_blank" rel="noopener" class="btn btn-secondary">Read the Research</a>
+      <a href="#contact" class="btn btn-primary" data-i18n="hero.btn.early">Get Early Access <i class="ph ph-arrow-right"></i></a>
+      <a href="https://habr.com/ru/articles/1049822/" target="_blank" rel="noopener" class="btn btn-secondary" data-i18n="hero.btn.research">Read the Research</a>
     </div>
     <div class="hero-stats reveal visible reveal-d4">
-      <div class="hero-stat"><div class="hero-stat-value"><span class="num-spec">5</span></div><div class="hero-stat-label">Architectures</div></div>
-      <div class="hero-stat"><div class="hero-stat-value"><span class="num-spec">90.54%</span></div><div class="hero-stat-label">Fashion-MNIST (CNN)</div></div>
-      <div class="hero-stat"><div class="hero-stat-value"><span class="num-spec">1.58</span></div><div class="hero-stat-label">Bits / Parameter</div></div>
-      <div class="hero-stat"><div class="hero-stat-value"><span class="num-spec">0</span></div><div class="hero-stat-label">DSP / FPU / GPU</div></div>
+      <div class="hero-stat"><div class="hero-stat-value"><span class="num-spec">5</span></div><div class="hero-stat-label" data-i18n="hero.stat.architectures">Architectures</div></div>
+      <div class="hero-stat"><div class="hero-stat-value"><span class="num-spec">90.54%</span></div><div class="hero-stat-label" data-i18n="hero.stat.fashion">Fashion-MNIST (CNN)</div></div>
+      <div class="hero-stat"><div class="hero-stat-value"><span class="num-spec">1.58</span></div><div class="hero-stat-label" data-i18n="hero.stat.bits">Bits / Parameter</div></div>
+      <div class="hero-stat"><div class="hero-stat-value"><span class="num-spec">0</span></div><div class="hero-stat-label" data-i18n="hero.stat.dsp">DSP / FPU / GPU</div></div>
     </div>
   </div>
 </section>
 
 <section class="section" id="metrics">
-  <div class="container">
+  <div class="container i18n-container">
     <div class="section-header reveal">
-      <div class="section-label">Key Metrics</div>
-      <h2 class="section-title title-reveal">5 architectures.<br>One framework.</h2>
-      <p class="section-subtitle">TernML unifies Graph, CNN, Transformer, RNN, and ViT under a single ternary QAT pipeline — all with float-beating accuracy and Cortex-M0+ codegen.</p>
+      <div class="section-label" data-i18n="metrics.label">Key Metrics</div>
+      <h2 class="section-title title-reveal" data-i18n-html="metrics.title">5 architectures.<br>One framework.</h2>
+      <p class="section-subtitle" data-i18n="metrics.subtitle">TernML unifies Graph, CNN, Transformer, RNN, and ViT under a single ternary QAT pipeline — all with float-beating accuracy and Cortex-M0+ codegen.</p>
     </div>
     <div class="metrics-grid">
       <div class="metric-card reveal reveal-d1">
         <div class="metric-value">5</div>
-        <div class="metric-label">Supported Architectures</div>
-        <div class="metric-desc">Graph, CNN, Transformer, RNN/LSTM, ViT — unified TernMLayer</div>
+        <div class="metric-label" data-i18n="metrics.card1.label">Supported Architectures</div>
+        <div class="metric-desc" data-i18n="metrics.card1.desc">Graph, CNN, Transformer, RNN/LSTM, ViT — unified TernMLayer</div>
       </div>
       <div class="metric-card reveal reveal-d2">
         <div class="metric-value">90.54%</div>
-        <div class="metric-label">Fashion-MNIST (CNN)</div>
-        <div class="metric-desc">Ternary QAT — finetune phase</div>
+        <div class="metric-label" data-i18n="metrics.card2.label">Fashion-MNIST (CNN)</div>
+        <div class="metric-desc" data-i18n="metrics.card2.desc">Ternary QAT — finetune phase</div>
       </div>
       <div class="metric-card reveal reveal-d3">
         <div class="metric-value">1.58</div>
-        <div class="metric-label">Bits / Parameter</div>
-        <div class="metric-desc">8× compression vs 8-bit quantized</div>
+        <div class="metric-label" data-i18n="metrics.card3.label">Bits / Parameter</div>
+        <div class="metric-desc" data-i18n="metrics.card3.desc">8× compression vs 8-bit quantized</div>
       </div>
       <div class="metric-card reveal reveal-d2">
         <div class="metric-value">✓</div>
-        <div class="metric-label">C Codegen</div>
-        <div class="metric-desc">5 architectures, p/m bit-sliced, verified under Unicorn</div>
+        <div class="metric-label" data-i18n="metrics.card4.label">C Codegen</div>
+        <div class="metric-desc" data-i18n="metrics.card4.desc">5 architectures, p/m bit-sliced, verified under Unicorn</div>
       </div>
       <div class="metric-card reveal reveal-d3">
         <div class="metric-value">0</div>
-        <div class="metric-label">DSP / FPU / GPU</div>
-        <div class="metric-desc">Pure add-shift — runs on any MCU</div>
+        <div class="metric-label" data-i18n="metrics.card5.label">DSP / FPU / GPU</div>
+        <div class="metric-desc" data-i18n="metrics.card5.desc">Pure add-shift — runs on any MCU</div>
       </div>
     </div>
   </div>
 </section>
 
 <section class="section" id="how">
-  <div class="container">
+  <div class="container i18n-container">
     <div class="section-header reveal">
-      <div class="section-label">How It Works</div>
-      <h2 class="section-title title-reveal">5 architectures.<br>One pipeline.</h2>
-      <p class="section-subtitle">Unified QAT pipeline that works across GraphKAN, CNN, Transformer, RNN, and ViT — producing ultra-efficient ternary networks with C codegen for any MCU.</p>
+      <div class="section-label" data-i18n="how.label">How It Works</div>
+      <h2 class="section-title title-reveal" data-i18n-html="how.title">5 architectures.<br>One pipeline.</h2>
+      <p class="section-subtitle" data-i18n="how.subtitle">Unified QAT pipeline that works across GraphKAN, CNN, Transformer, RNN, and ViT — producing ultra-efficient ternary networks with C codegen for any MCU.</p>
     </div>
     <div class="how-grid">
       <div class="how-card reveal-rotate reveal-d1">
         <div class="how-num">01</div>
-        <h3>Choose Your Architecture</h3>
-        <p>GraphKAN, CNN, Transformer, RNN/LSTM, or Vision Transformer — all use the same TernMLayer with STE-based QAT. Pick any architecture, get ternary weights.</p>
-        <span class="tag">5 architectures &bull; Unified API</span>
+        <h3 data-i18n="how.card1.title">Choose Your Architecture</h3>
+        <p data-i18n="how.card1.desc">GraphKAN, CNN, Transformer, RNN/LSTM, or Vision Transformer — all use the same TernMLayer with STE-based QAT. Pick any architecture, get ternary weights.</p>
+        <span class="tag" data-i18n="how.card1.tag">5 architectures · Unified API</span>
       </div>
       <div class="how-card reveal-rotate reveal-d2">
         <div class="how-num">02</div>
-        <h3>Train with Regularization</h3>
-        <p>4-phase QAT pipeline: float clamp → STE ternarization → hard clamp → finetune. Ternary quantization acts as a regularizer, improving accuracy over the float baseline.</p>
-        <span class="tag">Regularization-by-quantization</span>
+        <h3 data-i18n="how.card2.title">Train with Regularization</h3>
+        <p data-i18n="how.card2.desc">Train normally, then ternarize gradually — accuracy stays or improves. Ternary quantization acts as a regularizer, improving generalization over the float baseline.</p>
+        <span class="tag" data-i18n="how.card2.tag">Regularization-by-quantization</span>
       </div>
       <div class="how-card reveal-rotate reveal-d3">
         <div class="how-num">03</div>
-        <h3>Generate C Code</h3>
-        <p>Export ternary weights in p/m bit-sliced format (32 trits/8 bytes). Generate pure C for Cortex-M0+ with no DSP, no FPU, no OS — bare-metal inference in milliseconds.</p>
-        <span class="tag">From $0.50 MCU &bull; 5 archs &bull; Verified</span>
+        <h3 data-i18n="how.card3.title">Generate C Code</h3>
+        <p data-i18n="how.card3.desc">Export ternary weights in p/m bit-sliced format (32 trits/8 bytes). Generate pure C for Cortex-M0+ with no DSP, no FPU, no OS — bare-metal inference in milliseconds.</p>
+        <span class="tag" data-i18n="how.card3.tag">From $0.50 MCU · 5 archs · Verified</span>
       </div>
     </div>
   </div>
 </section>
 
 <section class="section" id="architectures">
-  <div class="container">
+  <div class="container i18n-container">
     <div class="section-header reveal">
-      <div class="section-label">Architectures</div>
-      <h2 class="section-title title-reveal">5 architectures.<br>One ternary framework.</h2>
-      <p class="section-subtitle">GraphKAN, CNN, Transformer, RNN/LSTM, Vision Transformer — all with the same 4-phase QAT pipeline and regularization-by-quantization effect.</p>
+      <div class="section-label" data-i18n="arch.label">Architectures</div>
+      <h2 class="section-title title-reveal" data-i18n-html="arch.title">5 architectures.<br>One ternary framework.</h2>
+      <p class="section-subtitle" data-i18n="arch.subtitle">GraphKAN, CNN, Transformer, RNN/LSTM, Vision Transformer — all with the same 4-phase QAT pipeline and regularization-by-quantization effect.</p>
     </div>
     <div class="bench-wrap reveal">
       <table>
         <thead>
           <tr>
-            <th>Architecture</th>
-            <th class="highlight-col">Dataset</th>
-            <th>Float</th>
-            <th>Ternary</th>
-            <th>Size</th>
+            <th data-i18n="arch.th.arch">Architecture</th>
+            <th class="highlight-col" data-i18n="arch.th.dataset">Dataset</th>
+            <th data-i18n="arch.th.float">Float</th>
+            <th data-i18n="arch.th.ternary">Ternary</th>
+            <th data-i18n="arch.th.size">Size</th>
           </tr>
         </thead>
         <tbody>
@@ -573,153 +599,93 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
         </tbody>
       </table>
     </div>
-    <p class="bench-note reveal">* All architectures use the same 4-phase QAT pipeline with STE. C codegen available for Cortex-M0+ — verified bit-exact under Unicorn emulator. ELM mode: frozen random ternary hidden layer + closed-form least squares.</p>
+    <p class="bench-note reveal" data-i18n="arch.note">* All architectures use the same 4-phase QAT pipeline with STE. C codegen for Cortex-M0+ — verified bit-exact under Unicorn. ELM mode also available.</p>
   </div>
 </section>
 
 <section class="section" id="benchmarks">
-  <div class="container">
+  <div class="container i18n-container">
     <div class="section-header reveal">
-      <div class="section-label">Benchmarks</div>
-      <h2 class="section-title title-reveal">Comparable accuracy.<br>10× smaller.</h2>
-      <p class="section-subtitle">Head-to-head against industry-standard TinyML frameworks. TernML delivers competitive accuracy at a fraction of the memory footprint.</p>
+      <div class="section-label" data-i18n="bench.label">Benchmarks</div>
+      <h2 class="section-title title-reveal" data-i18n-html="bench.title">Comparable accuracy.<br>10× smaller.</h2>
+      <p class="section-subtitle" data-i18n="bench.subtitle">Head-to-head against industry-standard TinyML frameworks. TernML delivers competitive accuracy at a fraction of the memory footprint.</p>
     </div>
     <div class="bench-wrap reveal">
       <table>
         <thead>
           <tr>
-            <th>Metric</th>
-            <th class="highlight-col">TernML</th>
-            <th>TFLite Micro (8-bit)</th>
-            <th>Edge Impulse</th>
+            <th data-i18n="bench.th.metric">Metric</th>
+            <th class="highlight-col" data-i18n="bench.th.ternml">TernML</th>
+            <th data-i18n="bench.th.tflite">TFLite Micro (8-bit)</th>
+            <th data-i18n="bench.th.edgeimpulse">Edge Impulse</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>MNIST</td>
-            <td class="highlight">96.15%</td>
-            <td>96.80%</td>
-            <td>96.20%</td>
-          </tr>
-          <tr>
-            <td>CIFAR-10 (deep CNN)</td>
-            <td class="highlight">84.46%</td>
-            <td>47.00%</td>
-            <td>45.50%</td>
-          </tr>
-          <tr>
-            <td>Fashion-MNIST (CNN)</td>
-            <td class="highlight">92.02%</td>
-            <td>91.50%</td>
-            <td>91.00%</td>
-          </tr>
-          <tr>
-            <td>Model Size (GraphKAN)</td>
-            <td class="highlight">15 KB</td>
-            <td>128 KB</td>
-            <td>256+ KB</td>
-          </tr>
-          <tr>
-            <td>Peak RAM</td>
-            <td class="highlight">4 KB</td>
-            <td>32 KB</td>
-            <td>64 KB</td>
-          </tr>
-          <tr>
-            <td>Bits / Parameter</td>
-            <td class="highlight">1.58</td>
-            <td>8.00</td>
-            <td>8.00</td>
-          </tr>
-          <tr>
-            <td>Architectures</td>
-            <td class="highlight">5</td>
-            <td class="cross">CNN only</td>
-            <td class="cross">CNN only</td>
-          </tr>
-          <tr>
-            <td>C Codegen</td>
-            <td><span class="check-badge"><i class="ph ph-check"></i> Yes</span></td>
-            <td class="cross">No</td>
-            <td class="cross">No</td>
-          </tr>
-          <tr>
-            <td>Natural Sparsity</td>
-            <td class="highlight">49%</td>
-            <td class="cross">0%</td>
-            <td class="cross">0%</td>
-          </tr>
-          <tr>
-            <td>DSP Required</td>
-            <td><span class="check-badge"><i class="ph ph-check"></i> No</span></td>
-            <td><span class="cross-badge"><i class="ph ph-x"></i> Yes</span></td>
-            <td><span class="cross-badge"><i class="ph ph-x"></i> Yes</span></td>
-          </tr>
-          <tr>
-            <td>FPU Required</td>
-            <td><span class="check-badge"><i class="ph ph-check"></i> No</span></td>
-            <td class="cross">Optional</td>
-            <td><span class="cross-badge"><i class="ph ph-x"></i> Yes</span></td>
-          </tr>
-          <tr>
-            <td>Min. MCU Cost</td>
-            <td class="highlight">$0.50</td>
-            <td>$1.50+</td>
-            <td>$3.00+</td>
-          </tr>
+          <tr><td data-i18n="bench.row.mnist">MNIST</td><td class="highlight">96.15%</td><td>96.80%</td><td>96.20%</td></tr>
+          <tr><td data-i18n="bench.row.cifar">CIFAR-10 (deep CNN)</td><td class="highlight">84.46%</td><td>47.00%</td><td>45.50%</td></tr>
+          <tr><td data-i18n="bench.row.fashion">Fashion-MNIST (CNN)</td><td class="highlight">92.02%</td><td>91.50%</td><td>91.00%</td></tr>
+          <tr><td data-i18n="bench.row.size_gk">Model Size (GraphKAN)</td><td class="highlight">15 KB</td><td>128 KB</td><td>256+ KB</td></tr>
+          <tr><td data-i18n="bench.row.ram">Peak RAM</td><td class="highlight">4 KB</td><td>32 KB</td><td>64 KB</td></tr>
+          <tr><td data-i18n="bench.row.bits">Bits / Parameter</td><td class="highlight">1.58</td><td>8.00</td><td>8.00</td></tr>
+          <tr><td data-i18n="bench.row.archs">Architectures</td><td class="highlight">5</td><td class="cross" data-i18n="bench.row.cnn_only">CNN only</td><td class="cross" data-i18n="bench.row.cnn_only">CNN only</td></tr>
+          <tr><td data-i18n="bench.row.codegen">C Codegen</td><td><span class="check-badge"><i class="ph ph-check"></i> <span data-i18n="bench.yes">Yes</span></span></td><td class="cross" data-i18n="bench.no">No</td><td class="cross" data-i18n="bench.no">No</td></tr>
+          <tr><td data-i18n="bench.row.sparsity">Natural Sparsity</td><td class="highlight">49%</td><td class="cross" data-i18n="bench.zero">0%</td><td class="cross" data-i18n="bench.zero">0%</td></tr>
+          <tr><td data-i18n="bench.row.dsp">DSP Required</td><td><span class="check-badge"><i class="ph ph-check"></i> <span data-i18n="bench.no">No</span></span></td><td><span class="cross-badge"><i class="ph ph-x"></i> <span data-i18n="bench.yes">Yes</span></span></td><td><span class="cross-badge"><i class="ph ph-x"></i> <span data-i18n="bench.yes">Yes</span></span></td></tr>
+          <tr><td data-i18n="bench.row.fpu">FPU Required</td><td><span class="check-badge"><i class="ph ph-check"></i> <span data-i18n="bench.no">No</span></span></td><td class="cross" data-i18n="bench.optional">Optional</td><td><span class="cross-badge"><i class="ph ph-x"></i> <span data-i18n="bench.yes">Yes</span></span></td></tr>
+          <tr><td data-i18n="bench.row.mcu_cost">Min. MCU Cost</td><td class="highlight">$0.50</td><td>$1.50+</td><td>$3.00+</td></tr>
         </tbody>
       </table>
     </div>
-    <p class="bench-note reveal">* TFLite and Edge Impulse benchmarks based on default 8-bit quantized models. TernML supports 5 architectures (Graph, CNN, Transformer, RNN, ViT) with C codegen for Cortex-M0+. Accuracy exceeds float baseline due to regularization-by-quantization effect.</p>
+    <p class="bench-note reveal" data-i18n="bench.note">* TFLite and Edge Impulse use 8-bit quantized models. TernML supports 5 architectures with C codegen for Cortex-M0+. Accuracy often exceeds float baseline due to regularization-by-quantization.</p>
   </div>
 </section>
 
 <section class="section" id="hardware">
-  <div class="container">
+  <div class="container i18n-container">
     <div class="section-header reveal">
-      <div class="section-label">Hardware Support</div>
-      <h2 class="section-title title-reveal">Runs on anything with a C compiler.</h2>
-      <p class="section-subtitle">No hardware accelerator, no DSP, no FPU. TernML runs on the cheapest MCUs on the market.</p>
+      <div class="section-label" data-i18n="hw.label">Hardware Support</div>
+      <h2 class="section-title title-reveal" data-i18n-html="hw.title">Runs on anything<br>with a C compiler.</h2>
+      <p class="section-subtitle" data-i18n="hw.subtitle">No hardware accelerator, no DSP, no FPU. TernML runs on the cheapest MCUs on the market.</p>
     </div>
     <div class="hw-grid">
       <div class="hw-card reveal-alt reveal-d1">
         <i class="ph ph-cpu hw-icon"></i>
-        <div class="hw-name">Cortex-M0+</div>
+        <div class="hw-name" data-i18n="hw.card1.name">Cortex-M0+</div>
         <div class="hw-core">ARM Cortex-M0+</div>
         <ul class="hw-specs">
-          <li><i class="ph ph-check-circle" style="color:var(--teal)"></i> 16 KB SRAM &mdash; fits entirely</li>
-          <li><i class="ph ph-check-circle" style="color:var(--teal)"></i> $0.50 MCU cost</li>
-          <li><i class="ph ph-check-circle" style="color:var(--teal)"></i> &lt;100 ms inference</li>
+          <li><i class="ph ph-check-circle" style="color:var(--teal)"></i> <span data-i18n="hw.card1.spec1">16 KB SRAM — fits entirely</span></li>
+          <li><i class="ph ph-check-circle" style="color:var(--teal)"></i> <span data-i18n="hw.card1.spec2">$0.50 MCU cost</span></li>
+          <li><i class="ph ph-check-circle" style="color:var(--teal)"></i> <span data-i18n="hw.card1.spec3"><100 ms inference</span></li>
         </ul>
       </div>
       <div class="hw-card reveal-alt reveal-d2">
         <i class="ph ph-cpu hw-icon"></i>
-        <div class="hw-name">ESP32-S3</div>
+        <div class="hw-name" data-i18n="hw.card2.name">ESP32-S3</div>
         <div class="hw-core">Xtensa LX7</div>
         <ul class="hw-specs">
-          <li><i class="ph ph-check-circle" style="color:var(--teal)"></i> 512 KB SRAM</li>
-          <li><i class="ph ph-check-circle" style="color:var(--teal)"></i> WiFi + BLE on-chip</li>
-          <li><i class="ph ph-check-circle" style="color:var(--teal)"></i> Port in progress</li>
+          <li><i class="ph ph-check-circle" style="color:var(--teal)"></i> <span data-i18n="hw.card2.spec1">512 KB SRAM</span></li>
+          <li><i class="ph ph-check-circle" style="color:var(--teal)"></i> <span data-i18n="hw.card2.spec2">WiFi + BLE on-chip</span></li>
+          <li><i class="ph ph-check-circle" style="color:var(--teal)"></i> <span data-i18n="hw.card2.spec3">Port in progress</span></li>
         </ul>
       </div>
       <div class="hw-card reveal-alt reveal-d3">
         <i class="ph ph-cpu hw-icon"></i>
-        <div class="hw-name">GD32V</div>
+        <div class="hw-name" data-i18n="hw.card3.name">GD32V</div>
         <div class="hw-core">RISC-V RV32IMAC</div>
         <ul class="hw-specs">
-          <li><i class="ph ph-check-circle" style="color:var(--teal)"></i> 32 KB SRAM</li>
-          <li><i class="ph ph-check-circle" style="color:var(--teal)"></i> Full model fits</li>
-          <li><i class="ph ph-check-circle" style="color:var(--teal)"></i> Open ISA</li>
+          <li><i class="ph ph-check-circle" style="color:var(--teal)"></i> <span data-i18n="hw.card3.spec1">32 KB SRAM</span></li>
+          <li><i class="ph ph-check-circle" style="color:var(--teal)"></i> <span data-i18n="hw.card3.spec2">Full model fits</span></li>
+          <li><i class="ph ph-check-circle" style="color:var(--teal)"></i> <span data-i18n="hw.card3.spec3">Open ISA</span></li>
         </ul>
       </div>
       <div class="hw-card reveal-alt reveal-d4">
         <i class="ph ph-cpu hw-icon"></i>
-        <div class="hw-name">MIK32 Amur</div>
+        <div class="hw-name" data-i18n="hw.card4.name">MIK32 Amur</div>
         <div class="hw-core">RISC-V RV32IMC</div>
         <ul class="hw-specs">
-          <li><i class="ph ph-check-circle" style="color:var(--teal)"></i> 8 KB SRAM</li>
-          <li><i class="ph ph-check-circle" style="color:var(--teal)"></i> Flash-optimized</li>
-          <li><i class="ph ph-check-circle" style="color:var(--teal)"></i> Ultra-low power</li>
+          <li><i class="ph ph-check-circle" style="color:var(--teal)"></i> <span data-i18n="hw.card4.spec1">8 KB SRAM</span></li>
+          <li><i class="ph ph-check-circle" style="color:var(--teal)"></i> <span data-i18n="hw.card4.spec2">Flash-optimized</span></li>
+          <li><i class="ph ph-check-circle" style="color:var(--teal)"></i> <span data-i18n="hw.card4.spec3">Ultra-low power</span></li>
         </ul>
       </div>
     </div>
@@ -727,97 +693,275 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
 </section>
 
 <section class="section" id="about">
-  <div class="container">
+  <div class="container i18n-container">
     <div class="section-header reveal">
-      <div class="section-label">About</div>
-      <h2 class="section-title title-reveal">Built for the edge.&zwnj;</h2>
-      <p class="section-subtitle">TernML is an independent research project focused on bringing neural network inference to the cheapest microcontrollers.</p>
+      <div class="section-label" data-i18n="about.label">About</div>
+      <h2 class="section-title title-reveal" data-i18n-html="about.title">Built for the edge.</h2>
+      <p class="section-subtitle" data-i18n="about.subtitle">TernML is an independent research project focused on bringing neural network inference to the cheapest microcontrollers.</p>
     </div>
     <div class="about-wrap">
       <div class="about-text reveal">
-        <p>TernML is a multi-architecture framework for ternary neural networks — supporting GraphKAN, CNN, Transformer, RNN/LSTM, and Vision Transformer under one unified QAT pipeline with C codegen for Cortex-M0+. The core discovery: ternary quantization acts as a regularizer during training, <strong>improving generalization over the float baseline</strong> across all architectures.</p>
+        <p data-i18n="about.p1">TernML is a multi-architecture framework for ternary neural networks — supporting GraphKAN, CNN, Transformer, RNN/LSTM, and Vision Transformer under one unified QAT pipeline with C codegen for Cortex-M0+. The core discovery: quantizing to <strong>{-1,0,+1}</strong> makes models <strong>more accurate</strong> than float.</p>
         <div class="highlight-quote">
-          &ldquo;Discrete ternary weights act as a regularizer during training, naturally pruning noise while preserving signal.&rdquo;
-          <cite>&mdash; Regularization-by-Quantization Effect</cite>
+          <span data-i18n="about.quote">&ldquo;Discrete ternary weights act as a regularizer during training, naturally pruning noise while preserving signal.&rdquo;</span>
+          <cite data-i18n="about.quote_cite">&mdash; Regularization-by-Quantization Effect</cite>
         </div>
-        <p>The result: models that don't just compress well &mdash; they generalize better. 5 architectures, 95 passing tests, Cortex-M0+ codegen. This is TernML&rsquo;s core insight.</p>
+        <p data-i18n="about.p2">The result: models that don't just compress well — they generalize better. 5 architectures, 95 passing tests, Cortex-M0+ codegen. This is TernML's core insight.</p>
         <div class="about-links">
-          <a href="https://github.com/Fakeonomics/TernML" target="_blank" rel="noopener" class="btn btn-secondary">GitHub <i class="ph ph-arrow-right"></i></a>
-          <a href="https://habr.com/ru/articles/1049822/" target="_blank" rel="noopener" class="btn btn-secondary">Habr #1 <i class="ph ph-arrow-right"></i></a>
-          <a href="https://habr.com/ru/articles/1049940/" target="_blank" rel="noopener" class="btn btn-secondary">Habr #2 <i class="ph ph-arrow-right"></i></a>
-          <a href="https://doi.org/10.5281/zenodo.20752769" target="_blank" rel="noopener" class="btn btn-secondary">Zenodo DOI <i class="ph ph-arrow-right"></i></a>
+          <a href="https://github.com/Fakeonomics/TernML" target="_blank" rel="noopener" class="btn btn-secondary" data-i18n="about.btn.github">GitHub <i class="ph ph-arrow-right"></i></a>
+          <a href="https://habr.com/ru/articles/1049822/" target="_blank" rel="noopener" class="btn btn-secondary" data-i18n="about.btn.habr1">Habr #1 <i class="ph ph-arrow-right"></i></a>
+          <a href="https://habr.com/ru/articles/1049940/" target="_blank" rel="noopener" class="btn btn-secondary" data-i18n="about.btn.habr2">Habr #2 <i class="ph ph-arrow-right"></i></a>
+          <a href="https://doi.org/10.5281/zenodo.20752769" target="_blank" rel="noopener" class="btn btn-secondary" data-i18n="about.btn.doi">Zenodo DOI <i class="ph ph-arrow-right"></i></a>
         </div>
       </div>
       <div class="about-badges reveal reveal-d2">
-<div class="about-badge"><span class="icon"><i class="ph ph-flask"></i></span> 5 architectures</div>
-          <div class="about-badge"><span class="icon"><i class="ph ph-target"></i></span> Regularization-by-quantization</div>
-          <div class="about-badge"><span class="icon"><i class="ph ph-microchip"></i></span> C codegen / Cortex-M0+</div>
-          <div class="about-badge"><span class="icon"><i class="ph ph-lightning"></i></span> 95 passing tests</div>
+        <div class="about-badge"><span class="icon"><i class="ph ph-flask"></i></span> <span data-i18n="about.badge1">5 architectures</span></div>
+        <div class="about-badge"><span class="icon"><i class="ph ph-target"></i></span> <span data-i18n="about.badge2">Regularization-by-quantization</span></div>
+        <div class="about-badge"><span class="icon"><i class="ph ph-microchip"></i></span> <span data-i18n="about.badge3">C codegen / Cortex-M0+</span></div>
+        <div class="about-badge"><span class="icon"><i class="ph ph-lightning"></i></span> <span data-i18n="about.badge4">95 passing tests</span></div>
       </div>
     </div>
   </div>
 </section>
 
 <section class="section" id="contact">
-  <div class="container">
+  <div class="container i18n-container">
     <div class="cta-block reveal">
-      <h2>Get in touch.</h2>
-      <p>Interested in licensing, collaboration, or early access? Reach out directly.</p>
+      <h2 data-i18n="cta.title">Get in touch.</h2>
+      <p data-i18n="cta.desc">Interested in licensing, collaboration, or early access? Reach out directly.</p>
       <div class="cta-btns">
-        <a href="https://t.me/fakeonomics" target="_blank" rel="noopener" class="cta-btn primary-b"><span class="icon"><i class="ph ph-telegram-logo"></i></span> Telegram</a>
-        <a href="mailto:uv20817@gmail.com" class="cta-btn ghost"><span class="icon"><i class="ph ph-envelope"></i></span> Email</a>
-        <a href="https://github.com/Fakeonomics/TernML" target="_blank" rel="noopener" class="cta-btn ghost"><span class="icon"><i class="ph ph-github-logo"></i></span> GitHub</a>
-        <a href="https://habr.com/ru/articles/1049822/" target="_blank" rel="noopener" class="cta-btn ghost"><span class="icon"><i class="ph ph-book-open"></i></span> GraphKAN Story</a>
-        <a href="https://habr.com/ru/articles/1049940/" target="_blank" rel="noopener" class="cta-btn ghost"><span class="icon"><i class="ph ph-book-open"></i></span> TernML Overview</a>
-        <a href="https://habr.com/ru/articles/1050030/" target="_blank" rel="noopener" class="cta-btn ghost"><span class="icon"><i class="ph ph-book-open"></i></span> TernML Retrain</a>
-        <a href="https://doi.org/10.5281/zenodo.20752769" target="_blank" rel="noopener" class="cta-btn ghost"><span class="icon"><i class="ph ph-link"></i></span> DOI</a>
+        <a href="https://t.me/fakeonomics" target="_blank" rel="noopener" class="cta-btn primary-b"><span class="icon"><i class="ph ph-telegram-logo"></i></span> <span data-i18n="cta.telegram">Telegram</span></a>
+        <a href="mailto:uv20817@gmail.com" class="cta-btn ghost"><span class="icon"><i class="ph ph-envelope"></i></span> <span data-i18n="cta.email">Email</span></a>
+        <a href="https://github.com/Fakeonomics/TernML" target="_blank" rel="noopener" class="cta-btn ghost"><span class="icon"><i class="ph ph-github-logo"></i></span> <span data-i18n="cta.github">GitHub</span></a>
+        <a href="https://habr.com/ru/articles/1049822/" target="_blank" rel="noopener" class="cta-btn ghost"><span class="icon"><i class="ph ph-book-open"></i></span> <span data-i18n="cta.habr1">GraphKAN Story</span></a>
+        <a href="https://habr.com/ru/articles/1049940/" target="_blank" rel="noopener" class="cta-btn ghost"><span class="icon"><i class="ph ph-book-open"></i></span> <span data-i18n="cta.habr2">TernML Overview</span></a>
+        <a href="https://habr.com/ru/articles/1050030/" target="_blank" rel="noopener" class="cta-btn ghost"><span class="icon"><i class="ph ph-book-open"></i></span> <span data-i18n="cta.habr3">TernML Retrain</span></a>
+        <a href="https://doi.org/10.5281/zenodo.20752769" target="_blank" rel="noopener" class="cta-btn ghost"><span class="icon"><i class="ph ph-link"></i></span> <span data-i18n="cta.doi">DOI</span></a>
       </div>
     </div>
   </div>
 </section>
 
 <footer>
-  <div class="container">
+  <div class="container i18n-container">
     <div class="footer-links">
-      <a href="https://github.com/Fakeonomics/TernML" target="_blank" rel="noopener">GitHub</a>
-      <a href="https://habr.com/ru/articles/1049822/" target="_blank" rel="noopener">Habr #1</a>
-      <a href="https://habr.com/ru/articles/1049940/" target="_blank" rel="noopener">Habr #2</a>
-      <a href="https://doi.org/10.5281/zenodo.20752769" target="_blank" rel="noopener">DOI</a>
-      <a href="https://fakeonomics.github.io/TernML-overview/" target="_blank" rel="noopener">Live Site</a>
+      <a href="https://github.com/Fakeonomics/TernML" target="_blank" rel="noopener" data-i18n="footer.github">GitHub</a>
+      <a href="https://habr.com/ru/articles/1049822/" target="_blank" rel="noopener" data-i18n="footer.habr1">Habr #1</a>
+      <a href="https://habr.com/ru/articles/1049940/" target="_blank" rel="noopener" data-i18n="footer.habr2">Habr #2</a>
+      <a href="https://doi.org/10.5281/zenodo.20752769" target="_blank" rel="noopener" data-i18n="footer.doi">DOI</a>
+      <a href="https://fakeonomics.github.io/TernML-overview/" target="_blank" rel="noopener" data-i18n="footer.live">Live Site</a>
     </div>
-    <p>Proprietary Technology &mdash; All Rights Reserved. Codebase is private.</p>
-    <p class="legal">TernML ternary quantization pipeline and regularization-by-quantization method are protected by applicable intellectual property laws. Unauthorized reproduction or distribution prohibited.</p>
+    <p data-i18n="footer.proprietary">Proprietary Technology — All Rights Reserved. Codebase is private.</p>
+    <p class="legal" data-i18n="footer.legal">TernML ternary quantization pipeline and regularization-by-quantization method are protected by applicable intellectual property laws. Unauthorized reproduction or distribution prohibited.</p>
   </div>
 </footer>
 
 <script>
-document.addEventListener('DOMContentLoaded',function(){
-  var els=document.querySelectorAll('.reveal,.reveal-alt,.reveal-rotate,.title-reveal');
-  var obs=new IntersectionObserver(function(entries){
-    entries.forEach(function(e){
-      if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}
-    });
-  },{threshold:0.06,rootMargin:'0px 0px 40px 0px'});
+const i18n = {
+  "nav.metrics": { "en": "Metrics", "ru": "Метрики", "uk": "Метрики", "be": "Метрыкі", "pl": "Metryki", "de": "Kennzahlen" },
+  "nav.how": { "en": "How It Works", "ru": "Как это работает", "uk": "Як це працює", "be": "Як гэта працуе", "pl": "Jak to działa", "de": "So funktioniert's" },
+  "nav.benchmarks": { "en": "Benchmarks", "ru": "Бенчмарки", "uk": "Бенчмарки", "be": "Бенчмаркі", "pl": "Wydajność", "de": "Vergleich" },
+  "nav.hardware": { "en": "Hardware", "ru": "Железо", "uk": "Залізо", "be": "Абсталяванне", "pl": "Sprzęt", "de": "Hardware" },
+  "nav.about": { "en": "About", "ru": "О проекте", "uk": "Про проєкт", "be": "Аб праекце", "pl": "O projekcie", "de": "Über" },
+  "nav.cta": { "en": "Get in Touch", "ru": "Связаться", "uk": "Зв'язатися", "be": "Звязацца", "pl": "Kontakt", "de": "Kontakt" },
+  "hero.badge.desc": { "en": "Multi-Architecture Ternary ML Framework", "ru": "Мультиархитектурный тернарный ML-фреймворк", "uk": "Багатоархітектурний тернарний ML-фреймворк", "be": "Мультыархітэктурны тэрнарны ML-фрэймворк", "pl": "Wieloarchitekturowy ternarny framework ML", "de": "Multi-Architektur ternäres ML-Framework" },
+  "hero.title": { "en": "The <span class=\"gold\">$0.50</span> neural<br>network.", "ru": "Нейросеть за <span class=\"gold\">$0.50</span>.<br>Без DSP. Без FPU.", "uk": "Нейромережа за <span class=\"gold\">$0.50</span>.<br>Без DSP. Без FPU.", "be": "Нейрасетка за <span class=\"gold\">$0.50</span>.<br>Без DSP. Без FPU.", "pl": "Sieć neuronowa za <span class=\"gold\">$0.50</span>.<br>Bez DSP. Bez FPU.", "de": "Das neuronale Netz für <span class=\"gold\">$0,50</span>.<br>Ohne DSP. Ohne FPU." },
+  "hero.sub": { "en": "TernML turns neural nets into a format that runs on $0.50 MCUs. 5 architectures. C codegen. No DSP, no FPU — just add-and-shift.", "ru": "TernML превращает нейросети в формат для $0.50 микроконтроллеров. 5 архитектур. C codegen. Без DSP, без FPU — только сложение и сдвиг.", "uk": "TernML перетворює нейромережі у формат для $0.50 мікроконтролерів. 5 архітектур. C codegen. Без DSP, без FPU — лише додавання та зсув.", "be": "TernML пераўтварае нейрасеткі ў фармат для $0.50 мікракантролераў. 5 архітэктур. C codegen. Без DSP, без FPU — толькі складанне і зрух.", "pl": "TernML zamienia sieci neuronowe w format działający na MCU za $0.50. 5 architektur. C codegen. Bez DSP, bez FPU — tylko dodawanie i przesunięcie.", "de": "TernML wandelt neuronale Netze in ein Format um, das auf $0,50 MCUs läuft. 5 Architekturen. C Codegen. Kein DSP, kein FPU — nur Addieren und Schieben." },
+  "hero.btn.early": { "en": "Get Early Access <i class=\"ph ph-arrow-right\"></i>", "ru": "Получить ранний доступ <i class=\"ph ph-arrow-right\"></i>", "uk": "Отримати ранній доступ <i class=\"ph ph-arrow-right\"></i>", "be": "Атрымаць ранні доступ <i class=\"ph ph-arrow-right\"></i>", "pl": "Uzyskaj wczesny dostęp <i class=\"ph ph-arrow-right\"></i>", "de": "Frühen Zugang erhalten <i class=\"ph ph-arrow-right\"></i>" },
+  "hero.btn.research": { "en": "Read the Research", "ru": "Читать статью", "uk": "Читати статтю", "be": "Чытаць артыкул", "pl": "Przeczytaj artykuł", "de": "Forschung lesen" },
+  "hero.stat.architectures": { "en": "Architectures", "ru": "Архитектур", "uk": "Архітектур", "be": "Архітэктур", "pl": "Architektur", "de": "Architekturen" },
+  "hero.stat.fashion": { "en": "Fashion-MNIST (CNN)", "ru": "Fashion-MNIST (CNN)", "uk": "Fashion-MNIST (CNN)", "be": "Fashion-MNIST (CNN)", "pl": "Fashion-MNIST (CNN)", "de": "Fashion-MNIST (CNN)" },
+  "hero.stat.bits": { "en": "Bits / Parameter", "ru": "Бит / Параметр", "uk": "Біт / Параметр", "be": "Біт / Параметр", "pl": "Bitów / Parametr", "de": "Bits / Parameter" },
+  "hero.stat.dsp": { "en": "DSP / FPU / GPU", "ru": "DSP / FPU / GPU", "uk": "DSP / FPU / GPU", "be": "DSP / FPU / GPU", "pl": "DSP / FPU / GPU", "de": "DSP / FPU / GPU" },
+  "metrics.label": { "en": "Key Metrics", "ru": "Ключевые метрики", "uk": "Ключові метрики", "be": "Ключавыя метрыкі", "pl": "Kluczowe metryki", "de": "Wichtige Kennzahlen" },
+  "metrics.title": { "en": "5 architectures.<br>One framework.", "ru": "5 архитектур.<br>Один фреймворк.", "uk": "5 архітектур.<br>Один фреймворк.", "be": "5 архітэктур.<br>Адзін фрэймворк.", "pl": "5 architektur.<br>Jeden framework.", "de": "5 Architekturen.<br>Ein Framework." },
+  "metrics.subtitle": { "en": "TernML unifies Graph, CNN, Transformer, RNN, and ViT under a single ternary QAT pipeline — all with float-beating accuracy and Cortex-M0+ codegen.", "ru": "TernML объединяет Graph, CNN, Transformer, RNN и ViT в едином тернарном QAT-пайплайне — с точностью выше float и кодогенерацией для Cortex-M0+.", "uk": "TernML об'єднує Graph, CNN, Transformer, RNN та ViT в єдиному тернарному QAT-пайплайні — з точністю вище float та кодогенерацією для Cortex-M0+.", "be": "TernML аб'ядноўвае Graph, CNN, Transformer, RNN і ViT у адзіным тэрнарным QAT-пайплайне — з дакладнасцю вышэй float і кодогенерацыяй для Cortex-M0+.", "pl": "TernML łączy Graph, CNN, Transformer, RNN i ViT w jednym ternarnym pipeline QAT — z dokładnością przewyższającą float i codegenem dla Cortex-M0+.", "de": "TernML vereint Graph, CNN, Transformer, RNN und ViT in einer einzigen ternären QAT-Pipeline — mit float-übertreffender Genauigkeit und Codegen für Cortex-M0+." },
+  "metrics.card1.label": { "en": "Supported Architectures", "ru": "Поддерживаемые архитектуры", "uk": "Підтримувані архітектури", "be": "Падтрыманыя архітэктуры", "pl": "Obsługiwane architektury", "de": "Unterstützte Architekturen" },
+  "metrics.card1.desc": { "en": "Graph, CNN, Transformer, RNN/LSTM, ViT — unified TernMLayer", "ru": "Graph, CNN, Transformer, RNN/LSTM, ViT — единый TernMLayer", "uk": "Graph, CNN, Transformer, RNN/LSTM, ViT — єдиний TernMLayer", "be": "Graph, CNN, Transformer, RNN/LSTM, ViT — адзіны TernMLayer", "pl": "Graph, CNN, Transformer, RNN/LSTM, ViT — ujednolicony TernMLayer", "de": "Graph, CNN, Transformer, RNN/LSTM, ViT — vereinheitlichter TernMLayer" },
+  "metrics.card2.label": { "en": "Fashion-MNIST (CNN)", "ru": "Fashion-MNIST (CNN)", "uk": "Fashion-MNIST (CNN)", "be": "Fashion-MNIST (CNN)", "pl": "Fashion-MNIST (CNN)", "de": "Fashion-MNIST (CNN)" },
+  "metrics.card2.desc": { "en": "Ternary QAT — finetune phase", "ru": "Тернарный QAT — фаза дообучения", "uk": "Тернарний QAT — фаза донавчання", "be": "Тэрнарны QAT — фаза данавучання", "pl": "Ternarny QAT — faza dostrajania", "de": "Ternäres QAT — Feintuning-Phase" },
+  "metrics.card3.label": { "en": "Bits / Parameter", "ru": "Бит / Параметр", "uk": "Біт / Параметр", "be": "Біт / Параметр", "pl": "Bitów / Parametr", "de": "Bits / Parameter" },
+  "metrics.card3.desc": { "en": "8× compression vs 8-bit quantized", "ru": "Сжатие в 8× vs 8-битные", "uk": "Стиснення в 8× vs 8-бітні", "be": "Сцісканне ў 8× vs 8-бітныя", "pl": "Kompresja 8× vs 8-bitowe", "de": "8× Kompression vs. 8-Bit" },
+  "metrics.card4.label": { "en": "C Codegen", "ru": "C Codegen", "uk": "C Codegen", "be": "C Codegen", "pl": "C Codegen", "de": "C Codegen" },
+  "metrics.card4.desc": { "en": "5 architectures, p/m bit-sliced, verified under Unicorn", "ru": "5 архитектур, p/m bit-sliced, верифицировано в Unicorn", "uk": "5 архітектур, p/m bit-sliced, верифіковано в Unicorn", "be": "5 архітэктур, p/m bit-sliced, верыфікавана ў Unicorn", "pl": "5 architektur, p/m bit-sliced, zweryfikowane w Unicorn", "de": "5 Architekturen, p/m Bit-Sliced, verifiziert unter Unicorn" },
+  "metrics.card5.label": { "en": "DSP / FPU / GPU", "ru": "DSP / FPU / GPU", "uk": "DSP / FPU / GPU", "be": "DSP / FPU / GPU", "pl": "DSP / FPU / GPU", "de": "DSP / FPU / GPU" },
+  "metrics.card5.desc": { "en": "Pure add-shift — runs on any MCU", "ru": "Чистые add-shift — работает на любом MCU", "uk": "Чисті add-shift — працює на будь-якому MCU", "be": "Чыстыя add-shift — працуе на любым MCU", "pl": "Czyste add-shift — działa na każdym MCU", "de": "Reines Add-Shift — läuft auf jedem MCU" },
+  "how.label": { "en": "How It Works", "ru": "Как это работает", "uk": "Як це працює", "be": "Як гэта працуе", "pl": "Jak to działa", "de": "So funktioniert's" },
+  "how.title": { "en": "5 architectures.<br>One pipeline.", "ru": "5 архитектур.<br>Один пайплайн.", "uk": "5 архітектур.<br>Один пайплайн.", "be": "5 архітэктур.<br>Адзін пайплайн.", "pl": "5 architektur.<br>Jeden pipeline.", "de": "5 Architekturen.<br>Eine Pipeline." },
+  "how.subtitle": { "en": "Unified QAT pipeline that works across GraphKAN, CNN, Transformer, RNN, and ViT — producing ultra-efficient ternary networks with C codegen for any MCU.", "ru": "Единый QAT-пайплайн для GraphKAN, CNN, Transformer, RNN и ViT — сверхэффективные тернарные сети с кодогенерацией для любых MCU.", "uk": "Єдиний QAT-пайплайн для GraphKAN, CNN, Transformer, RNN та ViT — надзвичайно ефективні тернарні мережі з кодогенерацією для будь-яких MCU.", "be": "Адзіны QAT-пайплайн для GraphKAN, CNN, Transformer, RNN і ViT — звышэфектыўныя тэрнарныя сеткі з кодогенерацыяй для любых MCU.", "pl": "Ujednolicony pipeline QAT dla GraphKAN, CNN, Transformer, RNN i ViT — ultrawydajne sieci ternarne z codegenem dla każdego MCU.", "de": "Einheitliche QAT-Pipeline für GraphKAN, CNN, Transformer, RNN und ViT — hocheffiziente ternäre Netze mit Codegen für jedes MCU." },
+  "how.card1.title": { "en": "Choose Your Architecture", "ru": "Выберите архитектуру", "uk": "Оберіть архітектуру", "be": "Абярыце архітэктуру", "pl": "Wybierz architekturę", "de": "Architektur wählen" },
+  "how.card1.desc": { "en": "GraphKAN, CNN, Transformer, RNN/LSTM, or Vision Transformer — all use the same TernMLayer with STE-based QAT. Pick any architecture, get ternary weights.", "ru": "GraphKAN, CNN, Transformer, RNN/LSTM или Vision Transformer — все используют единый TernMLayer с STE QAT. Выберите любую архитектуру, получите тернарные веса.", "uk": "GraphKAN, CNN, Transformer, RNN/LSTM або Vision Transformer — усі використовують єдиний TernMLayer з STE QAT. Оберіть будь-яку архітектуру, отримайте тернарні ваги.", "be": "GraphKAN, CNN, Transformer, RNN/LSTM або Vision Transformer — усе выкарыстоўваюць адзіны TernMLayer з STE QAT. Абярыце любую архітэктуру, атрымайце тэрнарныя вагі.", "pl": "GraphKAN, CNN, Transformer, RNN/LSTM lub Vision Transformer — wszystkie używają tego samego TernMLayer z STE QAT. Wybierz dowolną architekturę, otrzymaj wagi ternarne.", "de": "GraphKAN, CNN, Transformer, RNN/LSTM oder Vision Transformer — alle verwenden denselben TernMLayer mit STE QAT. Wähle eine Architektur, erhalte ternäre Gewichte." },
+  "how.card1.tag": { "en": "5 architectures · Unified API", "ru": "5 архитектур · Единый API", "uk": "5 архітектур · Єдиний API", "be": "5 архітэктур · Адзіны API", "pl": "5 architektur · Ujednolicone API", "de": "5 Architekturen · Einheitliches API" },
+  "how.card2.title": { "en": "Train with Regularization", "ru": "Обучение с регуляризацией", "uk": "Навчання з регуляризацією", "be": "Навучанне з рэгулярызацыяй", "pl": "Trening z regularyzacją", "de": "Training mit Regularisierung" },
+  "how.card2.desc": { "en": "Train normally, then ternarize gradually — accuracy stays or improves. Ternary quantization acts as a regularizer, improving generalization over the float baseline.", "ru": "Обучайте как обычно, затем постепенно тернаризуйте — точность остаётся или растёт. Тернарная квантизация действует как регуляризатор, улучшая обобщение относительно float.", "uk": "Навчайте як зазвичай, потім поступово тернаризуйте — точність залишається або зростає. Тернарна квантізація діє як регуляризатор, покращуючи узагальнення відносно float.", "be": "Навучайце як звычайна, затым паступова тэрнарызуйце — дакладнасць застаецца або расце. Тэрнарная квантызацыя дзейнічае як рэгулярызатар, паляпшаючы абагульненне адносна float.", "pl": "Trenuj normalnie, potem stopniowo ternaryzuj — dokładność pozostaje lub rośnie. Kwantyzacja ternarna działa jak regulator, poprawiając generalizację względem float.", "de": "Normal trainieren, dann schrittweise ternärisieren — die Genauigkeit bleibt oder verbessert sich. Ternäre Quantisierung wirkt als Regularisierer und verbessert die Generalisierung gegenüber Float." },
+  "how.card2.tag": { "en": "Regularization-by-quantization", "ru": "Регуляризация квантизацией", "uk": "Регуляризація квантізацією", "be": "Рэгулярызацыя квантызацыяй", "pl": "Regularyzacja przez kwantyzację", "de": "Regularisierung durch Quantisierung" },
+  "how.card3.title": { "en": "Generate C Code", "ru": "Генерация C-кода", "uk": "Генерація C-коду", "be": "Генерацыя C-кода", "pl": "Generowanie kodu C", "de": "C-Code generieren" },
+  "how.card3.desc": { "en": "Export ternary weights in p/m bit-sliced format (32 trits/8 bytes). Generate pure C for Cortex-M0+ with no DSP, no FPU, no OS — bare-metal inference in milliseconds.", "ru": "Экспорт тернарных весов в p/m bit-sliced формате (32 трита/8 байт). Генерация чистого C для Cortex-M0+ без DSP, FPU, ОС — bare-metal inference за миллисекунды.", "uk": "Експорт тернарних ваг у p/m bit-sliced форматі (32 трити/8 байт). Генерація чистого C для Cortex-M0+ без DSP, FPU, ОС — bare-metal inference за мілісекунди.", "be": "Экспарт тэрнарных ваг у p/m bit-sliced фармаце (32 трыты/8 байт). Генерацыя чыстага C для Cortex-M0+ без DSP, FPU, АС — bare-metal inference за мілісекунды.", "pl": "Eksport wag ternarnych w formacie p/m bit-sliced (32 trity/8 bajtów). Generowanie czystego C dla Cortex-M0+ bez DSP, FPU, OS — wnioskowanie bare-metal w milisekundach.", "de": "Export ternärer Gewichte im p/m Bit-Sliced-Format (32 Trits/8 Bytes). Generierung von reinem C für Cortex-M0+ ohne DSP, FPU, OS — Bare-Metal-Inferenz in Millisekunden." },
+  "how.card3.tag": { "en": "From $0.50 MCU · 5 archs · Verified", "ru": "От $0.50 MCU · 5 арх · Верифицировано", "uk": "Від $0.50 MCU · 5 арх · Верифіковано", "be": "Ад $0.50 MCU · 5 арх · Верыфікавана", "pl": "Od $0.50 MCU · 5 arch · Zweryfikowano", "de": "Ab $0,50 MCU · 5 Arch · Verifiziert" },
+  "arch.label": { "en": "Architectures", "ru": "Архитектуры", "uk": "Архітектури", "be": "Архітэктуры", "pl": "Architektury", "de": "Architekturen" },
+  "arch.title": { "en": "5 architectures.<br>One ternary framework.", "ru": "5 архитектур.<br>Один тернарный фреймворк.", "uk": "5 архітектур.<br>Один тернарний фреймворк.", "be": "5 архітэктур.<br>Адзін тэрнарны фрэймворк.", "pl": "5 architektur.<br>Jeden ternarny framework.", "de": "5 Architekturen.<br>Ein ternäres Framework." },
+  "arch.subtitle": { "en": "GraphKAN, CNN, Transformer, RNN/LSTM, Vision Transformer — all with the same 4-phase QAT pipeline and regularization-by-quantization effect.", "ru": "GraphKAN, CNN, Transformer, RNN/LSTM, Vision Transformer — все с единым 4-фазным QAT и эффектом регуляризации квантизацией.", "uk": "GraphKAN, CNN, Transformer, RNN/LSTM, Vision Transformer — усі з єдиним 4-фазним QAT та ефектом регуляризації квантізацією.", "be": "GraphKAN, CNN, Transformer, RNN/LSTM, Vision Transformer — усе з адзіным 4-фазным QAT і эфектам рэгулярызацыі квантызацыяй.", "pl": "GraphKAN, CNN, Transformer, RNN/LSTM, Vision Transformer — wszystkie z tym samym 4-fazowym pipelinem QAT i efektem regularyzacji przez kwantyzację.", "de": "GraphKAN, CNN, Transformer, RNN/LSTM, Vision Transformer — alle mit derselben 4-Phasen-QAT-Pipeline und dem Regularisierung-durch-Quantisierung-Effekt." },
+  "arch.th.arch": { "en": "Architecture", "ru": "Архитектура", "uk": "Архітектура", "be": "Архітэктура", "pl": "Architektura", "de": "Architektur" },
+  "arch.th.dataset": { "en": "Dataset", "ru": "Датасет", "uk": "Датасет", "be": "Датасэт", "pl": "Zbiór danych", "de": "Datensatz" },
+  "arch.th.float": { "en": "Float", "ru": "Float", "uk": "Float", "be": "Float", "pl": "Float", "de": "Float" },
+  "arch.th.ternary": { "en": "Ternary", "ru": "Тернарный", "uk": "Тернарний", "be": "Тэрнарны", "pl": "Ternarny", "de": "Ternär" },
+  "arch.th.size": { "en": "Size", "ru": "Размер", "uk": "Розмір", "be": "Памер", "pl": "Rozmiar", "de": "Größe" },
+  "arch.note": { "en": "* All architectures use the same 4-phase QAT pipeline with STE. C codegen for Cortex-M0+ — verified bit-exact under Unicorn. ELM mode also available.", "ru": "* Все архитектуры используют единый 4-фазный QAT с STE. C codegen для Cortex-M0+ — побитно верифицирован в Unicorn. Режим ELM также доступен.", "uk": "* Усі архітектури використовують єдиний 4-фазний QAT з STE. C codegen для Cortex-M0+ — побітно верифіковано в Unicorn. Режим ELM також доступний.", "be": "* Усе архітэктуры выкарыстоўваюць адзіны 4-фазны QAT з STE. C codegen для Cortex-M0+ — пабітна верыфікавана ў Unicorn. Рэжым ELM таксама даступны.", "pl": "* Wszystkie architektury używają tego samego 4-fazowego pipeline'u QAT z STE. C codegen dla Cortex-M0+ — zweryfikowany bitowo w Unicorn. Tryb ELM również dostępny.", "de": "* Alle Architekturen verwenden dieselbe 4-Phasen-QAT-Pipeline mit STE. C Codegen für Cortex-M0+ — bitgenau unter Unicorn verifiziert. ELM-Modus ebenfalls verfügbar." },
+  "bench.label": { "en": "Benchmarks", "ru": "Бенчмарки", "uk": "Бенчмарки", "be": "Бенчмаркі", "pl": "Wydajność", "de": "Vergleich" },
+  "bench.title": { "en": "Comparable accuracy.<br>10× smaller.", "ru": "Сопоставимая точность.<br>В 10 раз меньше.", "uk": "Порівнянна точність.<br>У 10 разів менше.", "be": "Супастаўная дакладнасць.<br>У 10 разоў менш.", "pl": "Porównywalna dokładność.<br>10× mniejszy.", "de": "Vergleichbare Genauigkeit.<br>10× kleiner." },
+  "bench.subtitle": { "en": "Head-to-head against industry-standard TinyML frameworks. TernML delivers competitive accuracy at a fraction of the memory footprint.", "ru": "Прямое сравнение с индустриальными TinyML-фреймворками. TernML даёт конкурентоспособную точность при минимальном расходе памяти.", "uk": "Пряме порівняння з індустріальними TinyML-фреймворками. TernML дає конкурентоспроможну точність при мінімальному використанні пам'яті.", "be": "Прамое параўнанне з індустрыяльнымі TinyML-фрэймворкамі. TernML дае канкурэнтаздольную дакладнасць пры мінімальным спажыванні памяці.", "pl": "Bezpośrednie porównanie z branżowymi frameworkami TinyML. TernML zapewnia konkurencyjną dokładność przy ułamku zużycia pamięci.", "de": "Direkter Vergleich mit branchenüblichen TinyML-Frameworks. TernML liefert wettbewerbsfähige Genauigkeit bei einem Bruchteil des Speicherverbrauchs." },
+  "bench.th.metric": { "en": "Metric", "ru": "Метрика", "uk": "Метрика", "be": "Метрыка", "pl": "Metryka", "de": "Merkmal" },
+  "bench.th.ternml": { "en": "TernML", "ru": "TernML", "uk": "TernML", "be": "TernML", "pl": "TernML", "de": "TernML" },
+  "bench.th.tflite": { "en": "TFLite Micro (8-bit)", "ru": "TFLite Micro (8-bit)", "uk": "TFLite Micro (8-bit)", "be": "TFLite Micro (8-bit)", "pl": "TFLite Micro (8-bit)", "de": "TFLite Micro (8-Bit)" },
+  "bench.th.edgeimpulse": { "en": "Edge Impulse", "ru": "Edge Impulse", "uk": "Edge Impulse", "be": "Edge Impulse", "pl": "Edge Impulse", "de": "Edge Impulse" },
+  "bench.row.mnist": { "en": "MNIST", "ru": "MNIST", "uk": "MNIST", "be": "MNIST", "pl": "MNIST", "de": "MNIST" },
+  "bench.row.cifar": { "en": "CIFAR-10 (deep CNN)", "ru": "CIFAR-10 (глубокая CNN)", "uk": "CIFAR-10 (глибока CNN)", "be": "CIFAR-10 (глыбокая CNN)", "pl": "CIFAR-10 (głęboka CNN)", "de": "CIFAR-10 (tiefe CNN)" },
+  "bench.row.fashion": { "en": "Fashion-MNIST (CNN)", "ru": "Fashion-MNIST (CNN)", "uk": "Fashion-MNIST (CNN)", "be": "Fashion-MNIST (CNN)", "pl": "Fashion-MNIST (CNN)", "de": "Fashion-MNIST (CNN)" },
+  "bench.row.size_gk": { "en": "Model Size (GraphKAN)", "ru": "Размер модели (GraphKAN)", "uk": "Розмір моделі (GraphKAN)", "be": "Памер мадэлі (GraphKAN)", "pl": "Rozmiar modelu (GraphKAN)", "de": "Modellgröße (GraphKAN)" },
+  "bench.row.ram": { "en": "Peak RAM", "ru": "Пиковая RAM", "uk": "Пікова RAM", "be": "Пікавая RAM", "pl": "Szczytowe RAM", "de": "Spitzen-RAM" },
+  "bench.row.bits": { "en": "Bits / Parameter", "ru": "Бит / Параметр", "uk": "Біт / Параметр", "be": "Біт / Параметр", "pl": "Bitów / Parametr", "de": "Bits / Parameter" },
+  "bench.row.archs": { "en": "Architectures", "ru": "Архитектуры", "uk": "Архітектури", "be": "Архітэктуры", "pl": "Architektury", "de": "Architekturen" },
+  "bench.row.cnn_only": { "en": "CNN only", "ru": "Только CNN", "uk": "Тільки CNN", "be": "Толькі CNN", "pl": "Tylko CNN", "de": "Nur CNN" },
+  "bench.row.codegen": { "en": "C Codegen", "ru": "C Codegen", "uk": "C Codegen", "be": "C Codegen", "pl": "C Codegen", "de": "C Codegen" },
+  "bench.yes": { "en": "Yes", "ru": "Да", "uk": "Так", "be": "Так", "pl": "Tak", "de": "Ja" },
+  "bench.no": { "en": "No", "ru": "Нет", "uk": "Ні", "be": "Не", "pl": "Nie", "de": "Nein" },
+  "bench.zero": { "en": "0%", "ru": "0%", "uk": "0%", "be": "0%", "pl": "0%", "de": "0%" },
+  "bench.optional": { "en": "Optional", "ru": "Опционально", "uk": "Опціонально", "be": "Апцыянальна", "pl": "Opcjonalnie", "de": "Optional" },
+  "bench.row.sparsity": { "en": "Natural Sparsity", "ru": "Естественная разреженность", "uk": "Природна розрідженість", "be": "Натуральная разрэджанасць", "pl": "Naturalna rzadkość", "de": "Natürliche Sparsität" },
+  "bench.row.dsp": { "en": "DSP Required", "ru": "Требуется DSP", "uk": "Потрібен DSP", "be": "Патрабуецца DSP", "pl": "Wymagany DSP", "de": "DSP erforderlich" },
+  "bench.row.fpu": { "en": "FPU Required", "ru": "Требуется FPU", "uk": "Потрібен FPU", "be": "Патрабуецца FPU", "pl": "Wymagany FPU", "de": "FPU erforderlich" },
+  "bench.row.mcu_cost": { "en": "Min. MCU Cost", "ru": "Мин. цена MCU", "uk": "Мін. ціна MCU", "be": "Мін. кошт MCU", "pl": "Min. koszt MCU", "de": "Min. MCU-Preis" },
+  "bench.note": { "en": "* TFLite and Edge Impulse use 8-bit quantized models. TernML supports 5 architectures with C codegen for Cortex-M0+. Accuracy often exceeds float baseline due to regularization-by-quantization.", "ru": "* TFLite и Edge Impulse используют 8-битные квантованные модели. TernML поддерживает 5 архитектур с C codegen для Cortex-M0+. Точность часто превышает float baseline благодаря регуляризации квантизацией.", "uk": "* TFLite та Edge Impulse використовують 8-бітні квантовані моделі. TernML підтримує 5 архітектур з C codegen для Cortex-M0+. Точність часто перевищує float baseline завдяки регуляризації квантізацією.", "be": "* TFLite і Edge Impulse выкарыстоўваюць 8-бітныя квантаваныя мадэлі. TernML падтрымлівае 5 архітэктур з C codegen для Cortex-M0+. Дакладнасць часто перавышае float baseline дзякуючы рэгулярызацыі квантызацыяй.", "pl": "* TFLite i Edge Impulse używają 8-bitowych modeli skwantowanych. TernML obsługuje 5 architektur z C codegen dla Cortex-M0+. Dokładność często przewyższa float baseline dzięki regularyzacji przez kwantyzację.", "de": "* TFLite und Edge Impulse verwenden 8-Bit quantisierte Modelle. TernML unterstützt 5 Architekturen mit C Codegen für Cortex-M0+. Die Genauigkeit übertrifft oft die Float-Baseline dank Regularisierung durch Quantisierung." },
+  "hw.label": { "en": "Hardware Support", "ru": "Поддержка железа", "uk": "Підтримка заліза", "be": "Падтрымка абсталявання", "pl": "Wsparcie sprzętowe", "de": "Hardware-Unterstützung" },
+  "hw.title": { "en": "Runs on anything<br>with a C compiler.", "ru": "Работает на всём,<br>у чего есть C-компилятор.", "uk": "Працює на всьому,<br>у чого є C-компілятор.", "be": "Працуе на ўсім,<br>у чаго ёсць C-кампілятар.", "pl": "Działa na wszystkim,<br>co ma kompilator C.", "de": "Läuft auf allem,<br>was einen C-Compiler hat." },
+  "hw.subtitle": { "en": "No hardware accelerator, no DSP, no FPU. TernML runs on the cheapest MCUs on the market.", "ru": "Никаких аппаратных ускорителей, DSP или FPU. TernML работает на самых дешёвых MCU на рынке.", "uk": "Жодних апаратних прискорювачів, DSP чи FPU. TernML працює на найдешевших MCU на ринку.", "be": "Ніякіх апаратных паскаральнікаў, DSP ці FPU. TernML працуе на самых танных MCU на рынку.", "pl": "Żadnych akceleratorów sprzętowych, DSP ani FPU. TernML działa na najtańszych MCU na rynku.", "de": "Keine Hardware-Beschleuniger, kein DSP, kein FPU. TernML läuft auf den günstigsten MCUs auf dem Markt." },
+  "hw.card1.name": { "en": "Cortex-M0+", "ru": "Cortex-M0+", "uk": "Cortex-M0+", "be": "Cortex-M0+", "pl": "Cortex-M0+", "de": "Cortex-M0+" },
+  "hw.card1.spec1": { "en": "16 KB SRAM — fits entirely", "ru": "16 КБ SRAM — влезает целиком", "uk": "16 КБ SRAM — вміщується повністю", "be": "16 КБ SRAM — змяшчаецца цалкам", "pl": "16 KB SRAM — mieści się w całości", "de": "16 KB SRAM — passt vollständig" },
+  "hw.card1.spec2": { "en": "$0.50 MCU cost", "ru": "Стоимость MCU $0.50", "uk": "Вартість MCU $0.50", "be": "Кошт MCU $0.50", "pl": "Koszt MCU $0.50", "de": "MCU-Kosten $0,50" },
+  "hw.card1.spec3": { "en": "<100 ms inference", "ru": "<100 мс инференс", "uk": "<100 мс інференс", "be": "<100 мс інферэнс", "pl": "<100 ms wnioskowanie", "de": "<100 ms Inferenz" },
+  "hw.card2.name": { "en": "ESP32-S3", "ru": "ESP32-S3", "uk": "ESP32-S3", "be": "ESP32-S3", "pl": "ESP32-S3", "de": "ESP32-S3" },
+  "hw.card2.spec1": { "en": "512 KB SRAM", "ru": "512 КБ SRAM", "uk": "512 КБ SRAM", "be": "512 КБ SRAM", "pl": "512 KB SRAM", "de": "512 KB SRAM" },
+  "hw.card2.spec2": { "en": "WiFi + BLE on-chip", "ru": "WiFi + BLE на кристалле", "uk": "WiFi + BLE на кристалі", "be": "WiFi + BLE на крышталі", "pl": "WiFi + BLE na chipie", "de": "WiFi + BLE auf dem Chip" },
+  "hw.card2.spec3": { "en": "Port in progress", "ru": "Порт в разработке", "uk": "Порт у розробці", "be": "Порт у распрацоўцы", "pl": "Port w trakcie", "de": "Port in Arbeit" },
+  "hw.card3.name": { "en": "GD32V", "ru": "GD32V", "uk": "GD32V", "be": "GD32V", "pl": "GD32V", "de": "GD32V" },
+  "hw.card3.spec1": { "en": "32 KB SRAM", "ru": "32 КБ SRAM", "uk": "32 КБ SRAM", "be": "32 КБ SRAM", "pl": "32 KB SRAM", "de": "32 KB SRAM" },
+  "hw.card3.spec2": { "en": "Full model fits", "ru": "Модель влезает целиком", "uk": "Модель вміщується повністю", "be": "Мадэль змяшчаецца цалкам", "pl": "Cały model się mieści", "de": "Gesamtes Modell passt" },
+  "hw.card3.spec3": { "en": "Open ISA", "ru": "Открытая ISA", "uk": "Відкрита ISA", "be": "Адкрытая ISA", "pl": "Otwarta ISA", "de": "Offene ISA" },
+  "hw.card4.name": { "en": "MIK32 Amur", "ru": "МИК32 Амур", "uk": "МІК32 Амур", "be": "МІК32 Амур", "pl": "MIK32 Amur", "de": "MIK32 Amur" },
+  "hw.card4.spec1": { "en": "8 KB SRAM", "ru": "8 КБ SRAM", "uk": "8 КБ SRAM", "be": "8 КБ SRAM", "pl": "8 KB SRAM", "de": "8 KB SRAM" },
+  "hw.card4.spec2": { "en": "Flash-optimized", "ru": "Оптимизация под Flash", "uk": "Оптимізація під Flash", "be": "Аптымізацыя пад Flash", "pl": "Zoptymalizowany pod Flash", "de": "Flash-optimiert" },
+  "hw.card4.spec3": { "en": "Ultra-low power", "ru": "Сверхнизкое потребление", "uk": "Надвисоке споживання", "be": "Звышнізкае спажыванне", "pl": "Bardzo niski pobór mocy", "de": "Ultra-niedriger Stromverbrauch" },
+  "about.label": { "en": "About", "ru": "О проекте", "uk": "Про проєкт", "be": "Аб праекце", "pl": "O projekcie", "de": "Über" },
+  "about.title": { "en": "Built for the edge.", "ru": "Создан для edge.", "uk": "Створений для edge.", "be": "Створаны для edge.", "pl": "Zbudowany dla edge.", "de": "Für den Edge gebaut." },
+  "about.subtitle": { "en": "TernML is an independent research project focused on bringing neural network inference to the cheapest microcontrollers.", "ru": "TernML — независимый исследовательский проект, цель которого — запустить нейросети на самых дешёвых микроконтроллерах.", "uk": "TernML — незалежний дослідницький проєкт, мета якого — запустити нейромережі на найдешевших мікроконтролерах.", "be": "TernML — незалежны даследчы праект, мэта якога — запусціць нейрасеткі на самых танных мікракантролерах.", "pl": "TernML to niezależny projekt badawczy, którego celem jest uruchomienie sieci neuronowych na najtańszych mikrokontrolerach.", "de": "TernML ist ein unabhängiges Forschungsprojekt, das neuronale Netze auf den günstigsten Mikrocontrollern zum Laufen bringen will." },
+  "about.p1": { "en": "TernML is a multi-architecture framework for ternary neural networks — supporting GraphKAN, CNN, Transformer, RNN/LSTM, and Vision Transformer under one unified QAT pipeline with C codegen for Cortex-M0+. The core discovery: quantizing to <strong>{-1,0,+1}</strong> makes models <strong>more accurate</strong> than float.", "ru": "TernML — мультиархитектурный фреймворк для тернарных нейросетей, поддерживающий GraphKAN, CNN, Transformer, RNN/LSTM и Vision Transformer в едином QAT-пайплайне с C codegen для Cortex-M0+. Ключевое открытие: квантизация до <strong>{-1,0,+1}</strong> делает модели <strong>точнее</strong>, чем float.", "uk": "TernML — багатоархітектурний фреймворк для тернарних нейромереж, що підтримує GraphKAN, CNN, Transformer, RNN/LSTM та Vision Transformer у єдиному QAT-пайплайні з C codegen для Cortex-M0+. Ключове відкриття: квантізація до <strong>{-1,0,+1}</strong> робить моделі <strong>точнішими</strong>, ніж float.", "be": "TernML — мультыархітэктурны фрэймворк для тэрнарных нейрасетак, які падтрымлівае GraphKAN, CNN, Transformer, RNN/LSTM і Vision Transformer у адзіным QAT-пайплайне з C codegen для Cortex-M0+. Ключавое адкрыццё: квантызацыя да <strong>{-1,0,+1}</strong> робіць мадэлі <strong>дакладнейшымі</strong>, чым float.", "pl": "TernML to wieloarchitekturowy framework dla ternarnych sieci neuronowych, obsługujący GraphKAN, CNN, Transformer, RNN/LSTM i Vision Transformer w jednym pipeline QAT z C codegen dla Cortex-M0+. Kluczowe odkrycie: kwantyzacja do <strong>{-1,0,+1}</strong> czyni modele <strong>dokładniejszymi</strong> niż float.", "de": "TernML ist ein Multi-Architektur-Framework für ternäre neuronale Netze, das GraphKAN, CNN, Transformer, RNN/LSTM und Vision Transformer in einer einzigen QAT-Pipeline mit C Codegen für Cortex-M0+ unterstützt. Die Kernentdeckung: Die Quantisierung auf <strong>{-1,0,+1}</strong> macht Modelle <strong>genauer</strong> als Float." },
+  "about.quote": { "en": "\u201cDiscrete ternary weights act as a regularizer during training, naturally pruning noise while preserving signal.\u201d", "ru": "\u201cДискретные тернарные веса действуют как регуляризатор во время обучения, естественным образом отсекая шум и сохраняя сигнал.\u201d", "uk": "\u201cДискретні тернарні ваги діють як регуляризатор під час навчання, природним чином відсікаючи шум і зберігаючи сигнал.\u201d", "be": "\u201cДыскрэтныя тэрнарныя вагі дзейнічаюць як рэгулярызатар падчас навучання, натуральным чынам абразаючы шум і захоўваючы сігнал.\u201d", "pl": "\u201cDyskretne wagi ternarne działają jak regulator podczas treningu, naturalnie odcinając szum przy jednoczesnym zachowaniu sygnału.\u201d", "de": "\u201cDiskrete ternäre Gewichte wirken während des Trainings als Regularisierer, indem sie Rauschen natürlich entfernen und das Signal bewahren.\u201d" },
+  "about.quote_cite": { "en": "\u2014 Regularization-by-Quantization Effect", "ru": "\u2014 Эффект регуляризации квантизацией", "uk": "\u2014 Ефект регуляризації квантізацією", "be": "\u2014 Эфект рэгулярызацыі квантызацыяй", "pl": "\u2014 Efekt regularyzacji przez kwantyzację", "de": "\u2014 Regularisierung-durch-Quantisierung-Effekt" },
+  "about.p2": { "en": "The result: models that don't just compress well — they generalize better. 5 architectures, 95 passing tests, Cortex-M0+ codegen. This is TernML's core insight.", "ru": "Результат: модели не просто хорошо сжимаются — они лучше обобщаются. 5 архитектур, 95 тестов, Cortex-M0+ codegen. В этом ключевая идея TernML.", "uk": "Результат: моделі не просто добре стискаються — вони краще узагальнюються. 5 архітектур, 95 тестів, Cortex-M0+ codegen. У цьому ключова ідея TernML.", "be": "Вынік: мадэлі не проста добра сціскаюцца — яны лепш абагульняюцца. 5 архітэктур, 95 тэстаў, Cortex-M0+ codegen. У гэтым ключавая ідэя TernML.", "pl": "Efekt: modele nie tylko dobrze się kompresują — lepiej generalizują. 5 architektur, 95 testów, Cortex-M0+ codegen. To jest kluczowa idea TernML.", "de": "Das Ergebnis: Modelle komprimieren nicht nur gut — sie generalisieren besser. 5 Architekturen, 95 Tests, Cortex-M0+ Codegen. Das ist die Kernidee von TernML." },
+  "about.badge1": { "en": "5 architectures", "ru": "5 архитектур", "uk": "5 архітектур", "be": "5 архітэктур", "pl": "5 architektur", "de": "5 Architekturen" },
+  "about.badge2": { "en": "Regularization-by-quantization", "ru": "Регуляризация квантизацией", "uk": "Регуляризація квантізацією", "be": "Рэгулярызацыя квантызацыяй", "pl": "Regularyzacja przez kwantyzację", "de": "Regularisierung durch Quantisierung" },
+  "about.badge3": { "en": "C codegen / Cortex-M0+", "ru": "C codegen / Cortex-M0+", "uk": "C codegen / Cortex-M0+", "be": "C codegen / Cortex-M0+", "pl": "C codegen / Cortex-M0+", "de": "C Codegen / Cortex-M0+" },
+  "about.badge4": { "en": "95 passing tests", "ru": "95 пройденных тестов", "uk": "95 пройдених тестів", "be": "95 пройдзеных тэстаў", "pl": "95 zaliczonych testów", "de": "95 bestandene Tests" },
+  "about.btn.github": { "en": "GitHub <i class=\"ph ph-arrow-right\"></i>", "ru": "GitHub <i class=\"ph ph-arrow-right\"></i>", "uk": "GitHub <i class=\"ph ph-arrow-right\"></i>", "be": "GitHub <i class=\"ph ph-arrow-right\"></i>", "pl": "GitHub <i class=\"ph ph-arrow-right\"></i>", "de": "GitHub <i class=\"ph ph-arrow-right\"></i>" },
+  "about.btn.habr1": { "en": "Habr #1 <i class=\"ph ph-arrow-right\"></i>", "ru": "Habr #1 <i class=\"ph ph-arrow-right\"></i>", "uk": "Habr #1 <i class=\"ph ph-arrow-right\"></i>", "be": "Habr #1 <i class=\"ph ph-arrow-right\"></i>", "pl": "Habr #1 <i class=\"ph ph-arrow-right\"></i>", "de": "Habr #1 <i class=\"ph ph-arrow-right\"></i>" },
+  "about.btn.habr2": { "en": "Habr #2 <i class=\"ph ph-arrow-right\"></i>", "ru": "Habr #2 <i class=\"ph ph-arrow-right\"></i>", "uk": "Habr #2 <i class=\"ph ph-arrow-right\"></i>", "be": "Habr #2 <i class=\"ph ph-arrow-right\"></i>", "pl": "Habr #2 <i class=\"ph ph-arrow-right\"></i>", "de": "Habr #2 <i class=\"ph ph-arrow-right\"></i>" },
+  "about.btn.doi": { "en": "Zenodo DOI <i class=\"ph ph-arrow-right\"></i>", "ru": "Zenodo DOI <i class=\"ph ph-arrow-right\"></i>", "uk": "Zenodo DOI <i class=\"ph ph-arrow-right\"></i>", "be": "Zenodo DOI <i class=\"ph ph-arrow-right\"></i>", "pl": "Zenodo DOI <i class=\"ph ph-arrow-right\"></i>", "de": "Zenodo DOI <i class=\"ph ph-arrow-right\"></i>" },
+  "cta.title": { "en": "Get in touch.", "ru": "Свяжитесь с нами.", "uk": "Зв'яжіться з нами.", "be": "Звяжыцеся з намі.", "pl": "Skontaktuj się.", "de": "Nimm Kontakt auf." },
+  "cta.desc": { "en": "Interested in licensing, collaboration, or early access? Reach out directly.", "ru": "Интересует лицензирование, сотрудничество или ранний доступ? Пишите напрямую.", "uk": "Цікавить ліцензування, співпраця або ранній доступ? Пишіть напряму.", "be": "Цікавіць ліцэнзаванне, супрацоўніцтва ці ранні доступ? Пішыце наўпрост.", "pl": "Zainteresowany licencjonowaniem, współpracą lub wczesnym dostępem? Skontaktuj się bezpośrednio.", "de": "Interesse an Lizenzierung, Zusammenarbeit oder frühem Zugang? Melde dich direkt." },
+  "cta.telegram": { "en": "Telegram", "ru": "Telegram", "uk": "Telegram", "be": "Telegram", "pl": "Telegram", "de": "Telegram" },
+  "cta.email": { "en": "Email", "ru": "Email", "uk": "Email", "be": "Email", "pl": "Email", "de": "E-Mail" },
+  "cta.github": { "en": "GitHub", "ru": "GitHub", "uk": "GitHub", "be": "GitHub", "pl": "GitHub", "de": "GitHub" },
+  "cta.habr1": { "en": "GraphKAN Story", "ru": "История GraphKAN", "uk": "Історія GraphKAN", "be": "Гісторыя GraphKAN", "pl": "Historia GraphKAN", "de": "GraphKAN Story" },
+  "cta.habr2": { "en": "TernML Overview", "ru": "Обзор TernML", "uk": "Огляд TernML", "be": "Агляд TernML", "pl": "Przegląd TernML", "de": "TernML Übersicht" },
+  "cta.habr3": { "en": "TernML Retrain", "ru": "TernML Retrain", "uk": "TernML Retrain", "be": "TernML Retrain", "pl": "TernML Retrain", "de": "TernML Retrain" },
+  "cta.doi": { "en": "DOI", "ru": "DOI", "uk": "DOI", "be": "DOI", "pl": "DOI", "de": "DOI" },
+  "footer.github": { "en": "GitHub", "ru": "GitHub", "uk": "GitHub", "be": "GitHub", "pl": "GitHub", "de": "GitHub" },
+  "footer.habr1": { "en": "Habr #1", "ru": "Habr #1", "uk": "Habr #1", "be": "Habr #1", "pl": "Habr #1", "de": "Habr #1" },
+  "footer.habr2": { "en": "Habr #2", "ru": "Habr #2", "uk": "Habr #2", "be": "Habr #2", "pl": "Habr #2", "de": "Habr #2" },
+  "footer.doi": { "en": "DOI", "ru": "DOI", "uk": "DOI", "be": "DOI", "pl": "DOI", "de": "DOI" },
+  "footer.live": { "en": "Live Site", "ru": "Сайт", "uk": "Сайт", "be": "Сайт", "pl": "Strona", "de": "Seite" },
+  "footer.proprietary": { "en": "Proprietary Technology \u2014 All Rights Reserved. Codebase is private.", "ru": "Проприетарная технология \u2014 Все права защищены. Кодовая база приватна.", "uk": "Пропрієтарна технологія \u2014 Всі права захищені. Кодова база приватна.", "be": "Прапрыетарная тэхналогія \u2014 Усе правы абаронены. Кодавая база прыватная.", "pl": "Zastrzeżona technologia \u2014 Wszelkie prawa zastrzeżone. Baza kodu jest prywatna.", "de": "Geschützte Technologie \u2014 Alle Rechte vorbehalten. Codebasis ist privat." },
+  "footer.legal": { "en": "TernML ternary quantization pipeline and regularization-by-quantization method are protected by applicable intellectual property laws. Unauthorized reproduction or distribution prohibited.", "ru": "Тернарный пайплайн TernML и метод регуляризации квантизацией защищены применимым законодательством об интеллектуальной собственности. Несанкционированное воспроизведение или распространение запрещено.", "uk": "Тернарний пайплайн TernML та метод регуляризації квантізацією захищені застосовним законодавством про інтелектуальну власність. Несанкціоноване відтворення або поширення заборонено.", "be": "Тэрнарны пайплайн TernML і метад рэгулярызацыі квантызацыяй абаронены прыдатным заканадаўствам аб інтэлектуальнай уласнасці. Несанкцыянаванае ўзнаўленне або распаўсюджванне забаронена.", "pl": "Ternarny pipeline TernML i metoda regularyzacji przez kwantyzację są chronione obowiązującymi przepisami prawa własności intelektualnej. Nieautoryzowane powielanie lub dystrybucja jest zabroniona.", "de": "Die ternäre Quantisierungspipeline von TernML und die Regularisierung-durch-Quantisierung-Methode sind durch geltende Gesetze zum geistigen Eigentum geschützt. Unbefugte Vervielfältigung oder Verbreitung untersagt." }
+};
 
-  function rv(h){
-    if(!h||h==='#'||h==='')return;
-    var s=document.querySelector(h);
-    if(s){s.querySelectorAll('.reveal,.reveal-alt,.reveal-rotate,.title-reveal').forEach(function(e){e.classList.add('visible');obs.unobserve(e)})}
+function setLang(lang) {
+  var container = document.querySelectorAll('.i18n-container');
+  container.forEach(function(el) { el.classList.add('fading'); });
+  setTimeout(function() {
+    var els = document.querySelectorAll('[data-i18n]');
+    for (var i = 0; i < els.length; i++) {
+      var el = els[i];
+      var key = el.getAttribute('data-i18n');
+      if (i18n[key] && i18n[key][lang]) {
+        if (el.hasAttribute('data-i18n-html') || el.querySelector('i') || el.querySelector('strong') || el.querySelector('span')) {
+          el.innerHTML = i18n[key][lang];
+        } else {
+          el.textContent = i18n[key][lang];
+        }
+      }
+    }
+    var elsHtml = document.querySelectorAll('[data-i18n-html]');
+    for (var j = 0; j < elsHtml.length; j++) {
+      var el2 = elsHtml[j];
+      var key2 = el2.getAttribute('data-i18n-html');
+      if (i18n[key2] && i18n[key2][lang]) {
+        el2.innerHTML = i18n[key2][lang];
+      }
+    }
+    container.forEach(function(el) { el.classList.remove('fading'); });
+    var btn = document.querySelector('.lang-btn');
+    btn.textContent = lang.toUpperCase() + ' ▾';
+    var dd = document.querySelectorAll('.lang-dropdown button');
+    for (var k = 0; k < dd.length; k++) {
+      dd[k].classList.toggle('active', dd[k].getAttribute('data-lang') === lang);
+    }
+    document.getElementById('langDropdown').classList.remove('open');
+    try { localStorage.setItem('ternml_lang', lang); } catch(e) {}
+  }, 300);
+}
+
+function toggleLangDropdown() {
+  document.getElementById('langDropdown').classList.toggle('open');
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  var saved = 'en';
+  try { var s = localStorage.getItem('ternml_lang'); if (s) saved = s; } catch(e) {}
+  setLang(saved);
+
+  document.addEventListener('click', function(e) {
+    var dd = document.getElementById('langDropdown');
+    if (!e.target.closest('.lang-switcher')) {
+      dd.classList.remove('open');
+    }
+  });
+
+  var els = document.querySelectorAll('.reveal,.reveal-alt,.reveal-rotate,.title-reveal');
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+    });
+  }, {threshold: 0.06, rootMargin: '0px 0px 40px 0px'});
+
+  function rv(h) {
+    if (!h || h === '#' || h === '') return;
+    var s = document.querySelector(h);
+    if (s) { s.querySelectorAll('.reveal,.reveal-alt,.reveal-rotate,.title-reveal').forEach(function(e) { e.classList.add('visible'); obs.unobserve(e); }); }
   }
 
-  els.forEach(function(el){obs.observe(el)});
-  if(location.hash){rv(location.hash)}
-  window.addEventListener('hashchange',function(){rv(location.hash)});
+  els.forEach(function(el) { obs.observe(el); });
+  if (location.hash) { rv(location.hash); }
+  window.addEventListener('hashchange', function() { rv(location.hash); });
 
-  var nav=document.getElementById('navbar');
-  var ticking=false;
-  window.addEventListener('scroll',function(){
-    if(!ticking){
-      requestAnimationFrame(function(){
-        nav.classList.toggle('scrolled',window.scrollY>50);
-        ticking=false;
+  var nav = document.getElementById('navbar');
+  var ticking = false;
+  window.addEventListener('scroll', function() {
+    if (!ticking) {
+      requestAnimationFrame(function() {
+        nav.classList.toggle('scrolled', window.scrollY > 50);
+        ticking = false;
       });
-      ticking=true;
+      ticking = true;
     }
   });
 });
