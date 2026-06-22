@@ -1071,16 +1071,16 @@ function setLang(lang) {
     for (var i = 0; i < els.length; i++) {
       var el = els[i];
       var key = el.getAttribute('data-i18n');
-      if (i18n[key] && i18n[key][lang]) {
-        el.innerHTML = i18n[key][lang];
+      if (i18n[key]) {
+        el.innerHTML = i18n[key][lang] || i18n[key]['en'] || '';
       }
     }
     var elsHtml = document.querySelectorAll('[data-i18n-html]');
     for (var j = 0; j < elsHtml.length; j++) {
       var el2 = elsHtml[j];
       var key2 = el2.getAttribute('data-i18n-html');
-      if (i18n[key2] && i18n[key2][lang]) {
-        el2.innerHTML = i18n[key2][lang];
+      if (i18n[key2]) {
+        el2.innerHTML = i18n[key2][lang] || i18n[key2]['en'] || '';
       }
     }
     container.forEach(function(el) { el.classList.remove('fading'); });
@@ -1090,6 +1090,11 @@ function setLang(lang) {
     for (var k = 0; k < dd.length; k++) {
       dd[k].classList.toggle('active', dd[k].getAttribute('data-lang') === lang);
     }
+    document.querySelectorAll('.arch-row.expanded').forEach(function(r) {
+      r.classList.remove('expanded');
+      var nxt = r.nextElementSibling;
+      if (nxt && nxt.classList.contains('arch-desc-row')) { nxt.remove(); }
+    });
     document.getElementById('langDropdown').classList.remove('open');
     try { localStorage.setItem('ternml_lang', lang); } catch(e) {}
   }, 300);
@@ -1295,7 +1300,7 @@ document.addEventListener('DOMContentLoaded', function() {
           var lang = 'en';
           try { var s = localStorage.getItem('ternml_lang'); if (s) lang = s; } catch(ex) {}
           var descKey = 'arch.desc.' + key;
-          td.textContent = (i18n[descKey] && i18n[descKey][lang]) ? i18n[descKey][lang] : '';
+          td.textContent = i18n[descKey] ? (i18n[descKey][lang] || i18n[descKey]['en'] || '') : '';
           descRow.appendChild(td);
           row.parentNode.insertBefore(descRow, row.nextElementSibling);
         }
