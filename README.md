@@ -1,9 +1,9 @@
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20752769.svg)](https://doi.org/10.5281/zenodo.20752769) [![License](https://img.shields.io/badge/License-All%20Rights%20Reserved-red)]() [![TernML Site](https://img.shields.io/badge/TernML-Live%20Site-blue?style=for-the-badge)](https://fakeonomics.github.io/TernML-overview/)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20804937.svg)](https://doi.org/10.5281/zenodo.20804937) [![License](https://img.shields.io/badge/License-All%20Rights%20Reserved-red)]() [![TernML Site](https://img.shields.io/badge/TernML-Live%20Site-blue?style=for-the-badge)](https://fakeonomics.github.io/TernML-overview/)
 
 # TernML: Multi-Architecture Ternary Machine Learning Framework
 
 First neural network framework with **discrete ternary weights** {-1, 0, +1}.  
-**1.58 bits/param · 5 architectures · 90.54% Fashion-MNIST · 0 DSP inference · C codegen for Cortex-M0+**
+**2 bits/param · 5 architectures · 90.54% Fashion-MNIST · 0 DSP inference · C codegen for Cortex-M0+**
 
 Supports **5 architectures**: GraphKAN, CNN, Transformer, RNN/LSTM, Vision Transformer (ViT).  
 All with the same 4-phase QAT pipeline and **regularization-by-quantization** effect.
@@ -19,7 +19,7 @@ All with the same 4-phase QAT pipeline and **regularization-by-quantization** ef
 | Transformer 3L/4H/48d | Copy task | **100.00%** | **10.4 KB** |
 | RNN 2L/64d | Seq MNIST | **18.2%** | **2.7 KB** |
 | LSTM 2L/64d | Seq MNIST | **20.6%** | **10.9 KB** |
-| ViT patch8/128d/4L | CIFAR-10 | **60.30%** | **25.4 KB** |
+| ViT patch4/64d/4L | CIFAR-10 | **65.43%** | **25.4 KB** |
 
 All improve over float baseline — **regularization-by-quantization**.
 
@@ -51,5 +51,5 @@ All improve over float baseline — **regularization-by-quantization**.
 ## Status
 
 Proprietary technology — All Rights Reserved.  
-Codebase is private. [Paper on Zenodo](https://doi.org/10.5281/zenodo.20752769).  
+Codebase is private. [Paper on Zenodo](https://doi.org/10.5281/zenodo.20804937).  
 Contact: [Telegram](https://t.me/fakeonomics) · [Email](mailto:uv20817@gmail.com)
