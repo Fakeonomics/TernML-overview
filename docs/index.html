@@ -343,6 +343,13 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
 @supports ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){
   .metric-card,.how-card,.bench-wrap,.paper-card,.cta-block,.codegen-note,.pipeline-step,.about-badge,.hw-card{background:rgba(255,255,255,.03);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
 }
+
+.landscape-bg{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+.landscape-bg::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(217,119,6,.02) 55%,rgba(217,119,6,.06) 60%,rgba(180,83,9,.08) 65%,rgba(217,119,6,.12) 68%,rgba(146,64,14,.1) 72%,rgba(120,53,15,.08) 76%,rgba(180,83,9,.06) 80%,rgba(217,119,6,.04) 85%,transparent 90%)}
+.landscape-peak{position:absolute;bottom:0;border-radius:0 0 0 0;filter:blur(50px)}
+.landscape-peak.p1{left:-8%;width:55%;height:30vh;background:rgba(180,83,9,.07);border-radius:35% 65% 0 0}
+.landscape-peak.p2{right:-5%;width:50%;height:38vh;background:rgba(217,119,6,.09);border-radius:60% 40% 0 0}
+.landscape-peak.p3{left:25%;width:50%;height:25vh;background:rgba(146,64,14,.05);border-radius:50% 50% 0 0;filter:blur(65px)}
   </style>
 </head>
 <body>
@@ -351,6 +358,12 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
   <div class="orb" style="width:700px;height:700px;background:radial-gradient(circle,rgba(217,119,6,.06) 0%,transparent 70%);top:-15%;left:-10%;animation-delay:0s"></div>
   <div class="orb" style="width:500px;height:500px;background:radial-gradient(circle,rgba(20,184,166,.03) 0%,transparent 70%);bottom:-10%;right:-5%;animation-delay:-8s"></div>
   <div class="orb" style="width:400px;height:400px;background:radial-gradient(circle,rgba(217,119,6,.03) 0%,transparent 70%);top:40%;right:15%;animation-delay:-15s"></div>
+</div>
+
+<div class="landscape-bg" aria-hidden="true">
+  <div class="landscape-peak p1"></div>
+  <div class="landscape-peak p2"></div>
+  <div class="landscape-peak p3"></div>
 </div>
 
 <script id="i18n-data" type="application/json">
