@@ -66,7 +66,7 @@
 ::selection{background:rgba(217,119,6,.25);color:#fff}
 html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 body{font-family:var(--font-ui);background:var(--bg);color:var(--text);line-height:1.65;overflow-x:hidden}
-body::before{content:'';position:fixed;inset:0;z-index:-1;background:radial-gradient(ellipse 80% 60% at 10% 20%,rgba(217,119,6,.05) 0%,transparent 60%),radial-gradient(ellipse 60% 80% at 90% 70%,rgba(20,184,166,.03) 0%,transparent 50%),radial-gradient(ellipse 100% 40% at 50% 80%,rgba(217,119,6,.02) 0%,transparent 50%)}
+body::before{content:'';position:fixed;inset:0;z-index:-1;background:linear-gradient(180deg,#1a1410 0%,#2a1f15 25%,#3a2818 45%,#5a3d20 60%,#7a5530 75%,#5a3d20 100%)}
 a{color:var(--amber);text-decoration:none;transition:color .25s}
 a:hover{color:var(--amber-light)}
 img{max-width:100%}
@@ -329,10 +329,6 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
 .ambient-bg .orb{position:absolute;border-radius:50%;filter:blur(100px);animation:float 20s ease-in-out infinite;will-change:transform}
 @keyframes float{0%,100%{transform:translate(0,0)scale(1)}33%{transform:translate(40px,-30px)scale(1.08)}66%{transform:translate(-30px,20px)scale(0.95)}}
 
-.lang-btn{background:none;border:1px solid var(--border);color:var(--amber);font-size:12px;font-weight:600;padding:5px 12px;border-radius:4px;cursor:pointer;font-family:var(--font-ui);transition:border-color .25s,color .25s;letter-spacing:.04em;text-transform:uppercase;line-height:1}
-.lang-btn:hover{border-color:var(--amber);color:var(--amber-light)}
-.lang-btn.active{background:var(--amber);color:#0c0b09;border-color:var(--amber)}
-
 .section-divider{width:60px;height:2px;background:var(--gradient-accent);margin:0 auto 32px;border-radius:2px;opacity:.5}
 
 ::-webkit-scrollbar{width:6px}
@@ -341,15 +337,17 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
 ::-webkit-scrollbar-thumb:hover{background:rgba(217,119,6,.4)}
 
 @supports ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){
-  .metric-card,.how-card,.bench-wrap,.paper-card,.cta-block,.codegen-note,.pipeline-step,.about-badge,.hw-card{background:rgba(255,255,255,.03);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+  .metric-card,.how-card,.bench-wrap,.paper-card,.cta-block,.codegen-note,.pipeline-step,.about-badge,.hw-card{  background:rgba(255,255,255,.03);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
 }
 
-.landscape-bg{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
-.landscape-bg::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(217,119,6,.02) 55%,rgba(217,119,6,.06) 60%,rgba(180,83,9,.08) 65%,rgba(217,119,6,.12) 68%,rgba(146,64,14,.1) 72%,rgba(120,53,15,.08) 76%,rgba(180,83,9,.06) 80%,rgba(217,119,6,.04) 85%,transparent 90%)}
-.landscape-peak{position:absolute;bottom:0;border-radius:0 0 0 0;filter:blur(50px)}
-.landscape-peak.p1{left:-8%;width:55%;height:30vh;background:rgba(180,83,9,.07);border-radius:35% 65% 0 0}
-.landscape-peak.p2{right:-5%;width:50%;height:38vh;background:rgba(217,119,6,.09);border-radius:60% 40% 0 0}
-.landscape-peak.p3{left:25%;width:50%;height:25vh;background:rgba(146,64,14,.05);border-radius:50% 50% 0 0;filter:blur(65px)}
+.lang-btn{background:none;border:1px solid var(--amber);color:var(--amber);font-size:12px;font-weight:600;padding:5px 12px;border-radius:4px;cursor:pointer;font-family:var(--font-ui);transition:border-color .25s,color .25s,background .25s;letter-spacing:.04em;text-transform:uppercase;line-height:1}
+.lang-btn:hover{border-color:var(--amber-light);color:var(--amber-light)}
+.lang-btn.active{background:var(--amber);color:#0c0b09;border-color:var(--amber)}
+
+.landscape-mountains{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+.landscape-mountains .peak1{position:absolute;bottom:0;left:-5%;width:45%;height:55%;background:radial-gradient(ellipse 100% 100% at 50% 100%,rgba(120,80,40,0.12) 0%,transparent 80%);border-radius:60% 40% 0 0;filter:blur(40px)}
+.landscape-mountains .peak2{position:absolute;bottom:0;left:25%;width:55%;height:65%;background:radial-gradient(ellipse 100% 100% at 50% 100%,rgba(180,120,60,0.10) 0%,transparent 80%);border-radius:50% 50% 0 0;filter:blur(50px)}
+.landscape-mountains .peak3{position:absolute;bottom:-5%;right:-10%;width:60%;height:45%;background:radial-gradient(ellipse 100% 100% at 50% 100%,rgba(217,119,6,0.08) 0%,transparent 80%);border-radius:30% 70% 0 0;filter:blur(35px)}
   </style>
 </head>
 <body>
@@ -360,10 +358,10 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
   <div class="orb" style="width:400px;height:400px;background:radial-gradient(circle,rgba(217,119,6,.03) 0%,transparent 70%);top:40%;right:15%;animation-delay:-15s"></div>
 </div>
 
-<div class="landscape-bg" aria-hidden="true">
-  <div class="landscape-peak p1"></div>
-  <div class="landscape-peak p2"></div>
-  <div class="landscape-peak p3"></div>
+<div class="landscape-mountains" aria-hidden="true">
+  <div class="peak1"></div>
+  <div class="peak2"></div>
+  <div class="peak3"></div>
 </div>
 
 <script id="i18n-data" type="application/json">
@@ -380,7 +378,7 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
     "nav_about": "About",
     "nav_cta": "Get in Touch",
     "hero_badge": "v2.0 · Multi-Architecture Ternary ML Framework",
-    "hero_title": "The $0.50 neural network.",
+    "hero_title": "The <span class=\"gold\">$0.50</span> neural<br>network.",
     "hero_sub": "TernML turns neural nets into a format that runs on $0.50 MCUs. 5 architectures. C codegen. No DSP, no FPU — just add-and-shift.",
     "hero_cta": "Get in Touch",
     "hero_paper_btn": "Read the Paper",
@@ -512,9 +510,9 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
     "codegen_step4_sub": "arm-none-eabi-gcc",
     "codegen_step5": "Run on MCU",
     "codegen_step5_sub": "Cortex-M0+",
-    "codegen_note": "All 5 architectures compiled and verified under Unicorn Engine (Cortex-M0+ simulator).",
+    "codegen_note": "<strong>All 5 architectures</strong> compiled and verified under Unicorn Engine (Cortex-M0+ simulator).",
     "papers_label": "Papers",
-    "papers_title": "Research Papers.",
+    "papers_title": "Research<br>Papers.",
     "papers_sub": "Published research and codebase on Zenodo.",
     "paper1_title": "TernML: Multi-Architecture Ternary ML Framework",
     "paper1_doi": "10.5281/zenodo.20804937",
@@ -565,7 +563,7 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
     "nav_about": "О проекте",
     "nav_cta": "Связаться",
     "hero_badge": "v2.0 · Фреймворк тернарного ML с 5 архитектурами",
-    "hero_title": "Нейросеть за $0.50.",
+    "hero_title": "Нейросеть за <span class=\"gold\">$0.50</span>.",
     "hero_sub": "TernML превращает нейросети в формат, работающий на микроконтроллерах за $0.50. 5 архитектур. C кодогенерация. Ни DSP, ни FPU — только сложение и сдвиг.",
     "hero_cta": "Связаться",
     "hero_paper_btn": "Читать статью",
@@ -697,9 +695,9 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
     "codegen_step4_sub": "arm-none-eabi-gcc",
     "codegen_step5": "Запуск на MCU",
     "codegen_step5_sub": "Cortex-M0+",
-    "codegen_note": "Все 5 архитектур скомпилированы и проверены под Unicorn Engine (симулятор Cortex-M0+).",
+    "codegen_note": "<strong>Все 5 архитектур</strong> скомпилированы и проверены под Unicorn Engine (симулятор Cortex-M0+).",
     "papers_label": "Статьи",
-    "papers_title": "Научные работы.",
+    "papers_title": "Научные<br>работы.",
     "papers_sub": "Опубликованные исследования и код на Zenodo.",
     "paper1_title": "TernML: Multi-Architecture Ternary ML Framework",
     "paper1_doi": "10.5281/zenodo.20804937",
@@ -735,8 +733,8 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
     "footer_zenodo_code": "Zenodo Code",
     "footer_ternat": "TernaT",
     "footer_terny": "TernY",
-    "footer_proprietary": "Proprietary Technology — All Rights Reserved. Fakeonomics (Yuriy Venediktov).",
-    "footer_legal": "TernML ternary quantization pipeline and regularization-by-quantization method are protected by applicable intellectual property laws. Unauthorized reproduction or distribution prohibited."
+    "footer_proprietary": "Проприетарная технология — Все права защищены. Fakeonomics (Yuriy Venediktov).",
+    "footer_legal": "Конвейер тернарной квантизации TernML и метод регуляризации квантизацией защищены применимыми законами об интеллектуальной собственности. Несанкционированное воспроизведение или распространение запрещено."
   }
 }
 </script>
