@@ -53,7 +53,6 @@
   --amber-light:#f59e0b;
   --amber-glow:rgba(217,119,6,.15);
   --amber-dim:#b45309;
-  --gold:#e2c278;
   --teal:#14b8a6;
   --ember:#d4603a;
   --gradient-hero:linear-gradient(180deg,rgba(12,11,9,.2) 0%,rgba(12,11,9,.88) 55%,var(--bg) 100%);
@@ -106,6 +105,8 @@ nav .container{display:flex;align-items:center;justify-content:space-between}
 .nav-links a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1.5px;background:var(--amber);transition:width .3s cubic-bezier(.22,1,.36,1)}
 .nav-links a:hover{color:var(--text)}
 .nav-links a:hover::after{width:100%}
+.nav-links a.active{color:var(--amber)!important}
+.nav-links a.active::after{width:100%!important;background:var(--amber)!important;box-shadow:0 0 8px var(--amber-glow)}
 .nav-cta{font-size:13px;font-weight:600;padding:9px 22px;background:var(--gradient-accent);border-radius:6px;color:#0c0b09!important;letter-spacing:.01em;transition:opacity .25s,transform .25s;clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%)}
 .nav-cta:hover{opacity:.88;transform:translateY(-1px);color:#0c0b09!important}
 .nav-cta::after{display:none!important}
@@ -752,7 +753,8 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
       <a href="https://github.com/Fakeonomics/TernML-overview" target="_blank" rel="noopener">GitHub</a>
       <a href="https://doi.org/10.5281/zenodo.20804937" target="_blank" rel="noopener">Zenodo Paper</a>
       <a href="https://doi.org/10.5281/zenodo.20817123" target="_blank" rel="noopener">Zenodo Code</a>
-      <a href="https://fakeonomics.github.io/TernML-overview/" target="_blank" rel="noopener">Live Site</a>
+      <a href="https://fakeonomics.github.io/TernaT-overview/" target="_blank" rel="noopener">TernaT</a>
+      <a href="https://fakeonomics.github.io/TernY-overview/" target="_blank" rel="noopener">TernY</a>
     </div>
     <p>Proprietary Technology &mdash; All Rights Reserved. Fakeonomics (Yuriy Venediktov).</p>
     <p class="legal">TernML ternary quantization pipeline and regularization-by-quantization method are protected by applicable intellectual property laws. Unauthorized reproduction or distribution prohibited.</p>
