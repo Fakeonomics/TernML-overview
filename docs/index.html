@@ -263,7 +263,7 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
 #scroll-top:hover{background:var(--bg-card-hover);border-color:var(--amber);transform:translateY(-2px)}
 
 /* === HEROCANVAS === */
-#hero-canvas{position:absolute;inset:0;z-index:1;pointer-events:none;width:100%;height:100%}
+/* removed: hero-canvas */
 
 /* === RESPONSIVE === */
 @media(max-width:960px){
@@ -320,7 +320,7 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
   .reveal,.reveal-alt,.reveal-rotate,.reveal.visible,.reveal-alt.visible,.reveal-rotate.visible{transform:none!important;opacity:1!important;transition:none!important}
   .title-reveal,.title-reveal.visible{color:var(--text)!important;transition:none!important}
   .hero-bg .grain{animation:none!important}
-  #hero-canvas{display:none!important}
+  /* particles removed */
   #scroll-progress{display:none!important}
 }
 .hero-bg-fallback{position:absolute;inset:0;background:radial-gradient(ellipse at 30% 40%,rgba(217,119,6,.06),transparent 70%),radial-gradient(ellipse at 70% 60%,rgba(20,184,166,.04),transparent 70%),radial-gradient(ellipse at 50% 50%,rgba(12,11,9,0) 0%,#0c0b09 100%);pointer-events:none}
@@ -774,7 +774,7 @@ footer .legal{font-size:12px;color:var(--text-dimmer);margin-top:4px;line-height
     <img src="arch_diagram.jpg" alt="" aria-hidden="true" loading="eager" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.6">
     <div class="overlay"></div>
     <div class="grain"></div>
-    <canvas id="hero-canvas"></canvas>
+    <!-- particles removed -->
   </div>
   <div class="container">
     <div class="reveal visible">
@@ -1290,86 +1290,7 @@ var scrollTop = document.getElementById('scroll-top');
     });
   });
 
-  // PARTICLE HERO
-  var canvas = document.getElementById('hero-canvas');
-  if (canvas) {
-    var ctx = canvas.getContext('2d');
-    var hero = document.querySelector('.hero');
-    var particles = [];
-    var NUM_PARTICLES = 50;
-    var CONNECT_DIST = 120;
-    var MAX_PARTICLES = 50;
-    var skipFrame = false;
-    var frameCount = 0;
-    var lastFpsCheck = performance.now();
-    var fpsFrameCount = 0;
-    function checkFrameRate() {
-      var now = performance.now();
-      var elapsed = now - lastFpsCheck;
-      if (elapsed >= 1000) {
-        var fps = (fpsFrameCount * 1000) / elapsed;
-        if (fps < 30 && NUM_PARTICLES > 20) {
-          NUM_PARTICLES = Math.max(20, NUM_PARTICLES - 10);
-          MAX_PARTICLES = NUM_PARTICLES;
-          if (particles.length > NUM_PARTICLES) particles.length = NUM_PARTICLES;
-        }
-        lastFpsCheck = now;
-        fpsFrameCount = 0;
-      }
-    }
-    function resizeCanvas() {
-      canvas.width = hero.offsetWidth;
-      canvas.height = hero.offsetHeight;
-    }
-    function initParticles() {
-      particles = [];
-      for (var i = 0; i < NUM_PARTICLES; i++) {
-        particles.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          vx: (Math.random() - 0.5) * 0.4,
-          vy: (Math.random() - 0.5) * 0.4,
-          r: Math.random() * 1.8 + 0.5,
-          hue: Math.random() > 0.5 ? 35 : 25
-        });
-      }
-    }
-    function drawParticles() {
-      skipFrame = !skipFrame;
-      if (skipFrame) { requestAnimationFrame(drawParticles); return; }
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      for (var i = 0; i < particles.length; i++) {
-        var p = particles[i];
-        p.x += p.vx; p.y += p.vy;
-        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = 'hsla(' + p.hue + ',80%,60%,0.5)';
-        ctx.fill();
-        for (var j = i + 1; j < particles.length; j++) {
-          var p2 = particles[j];
-          var dx = p.x - p2.x, dy = p.y - p2.y;
-          var dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < CONNECT_DIST) {
-            ctx.beginPath();
-            ctx.moveTo(p.x, p.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.strokeStyle = 'hsla(' + ((p.hue + p2.hue) / 2) + ',70%,60%,' + (0.12 * (1 - dist / CONNECT_DIST)) + ')';
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
-          }
-        }
-      }
-      fpsFrameCount++;
-      if (frameCount++ % 60 === 0) checkFrameRate();
-      requestAnimationFrame(drawParticles);
-    }
-    resizeCanvas();
-    initParticles();
-    drawParticles();
-    window.addEventListener('resize', resizeCanvas);
-  }
+  /* PARTICLE HERO removed */
 
   // SMOOTH SCROLL FOR NAV
   navLinks.forEach(function(a) {
