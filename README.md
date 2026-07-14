@@ -26,7 +26,7 @@ All improve over float baseline — **regularization-by-quantization**.
 ## Features
 
 - **5 architectures**: Graph, CNN, Transformer, RNN, ViT — unified `TernMLayer`
-- **C codegen**: Cortex-M0+ output, p/m bit-sliced format (32 trits/chunk)
+- **C codegen**: Cortex-M0+ output, 4-trit-per-byte packed format
 - **ELM mode**: Frozen random ternary hidden layer + closed-form least squares
 - **95 passing tests**: core + transformer + rnn + codegen + vit + pm_format
 - **Gamma absorption**: Absorb scaling into batch norm during inference
@@ -52,4 +52,4 @@ All improve over float baseline — **regularization-by-quantization**.
 
 Proprietary technology — All Rights Reserved.  
 Codebase is private. [Paper on Zenodo](https://doi.org/10.5281/zenodo.20804937).  
-Contact: [Telegram](https://t.me/fakeonomics) · [Email](mailto:uv20817@gmail.com)
+Contact: [Telegram](https://t.me/fakeonomics)
