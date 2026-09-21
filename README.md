@@ -1,8 +1,9 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20804937.svg)](https://doi.org/10.5281/zenodo.20804937) [![License](https://img.shields.io/badge/License-All%20Rights%20Reserved-red)]() [![TernML Site](https://img.shields.io/badge/TernML-Live%20Site-blue?style=for-the-badge)](https://fakeonomics.github.io/TernML-overview/)
 
-# TernML: Multi-Architecture Ternary Machine Learning Framework
+<div align="center"><h1><code>TernML-overview</code></h1><h3>Multi-architecture ternary ML: 5 nets, 1.58 bits/param, MCU-ready.</h3></div>
 
-First neural network framework with **discrete ternary weights** {-1, 0, +1}.  
+Site: https://fakeonomics.github.io/TernML-overview/
+
 **2 bits/param · 5 architectures · 90.54% Fashion-MNIST · 0 DSP inference · C codegen for Cortex-M0+**
 
 Supports **5 architectures**: GraphKAN, CNN, Transformer, RNN/LSTM, Vision Transformer (ViT).  
